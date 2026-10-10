@@ -1,4 +1,5 @@
 import Hero from "@/components/Hero";
+import ConstructionSlider from "@/components/ConstructionSlider";
 import ServicesSection from "@/components/ServicesSection";
 import ProjectsGallery from "@/components/ProjectsGallery";
 import CostCalculator from "@/components/CostCalculator";
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <ConstructionSlider />
       <ServicesSection />
       <ProjectsGallery />
       <CostCalculator />
