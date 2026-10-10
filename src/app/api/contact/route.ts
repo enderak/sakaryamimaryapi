@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 import { companyInfo } from "@/data/company";
 import fs from "fs";
 import path from "path";
+import { getSiteSettings } from "@/lib/settingsStorage";
 
 // In-Memory Rate Limiter (IP bazlı istek sınırlaması)
 interface RateLimitRecord {
@@ -11,7 +12,6 @@ interface RateLimitRecord {
 }
 const rateLimitMap = new Map<string, RateLimitRecord>();
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 dakika
-const MAX_REQUESTS_PER_WINDOW = 5; // 10 dakikada en fazla 5 form gönderimi
 
 // XSS Temizleyici (HTML Entity Encoder)
 function sanitize(input: unknown, maxLength: number): string {
@@ -42,31 +42,55 @@ function isValidEmail(email: string): boolean {
 
 export async function POST(request: Request) {
   try {
+    const settings = getSiteSettings();
+    const sec = settings.security;
+
     // 1. İstemci IP Adresi Tespiti
     const forwardedFor = request.headers.get("x-forwarded-for");
     const ip = forwardedFor ? forwardedFor.split(",")[0].trim() : "127.0.0.1";
 
-    // 2. Rate Limiting (Flooding & Spam Koruması)
-    const now = Date.now();
-    const clientRecord = rateLimitMap.get(ip);
+    // 2. IP Engel Kontrolü (Blacklist)
+    if (sec.blockedIps && sec.blockedIps.includes(ip)) {
+      return NextResponse.json(
+        { success: false, error: "Erişiminiz güvenlik politikaları nedeniyle kısıtlanmıştır." },
+        { status: 403 }
+      );
+    }
 
-    if (clientRecord) {
-      if (now - clientRecord.firstRequestTime < RATE_LIMIT_WINDOW_MS) {
-        if (clientRecord.count >= MAX_REQUESTS_PER_WINDOW) {
-          return NextResponse.json(
-            {
-              success: false,
-              error: "Çok fazla istek gönderdiniz. Güvenliğiniz için lütfen 10 dakika sonra tekrar deneyiniz veya doğrudan bizi arayınız."
-            },
-            { status: 429 }
-          );
+    // 3. User-Agent Kontrolü (Zararlı bot engeli)
+    const userAgent = request.headers.get("user-agent") || "";
+    if (sec.blockMaliciousUserAgents) {
+      const badBots = ["sqlmap", "nikto", "dirbuster", "nmap", "wpscan", "masscan"];
+      const isBadBot = badBots.some(bot => userAgent.toLowerCase().includes(bot));
+      if (isBadBot) {
+        return NextResponse.json({ success: false, error: "Geçersiz istek." }, { status: 400 });
+      }
+    }
+
+    // 4. Rate Limiting (Flooding & Spam Koruması)
+    if (sec.rateLimitingEnabled) {
+      const maxReq = sec.maxContactRequestsPer10Min || 5;
+      const now = Date.now();
+      const clientRecord = rateLimitMap.get(ip);
+
+      if (clientRecord) {
+        if (now - clientRecord.firstRequestTime < RATE_LIMIT_WINDOW_MS) {
+          if (clientRecord.count >= maxReq) {
+            return NextResponse.json(
+              {
+                success: false,
+                error: "Çok fazla istek gönderdiniz. Güvenliğiniz için lütfen 10 dakika sonra tekrar deneyiniz veya doğrudan bizi arayınız."
+              },
+              { status: 429 }
+            );
+          }
+          clientRecord.count += 1;
+        } else {
+          rateLimitMap.set(ip, { count: 1, firstRequestTime: now });
         }
-        clientRecord.count += 1;
       } else {
         rateLimitMap.set(ip, { count: 1, firstRequestTime: now });
       }
-    } else {
-      rateLimitMap.set(ip, { count: 1, firstRequestTime: now });
     }
 
     // 3. Request Body Okuma

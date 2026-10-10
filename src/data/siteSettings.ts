@@ -5,13 +5,33 @@ export interface RssFeedSource {
   enabled: boolean;
 }
 
+export interface SecurityDefenseConfig {
+  // 1. Kimlik ve Oturum
+  allowedEmails: string[];
+  requireOtp: boolean;
+  sessionDurationDays: number;
+  masterPasswordHint: string;
+  maxLoginAttempts: number; // Hatalı OTP deneme limiti (örn. 5)
+
+  // 2. Savunma & WAF Kuralları
+  rateLimitingEnabled: boolean; // IP bazlı istek sınırlandırma
+  maxContactRequestsPer10Min: number; // İletişim formu için 10 dk sınır
+  blockMaliciousUserAgents: boolean; // Bilinen tarama ve saldırı botlarını bloklama
+  blockSqlInjectionPatterns: boolean; // SQL injection ve path traversal desenlerini filtreleme
+  xssProtectionStrict: boolean; // Katı HTML entity temizleme
+  
+  // 3. Güvenlik Başlıkları & İpuçları
+  clickjackingProtection: boolean; // X-Frame-Options: SAMEORIGIN
+  hstsEnabled: boolean; // Strict-Transport-Security (HTTPS zorunlu)
+  nosniffEnabled: boolean; // X-Content-Type-Options: nosniff
+  
+  // 4. IP Engel & İzin Listesi
+  blockedIps: string[]; // Engellenen IP adresleri listesi
+  ipWhitelistForAdmin: string[]; // İsteğe bağlı Admin paneline sadece belirli IP'lerin girmesi
+}
+
 export interface SiteSettingsConfig {
-  security: {
-    allowedEmails: string[];
-    requireOtp: boolean;
-    sessionDurationDays: number;
-    masterPasswordHint: string;
-  };
+  security: SecurityDefenseConfig;
   rss: {
     enabled: boolean;
     itemsToShow: number;
@@ -48,7 +68,18 @@ export const defaultSiteSettingsConfig: SiteSettingsConfig = {
     ],
     requireOtp: true,
     sessionDurationDays: 7,
-    masterPasswordHint: "Sakarya 2026 Admin Şifresi / OTP ile doğrulama"
+    masterPasswordHint: "Sakarya 2026 Admin Şifresi / OTP ile doğrulama",
+    maxLoginAttempts: 5,
+    rateLimitingEnabled: true,
+    maxContactRequestsPer10Min: 5,
+    blockMaliciousUserAgents: true,
+    blockSqlInjectionPatterns: true,
+    xssProtectionStrict: true,
+    clickjackingProtection: true,
+    hstsEnabled: true,
+    nosniffEnabled: true,
+    blockedIps: [],
+    ipWhitelistForAdmin: []
   },
   rss: {
     enabled: true,

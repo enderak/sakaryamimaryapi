@@ -22,7 +22,12 @@ import {
   Sliders,
   Check,
   Smartphone,
-  Eye
+  Eye,
+  ShieldAlert,
+  Ban,
+  Shield,
+  Server,
+  Activity
 } from "lucide-react";
 import { SiteSettingsConfig, defaultSiteSettingsConfig, RssFeedSource } from "@/data/siteSettings";
 import { themeOptions, ThemeType } from "@/components/ThemeSwitcher";
@@ -47,6 +52,8 @@ export default function AdminSettingsSection({
   const [activeSubTab, setActiveSubTab] = useState<"security" | "rss" | "blog" | "theme">("security");
   const [newEmail, setNewEmail] = useState("");
   const [newEmailError, setNewEmailError] = useState<string | null>(null);
+  const [newBlockedIp, setNewBlockedIp] = useState("");
+  const [newBlockedIpError, setNewBlockedIpError] = useState<string | null>(null);
   
   // New RSS Feed State
   const [newFeedName, setNewFeedName] = useState("");
@@ -96,6 +103,46 @@ export default function AdminSettingsSection({
         security: {
           ...base.security,
           allowedEmails: base.security.allowedEmails.filter(e => e.toLowerCase() !== emailToRemove.toLowerCase())
+        }
+      };
+    });
+  };
+
+  // Handle Blocked IP Add
+  const handleAddBlockedIp = () => {
+    setNewBlockedIpError(null);
+    const trimmed = newBlockedIp.trim();
+    if (!trimmed) {
+      setNewBlockedIpError("Geçerli bir IP adresi yazınız.");
+      return;
+    }
+    const currentList = settings.security.blockedIps || [];
+    if (currentList.includes(trimmed)) {
+      setNewBlockedIpError("Bu IP adresi zaten engellenenler listesinde.");
+      return;
+    }
+    setSettings(prev => {
+      const base = prev || settings;
+      return {
+        ...base,
+        security: {
+          ...base.security,
+          blockedIps: [...(base.security.blockedIps || []), trimmed]
+        }
+      };
+    });
+    setNewBlockedIp("");
+  };
+
+  // Handle Blocked IP Remove
+  const handleRemoveBlockedIp = (ipToRemove: string) => {
+    setSettings(prev => {
+      const base = prev || settings;
+      return {
+        ...base,
+        security: {
+          ...base.security,
+          blockedIps: (base.security.blockedIps || []).filter(ip => ip !== ipToRemove)
         }
       };
     });
@@ -380,6 +427,230 @@ export default function AdminSettingsSection({
                 Admin çerezi belirtilen gün sonunda otomatik olarak sonlandırılır.
               </p>
             </div>
+          </div>
+
+          {/* 1.1 Web Application Firewall (WAF) & Saldırı Savunma Kalkanı */}
+          <div className="pt-6 border-t border-slate-100 space-y-4">
+            <div className="flex items-center gap-2">
+              <ShieldAlert className="w-4 h-4 text-rose-600" />
+              <h3 className="text-sm font-bold text-slate-900">
+                Web Güvenlik Duvarı (WAF) & Otomatik Savunma Kalkanı
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={settings.security.rateLimitingEnabled ?? true}
+                    onChange={(e) =>
+                      setSettings(prev => {
+                        const base = prev || settings;
+                        return {
+                          ...base,
+                          security: { ...base.security, rateLimitingEnabled: e.target.checked }
+                        };
+                      })
+                    }
+                    className="w-4 h-4 text-emerald-600 rounded"
+                  />
+                  <span className="text-xs font-bold text-slate-800">DDoS & Spam Sınırlandırma (Rate Limit)</span>
+                </label>
+                <p className="text-[11px] text-slate-500 mt-1 ml-6">
+                  Aynı IP&apos;den 10 dakikada gelen istekleri akıllıca sınırlar.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={settings.security.blockMaliciousUserAgents ?? true}
+                    onChange={(e) =>
+                      setSettings(prev => {
+                        const base = prev || settings;
+                        return {
+                          ...base,
+                          security: { ...base.security, blockMaliciousUserAgents: e.target.checked }
+                        };
+                      })
+                    }
+                    className="w-4 h-4 text-emerald-600 rounded"
+                  />
+                  <span className="text-xs font-bold text-slate-800">Zararlı Tarayıcı/Bot Koruması</span>
+                </label>
+                <p className="text-[11px] text-slate-500 mt-1 ml-6">
+                  sqlmap, nikto, dirbuster vb. otomatik zafiyet tarayıcılarını engeller.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={settings.security.xssProtectionStrict ?? true}
+                    onChange={(e) =>
+                      setSettings(prev => {
+                        const base = prev || settings;
+                        return {
+                          ...base,
+                          security: { ...base.security, xssProtectionStrict: e.target.checked }
+                        };
+                      })
+                    }
+                    className="w-4 h-4 text-emerald-600 rounded"
+                  />
+                  <span className="text-xs font-bold text-slate-800">Katı XSS & Kod Enjeksiyon Filtresi</span>
+                </label>
+                <p className="text-[11px] text-slate-500 mt-1 ml-6">
+                  Tüm form girdilerini HTML Entity şifrelemesiyle temizler.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={settings.security.clickjackingProtection ?? true}
+                    onChange={(e) =>
+                      setSettings(prev => {
+                        const base = prev || settings;
+                        return {
+                          ...base,
+                          security: { ...base.security, clickjackingProtection: e.target.checked }
+                        };
+                      })
+                    }
+                    className="w-4 h-4 text-emerald-600 rounded"
+                  />
+                  <span className="text-xs font-bold text-slate-800">Clickjacking Savunması (iFrame Kilidi)</span>
+                </label>
+                <p className="text-[11px] text-slate-500 mt-1 ml-6">
+                  Sitenin başka zararlı sayfalarda çerçeve içine alınmasını engeller.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={settings.security.hstsEnabled ?? true}
+                    onChange={(e) =>
+                      setSettings(prev => {
+                        const base = prev || settings;
+                        return {
+                          ...base,
+                          security: { ...base.security, hstsEnabled: e.target.checked }
+                        };
+                      })
+                    }
+                    className="w-4 h-4 text-emerald-600 rounded"
+                  />
+                  <span className="text-xs font-bold text-slate-800">Zorunlu HSTS & SSL Şifreleme</span>
+                </label>
+                <p className="text-[11px] text-slate-500 mt-1 ml-6">
+                  Tüm bağlantıları HTTPS tüneli üzerinden güvene alır.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                <label className="block text-xs font-bold text-slate-800 mb-1">
+                  10 Dakikalık Form İstek Limiti
+                </label>
+                <input
+                  type="number"
+                  min="2"
+                  max="20"
+                  value={settings.security.maxContactRequestsPer10Min || 5}
+                  onChange={(e) =>
+                    setSettings(prev => {
+                      const base = prev || settings;
+                      return {
+                        ...base,
+                        security: { ...base.security, maxContactRequestsPer10Min: Number(e.target.value) || 5 }
+                      };
+                    })
+                  }
+                  className="w-full text-xs px-3 py-2 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#0f2b5c]"
+                />
+                <p className="text-[11px] text-slate-500 mt-1">
+                  Tek bir IP&apos;den gönderilebilecek azami teklif/iletişim adedi.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* 1.2 IP Engelleme & Kara Liste (IP Blacklist) */}
+          <div className="pt-6 border-t border-slate-100 space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Ban className="w-4 h-4 text-rose-600" />
+                <h3 className="text-sm font-bold text-slate-900">
+                  Engellenen IP Adresleri (Kara Liste - {settings.security.blockedIps?.length || 0})
+                </h3>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-500">
+              Buraya eklenen IP adreslerinin iletişim formlarına, API uçlarına ve siteye erişimi güvenlik kalkanı tarafından 403 Forbidden ile kesilir.
+            </p>
+
+            <div className="flex flex-wrap gap-2">
+              {(settings.security.blockedIps || []).length === 0 ? (
+                <div className="text-xs text-slate-400 italic py-2">
+                  Şu anda engellenmiş bir IP adresi bulunmamaktadır.
+                </div>
+              ) : (
+                settings.security.blockedIps.map((ip) => (
+                  <div
+                    key={ip}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 text-xs font-semibold"
+                  >
+                    <span>{ip}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveBlockedIp(ip)}
+                      className="p-0.5 hover:text-rose-700 hover:bg-rose-100 rounded"
+                      title="Engeli Kaldır"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Add IP Input */}
+            <div className="flex flex-col sm:flex-row gap-2 max-w-md pt-2">
+              <input
+                type="text"
+                value={newBlockedIp}
+                onChange={(e) => setNewBlockedIp(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleAddBlockedIp();
+                  }
+                }}
+                placeholder="Örn: 192.168.1.100 veya 85.105.x.x"
+                className="flex-1 text-xs px-3 py-2 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-rose-600"
+              />
+              <button
+                type="button"
+                onClick={handleAddBlockedIp}
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-xs transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                <span>IP Engelle</span>
+              </button>
+            </div>
+            {newBlockedIpError && (
+              <p className="text-xs text-rose-600 font-medium flex items-center gap-1.5">
+                <AlertCircle className="w-3.5 h-3.5" />
+                <span>{newBlockedIpError}</span>
+              </p>
+            )}
           </div>
         </div>
       )}

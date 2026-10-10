@@ -33,7 +33,9 @@ export function getSiteSettings(): SiteSettingsConfig {
       security: {
         ...defaultSiteSettingsConfig.security,
         ...(parsed.security || {}),
-        allowedEmails: currentEmails.length > 0 ? currentEmails : (parsed.security?.allowedEmails || defaultSiteSettingsConfig.security.allowedEmails)
+        allowedEmails: currentEmails.length > 0 ? currentEmails : (parsed.security?.allowedEmails || defaultSiteSettingsConfig.security.allowedEmails),
+        blockedIps: parsed.security?.blockedIps || defaultSiteSettingsConfig.security.blockedIps,
+        ipWhitelistForAdmin: parsed.security?.ipWhitelistForAdmin || defaultSiteSettingsConfig.security.ipWhitelistForAdmin
       },
       rss: {
         ...defaultSiteSettingsConfig.rss,
