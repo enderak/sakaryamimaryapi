@@ -68,17 +68,17 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
   };
 
   return (
-    <div className="py-20 bg-[#121316] text-white min-h-screen">
+    <div className="py-20 bg-slate-50 text-slate-900 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 text-[#c5ad97] text-xs font-bold uppercase tracking-wider mb-2">
-            <MapPin className="w-4 h-4" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0f2b5c] text-xs font-bold uppercase tracking-wider mb-2">
+            <MapPin className="w-4 h-4 text-[#0f2b5c]" />
             <span>Serdivan Merkez Ofisimiz & İletişim</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight">
-            Sakarya Mimar Yapı <span className="text-[#c5ad97]">İletişim</span>
+          <h1 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
+            Sakarya Mimar Yapı <span className="text-[#0f2b5c]">İletişim</span>
           </h1>
-          <p className="mt-3 text-slate-300 text-base">
+          <p className="mt-3 text-slate-600 text-base">
             Serdivan Çark Caddesi&apos;ndeki ofisimize uğrayabilir veya form üzerinden mesajınızı doğrudan e-posta adresimize ({companyInfo.email}) iletebilirsiniz.
           </p>
         </div>
@@ -87,8 +87,8 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
           {/* Contact Details */}
           <div className="lg:col-span-5 space-y-6">
             {/* Team Members Direct Cards */}
-            <div className="bg-[#18191d] border border-[#2b2d35] rounded-3xl p-6 sm:p-8 space-y-6">
-              <h3 className="text-xl font-bold text-white border-b border-[#2b2d35] pb-3">
+            <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-md">
+              <h3 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-3">
                 Yetkili İletişim Hatları
               </h3>
 
@@ -96,17 +96,17 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
                 {companyInfo.team.map((person, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-2xl bg-[#121316] border border-[#2b2d35] space-y-3"
+                    className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3"
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="text-base font-black text-white flex items-center gap-1.5">
-                          <UserCheck className="w-4 h-4 text-[#c5ad97]" />
+                        <div className="text-base font-black text-slate-900 flex items-center gap-1.5">
+                          <UserCheck className="w-4 h-4 text-[#0f2b5c]" />
                           <span>{person.name}</span>
                         </div>
-                        <div className="text-xs text-slate-400">{person.role}</div>
+                        <div className="text-xs text-slate-500">{person.role}</div>
                       </div>
-                      <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#c5ad97]/15 text-[#ded0c3] border border-[#c5ad97]/30">
+                      <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 text-[#0f2b5c] border border-blue-200">
                         Yetkili
                       </span>
                     </div>
@@ -114,9 +114,9 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
                     <div className="flex items-center gap-3 pt-1">
                       <a
                         href={`tel:${person.rawPhone}`}
-                        className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-[#18191d] hover:bg-[#2b2d35] border border-[#2b2d35] text-xs font-semibold text-white transition-colors"
+                        className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-800 transition-colors shadow-sm"
                       >
-                        <Phone className="w-3.5 h-3.5 text-[#c5ad97]" />
+                        <Phone className="w-3.5 h-3.5 text-[#0f2b5c]" />
                         <span>{person.phone}</span>
                       </a>
 
@@ -126,7 +126,7 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
                         )}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-1.5 py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-transform hover:scale-105"
+                        className="flex items-center justify-center gap-1.5 py-2 px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold transition-transform hover:scale-105 shadow-sm"
                       >
                         <MessageCircle className="w-3.5 h-3.5" />
                         <span>WhatsApp</span>
@@ -137,39 +137,39 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
               </div>
 
               {/* Office Details */}
-              <div className="space-y-3 pt-2 text-xs border-t border-[#2b2d35]">
-                <div className="flex items-start gap-3 text-slate-300">
-                  <MapPin className="w-4 h-4 text-[#c5ad97] shrink-0 mt-0.5" />
+              <div className="space-y-3 pt-2 text-xs border-t border-slate-100">
+                <div className="flex items-start gap-3 text-slate-600">
+                  <MapPin className="w-4 h-4 text-[#0f2b5c] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-white block">Adres:</strong>
+                    <strong className="text-slate-900 block font-bold">Adres:</strong>
                     <span>{companyInfo.address}</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 text-slate-300">
-                  <Globe className="w-4 h-4 text-[#c5ad97] shrink-0" />
+                <div className="flex items-center gap-3 text-slate-600">
+                  <Globe className="w-4 h-4 text-[#0f2b5c] shrink-0" />
                   <div>
-                    <strong className="text-white inline mr-1">Web:</strong>
-                    <a href={companyInfo.website} target="_blank" rel="noopener noreferrer" className="text-[#ded0c3] hover:underline font-bold">
+                    <strong className="text-slate-900 inline mr-1 font-bold">Web:</strong>
+                    <a href={companyInfo.website} target="_blank" rel="noopener noreferrer" className="text-[#0f2b5c] hover:underline font-bold">
                       {companyInfo.displayWebsite}
                     </a>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 text-slate-300">
-                  <Mail className="w-4 h-4 text-[#c5ad97] shrink-0" />
+                <div className="flex items-center gap-3 text-slate-600">
+                  <Mail className="w-4 h-4 text-[#0f2b5c] shrink-0" />
                   <div>
-                    <strong className="text-white inline mr-1">E-Posta:</strong>
-                    <a href={`mailto:${companyInfo.email}`} className="text-slate-300 hover:text-white">
+                    <strong className="text-slate-900 inline mr-1 font-bold">E-Posta:</strong>
+                    <a href={`mailto:${companyInfo.email}`} className="text-slate-700 hover:text-[#0f2b5c] font-medium">
                       {companyInfo.email}
                     </a>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 text-slate-300">
-                  <Clock className="w-4 h-4 text-[#c5ad97] shrink-0 mt-0.5" />
+                <div className="flex items-start gap-3 text-slate-600">
+                  <Clock className="w-4 h-4 text-[#0f2b5c] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-white block">Çalışma Saatleri:</strong>
+                    <strong className="text-slate-900 block font-bold">Çalışma Saatleri:</strong>
                     <span>Pazartesi - Cumartesi: 08:30 - 19:30</span>
                   </div>
                 </div>
@@ -178,27 +178,27 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
           </div>
 
           {/* Form */}
-          <div className="lg:col-span-7 bg-[#18191d] border border-[#2b2d35] rounded-3xl p-6 sm:p-10 shadow-2xl">
-            <div className="flex items-center justify-between pb-4 mb-4 border-b border-[#2b2d35]">
+          <div className="lg:col-span-7 bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-lg">
+            <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
               <div>
-                <h3 className="text-2xl font-black text-white">
+                <h3 className="text-2xl font-black text-slate-900">
                   Ücretsiz Keşif & İletişim Formu
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">
-                  Mesajınız doğrudan <strong className="text-[#ded0c3]">{companyInfo.email}</strong> adresimize iletilir.
+                <p className="text-xs text-slate-500 mt-1">
+                  Mesajınız doğrudan <strong className="text-[#0f2b5c]">{companyInfo.email}</strong> adresimize iletilir.
                 </p>
               </div>
-              <Mail className="w-8 h-8 text-[#c5ad97] opacity-60 hidden sm:block" />
+              <Mail className="w-8 h-8 text-[#0f2b5c] opacity-60 hidden sm:block" />
             </div>
 
             {submitted ? (
               <div className="py-8 space-y-5 text-center">
-                <div className="w-16 h-16 rounded-full bg-[#c5ad97]/20 border-2 border-[#c5ad97] text-[#ded0c3] flex items-center justify-center mx-auto">
+                <div className="w-16 h-16 rounded-full bg-emerald-50 border-2 border-emerald-500 text-emerald-600 flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-9 h-9" />
                 </div>
                 <div className="space-y-2">
-                  <h4 className="text-2xl font-black text-white">Talebiniz Başarıyla Alındı!</h4>
-                  <p className="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+                  <h4 className="text-2xl font-black text-slate-900">Talebiniz Başarıyla Alındı!</h4>
+                  <p className="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
                     İletişim bilgileriniz ve mesajınız <strong>{companyInfo.email}</strong> adresimize iletildi. Yetkililerimiz en kısa sürede sizinle irtibata geçecektir.
                   </p>
                 </div>
@@ -206,7 +206,7 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
                 <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
                   <button
                     onClick={handleOpenWhatsAppBackup}
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg transition-transform hover:scale-105"
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs shadow-md transition-transform hover:scale-105"
                   >
                     <MessageCircle className="w-4 h-4" />
                     <span>Aynı Mesajı WhatsApp&apos;tan da İlet</span>
@@ -226,7 +226,7 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
                         website_hp: ""
                       });
                     }}
-                    className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#121316] hover:bg-[#2b2d35] text-slate-300 text-xs font-semibold border border-[#2b2d35]"
+                    className="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-300"
                   >
                     Yeni Mesaj Gönder
                   </button>
@@ -235,7 +235,7 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 {errorMessage && (
-                  <div className="p-3.5 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 text-xs flex items-center gap-2">
+                  <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
                     <AlertCircle className="w-4 h-4 shrink-0" />
                     <span>{errorMessage}</span>
                   </div>
@@ -255,7 +255,7 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                    <label className="block text-xs font-bold text-slate-800 mb-1">
                       Adınız Soyadınız *
                     </label>
                     <input
@@ -265,12 +265,12 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
                       placeholder="Ad Soyad"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-[#121316] border border-[#2b2d35] rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-[#c5ad97]"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-900 focus:bg-white focus:outline-none focus:border-[#0f2b5c]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                    <label className="block text-xs font-bold text-slate-800 mb-1">
                       Telefon Numaranız *
                     </label>
                     <input
@@ -280,14 +280,14 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
                       placeholder="05xx xxx xx xx"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full bg-[#121316] border border-[#2b2d35] rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-[#c5ad97]"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-900 focus:bg-white focus:outline-none focus:border-[#0f2b5c]"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                    <label className="block text-xs font-bold text-slate-800 mb-1">
                       E-Posta Adresiniz (İsteğe bağlı)
                     </label>
                     <input
@@ -296,18 +296,18 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
                       placeholder="ornek@gmail.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full bg-[#121316] border border-[#2b2d35] rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-[#c5ad97]"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-900 focus:bg-white focus:outline-none focus:border-[#0f2b5c]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                    <label className="block text-xs font-bold text-slate-800 mb-1">
                       Sakarya İlçesi
                     </label>
                     <select
                       value={formData.district}
                       onChange={(e) => setFormData({ ...formData, district: e.target.value })}
-                      className="w-full bg-[#121316] border border-[#2b2d35] rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-[#c5ad97]"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-900 focus:bg-white focus:outline-none focus:border-[#0f2b5c]"
                     >
                       {sakaryaDistricts.map((d) => (
                         <option key={d.slug} value={d.name}>
@@ -319,13 +319,13 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-800 mb-1">
                     İlgilendiğiniz Hizmet
                   </label>
                   <select
                     value={formData.service}
                     onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                    className="w-full bg-[#121316] border border-[#2b2d35] rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-[#c5ad97]"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-900 focus:bg-white focus:outline-none focus:border-[#0f2b5c]"
                   >
                     <option value="Komple Ev Tadilatı">Komple Ev Tadilatı</option>
                     <option value="Mutfak & Banyo Yenileme">Mutfak & Banyo Yenileme</option>
@@ -337,44 +337,44 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-800 mb-1">
                     Hangi Yetkilimize İletilsin?
                   </label>
                   <div className="grid grid-cols-2 gap-3">
-                    <label className="flex items-center gap-2 p-3 rounded-xl bg-[#121316] border border-[#2b2d35] cursor-pointer">
+                    <label className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 border border-slate-300 cursor-pointer">
                       <input
                         type="radio"
                         name="targetPerson"
                         value="asim"
                         checked={formData.targetPerson === "asim"}
                         onChange={() => setFormData({ ...formData, targetPerson: "asim" })}
-                        className="accent-[#c5ad97]"
+                        className="accent-[#0f2b5c]"
                       />
                       <div className="text-xs">
-                        <div className="font-bold text-white">{companyInfo.team[0].name}</div>
-                        <div className="text-[10px] text-slate-400">{companyInfo.team[0].phone}</div>
+                        <div className="font-bold text-slate-900">{companyInfo.team[0].name}</div>
+                        <div className="text-[10px] text-slate-500">{companyInfo.team[0].phone}</div>
                       </div>
                     </label>
 
-                    <label className="flex items-center gap-2 p-3 rounded-xl bg-[#121316] border border-[#2b2d35] cursor-pointer">
+                    <label className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 border border-slate-300 cursor-pointer">
                       <input
                         type="radio"
                         name="targetPerson"
                         value="abdussamet"
                         checked={formData.targetPerson === "abdussamet"}
                         onChange={() => setFormData({ ...formData, targetPerson: "abdussamet" })}
-                        className="accent-[#c5ad97]"
+                        className="accent-[#0f2b5c]"
                       />
                       <div className="text-xs">
-                        <div className="font-bold text-white">{companyInfo.team[1].name}</div>
-                        <div className="text-[10px] text-slate-400">{companyInfo.team[1].phone}</div>
+                        <div className="font-bold text-slate-900">{companyInfo.team[1].name}</div>
+                        <div className="text-[10px] text-slate-500">{companyInfo.team[1].phone}</div>
                       </div>
                     </label>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                  <label className="block text-xs font-bold text-slate-800 mb-1">
                     Mekan Hakkında Notlar & Talepleriniz
                   </label>
                   <textarea
@@ -383,7 +383,7 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
                     placeholder="Örn: Serdivan Arabacıalanı'nda 3+1 daire, mutfak ve banyo komple yenilenecek..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full bg-[#121316] border border-[#2b2d35] rounded-xl p-4 text-xs sm:text-sm text-white focus:outline-none focus:border-[#c5ad97] resize-none"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl p-4 text-xs sm:text-sm text-slate-900 focus:bg-white focus:outline-none focus:border-[#0f2b5c] resize-none"
                   />
                 </div>
 
@@ -394,10 +394,10 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
                     required
                     checked={kvkkAccepted}
                     onChange={(e) => setKvkkAccepted(e.target.checked)}
-                    className="mt-0.5 w-4 h-4 rounded border-[#2b2d35] bg-[#121316] text-[#c5ad97] focus:ring-[#c5ad97] accent-[#c5ad97] shrink-0 cursor-pointer"
+                    className="mt-0.5 w-4 h-4 rounded border-slate-300 bg-white text-[#0f2b5c] focus:ring-[#0f2b5c] accent-[#0f2b5c] shrink-0 cursor-pointer"
                   />
-                  <label htmlFor="contact-kvkk" className="text-xs text-slate-400 leading-snug cursor-pointer select-none">
-                    <Link href="/kvkk-aydinlatma-metni" target="_blank" className="text-[#ded0c3] hover:underline font-bold">
+                  <label htmlFor="contact-kvkk" className="text-xs text-slate-600 leading-snug cursor-pointer select-none">
+                    <Link href="/kvkk-aydinlatma-metni" target="_blank" className="text-[#0f2b5c] hover:underline font-bold">
                       KVKK Aydınlatma Metni
                     </Link>
                     &apos;ni okudum, iletişim ve keşif amacıyla verilerimin işlenmesini onaylıyorum.
@@ -407,7 +407,7 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-[#c5ad97] hover:bg-[#ded0c3] text-[#121316] font-bold text-sm shadow-xl shadow-black/40 transition-all hover:scale-[1.01] disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-[#0f2b5c] hover:bg-[#153a7a] text-white font-bold text-sm shadow-md transition-all hover:scale-[1.01] disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <>

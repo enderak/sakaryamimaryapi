@@ -56,18 +56,9 @@ export default function RootLayout({
   return (
     <html
       lang="tr"
-      data-theme="navy"
-      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
     >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('sakarya_theme')||'navy';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
-          }}
-        />
-      </head>
-      <body className="min-h-full flex flex-col bg-[#121316] text-[#f1f2f4] selection:bg-[#c5ad97] selection:text-[#121316]">
+      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900 selection:bg-amber-100 selection:text-amber-900">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

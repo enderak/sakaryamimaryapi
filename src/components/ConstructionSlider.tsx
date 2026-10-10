@@ -133,19 +133,19 @@ export default function ConstructionSlider() {
   const currentSlide = slides[current];
 
   return (
-    <section className="pt-6 sm:pt-8 pb-14 sm:pb-16 bg-[#121316] text-white relative overflow-hidden border-b border-zinc-800/80">
+    <section className="pt-6 sm:pt-8 pb-14 sm:pb-16 bg-slate-50 text-slate-900 relative overflow-hidden border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-800/80 border border-zinc-700/80 text-[#c5ad97] text-xs font-bold uppercase tracking-wider mb-3">
-              <HardHat className="w-3.5 h-3.5 text-[#c5ad97]" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0f2b5c] text-xs font-bold uppercase tracking-wider mb-3">
+              <HardHat className="w-3.5 h-3.5 text-[#0f2b5c]" />
               <span>Şantiye & Saha Çalışmalarımız</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
-              Sakarya <span className="text-[#c5ad97]">İnşaat Projelerimiz</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
+              Sakarya <span className="text-[#0f2b5c]">İnşaat Projelerimiz</span>
             </h2>
-            <p className="mt-2 text-zinc-400 max-w-2xl text-sm sm:text-base">
+            <p className="mt-2 text-slate-600 max-w-2xl text-sm sm:text-base">
               Sapanca villalarından Serdivan konutlarına, kaba inşaattan çelik konstrüksiyona kadar mühendislik güvencemizle yükselen yapılarımız.
             </p>
           </div>
@@ -154,22 +154,22 @@ export default function ConstructionSlider() {
           <div className="flex items-center gap-2.5">
             <button
               onClick={() => setIsPlaying(!isPlaying)}
-              className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
+              className="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-[#0f2b5c] hover:border-slate-300 shadow-sm transition-colors"
               title={isPlaying ? "Durdur" : "Oynat"}
               aria-label="Otomatik geçiş kontrolü"
             >
-              {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 text-[#c5ad97]" />}
+              {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 text-[#0f2b5c]" />}
             </button>
             <button
               onClick={prevSlide}
-              className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:bg-[#c5ad97] hover:text-zinc-950 hover:border-[#c5ad97] transition-all"
+              className="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-[#0f2b5c] hover:text-white hover:border-[#0f2b5c] shadow-sm transition-all"
               aria-label="Önceki Proje"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={nextSlide}
-              className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:bg-[#c5ad97] hover:text-zinc-950 hover:border-[#c5ad97] transition-all"
+              className="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-[#0f2b5c] hover:text-white hover:border-[#0f2b5c] shadow-sm transition-all"
               aria-label="Sonraki Proje"
             >
               <ChevronRight className="w-5 h-5" />
@@ -179,7 +179,7 @@ export default function ConstructionSlider() {
 
         {/* Main Slider Canvas */}
         <div
-          className="relative rounded-3xl overflow-hidden border border-zinc-800/90 shadow-2xl min-h-[500px] sm:min-h-[540px] flex items-end group"
+          className="relative rounded-3xl overflow-hidden border border-slate-200 shadow-xl min-h-[500px] sm:min-h-[540px] flex items-end group"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
@@ -196,11 +196,11 @@ export default function ConstructionSlider() {
                 alt={slide.title}
                 fill
                 priority={idx === 0}
-                className="object-cover object-center brightness-45"
+                className="object-cover object-center brightness-60"
                 sizes="(max-width: 1200px) 100vw, 1200px"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#121316] via-[#121316]/75 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#121316]/90 via-[#121316]/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a152d]/95 via-[#0a152d]/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0a152d]/85 via-[#0a152d]/30 to-transparent" />
             </div>
           ))}
 
@@ -208,15 +208,15 @@ export default function ConstructionSlider() {
           <div className="relative z-20 p-6 sm:p-10 lg:p-12 w-full max-w-4xl space-y-4">
             {/* Badges */}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-[#c5ad97] text-zinc-950 text-xs font-bold uppercase tracking-wider shadow-md">
+              <span className="px-3 py-1 rounded-full bg-amber-500 text-white text-xs font-bold uppercase tracking-wider shadow-md">
                 {currentSlide.category}
               </span>
-              <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/80 backdrop-blur-md text-zinc-300 border border-zinc-700/80 text-xs font-medium">
-                <MapPin className="w-3.5 h-3.5 text-[#c5ad97]" />
+              <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0a152d]/80 backdrop-blur-md text-white border border-white/20 text-xs font-medium">
+                <MapPin className="w-3.5 h-3.5 text-amber-400" />
                 {currentSlide.district}
               </span>
-              <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/80 backdrop-blur-md text-zinc-300 border border-zinc-700/80 text-xs font-medium">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#c5ad97]" />
+              <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0a152d]/80 backdrop-blur-md text-white border border-white/20 text-xs font-medium">
+                <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
                 Deprem & Statik Onaylı
               </span>
             </div>
@@ -226,13 +226,13 @@ export default function ConstructionSlider() {
               <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight drop-shadow-md">
                 {currentSlide.title}
               </h3>
-              <p className="text-[#ded0c3] text-sm sm:text-base font-medium">
+              <p className="text-amber-200 text-sm sm:text-base font-medium">
                 {currentSlide.subtitle}
               </p>
             </div>
 
             {/* Scope description */}
-            <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-2xl line-clamp-2 sm:line-clamp-none">
+            <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-2xl line-clamp-2 sm:line-clamp-none">
               {currentSlide.scope}
             </p>
 
@@ -241,21 +241,21 @@ export default function ConstructionSlider() {
               {currentSlide.features.map((feat, fIdx) => (
                 <div
                   key={fIdx}
-                  className="flex items-center gap-2 bg-zinc-900/85 backdrop-blur-md p-2.5 rounded-xl border border-zinc-800 text-xs text-zinc-200"
+                  className="flex items-center gap-2 bg-[#0a152d]/75 backdrop-blur-md p-2.5 rounded-xl border border-white/10 text-xs text-white"
                 >
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#c5ad97] shrink-0" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                   <span className="truncate">{feat}</span>
                 </div>
               ))}
             </div>
 
             {/* Specs & Actions */}
-            <div className="pt-3 flex flex-wrap items-center justify-between gap-4 border-t border-zinc-800/80">
+            <div className="pt-3 flex flex-wrap items-center justify-between gap-4 border-t border-white/15">
               {/* Specs Pills */}
               <div className="flex items-center gap-3 text-xs">
                 {currentSlide.specs.map((spec, sIdx) => (
-                  <div key={sIdx} className="bg-zinc-900/90 px-3 py-1.5 rounded-xl border border-zinc-800">
-                    <span className="text-zinc-400 block text-[10px] uppercase font-bold">{spec.label}</span>
+                  <div key={sIdx} className="bg-[#0a152d]/80 px-3 py-1.5 rounded-xl border border-white/10">
+                    <span className="text-slate-300 block text-[10px] uppercase font-bold">{spec.label}</span>
                     <span className="text-white font-bold">{spec.value}</span>
                   </div>
                 ))}
@@ -269,7 +269,7 @@ export default function ConstructionSlider() {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-5 py-3 rounded-xl bg-[#c5ad97] hover:bg-[#b39982] text-zinc-950 font-bold text-xs shadow-lg transition-all hover:scale-[1.02] flex items-center gap-2"
+                  className="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-white font-bold text-xs shadow-lg transition-all hover:scale-[1.02] flex items-center gap-2"
                 >
                   <span>Bu Proje İçin Keşif İste</span>
                   <ArrowRight className="w-4 h-4" />
@@ -277,7 +277,7 @@ export default function ConstructionSlider() {
 
                 <Link
                   href="/projeler"
-                  className="px-4 py-3 rounded-xl bg-zinc-900/90 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-700/80 text-xs font-semibold transition-colors"
+                  className="px-4 py-3 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/25 text-xs font-semibold backdrop-blur-md transition-colors"
                 >
                   Tüm Projeler
                 </Link>
@@ -294,27 +294,27 @@ export default function ConstructionSlider() {
               onClick={() => setCurrent(idx)}
               className={`p-3 rounded-2xl text-left border transition-all ${
                 idx === current
-                  ? "bg-zinc-900 border-[#c5ad97] text-white shadow-lg"
-                  : "bg-zinc-950/70 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
+                  ? "bg-white border-2 border-[#0f2b5c] text-slate-900 shadow-md ring-2 ring-[#0f2b5c]/10"
+                  : "bg-white/80 border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300 hover:bg-white"
               }`}
             >
               <div className="flex items-center justify-between text-[11px] mb-1">
-                <span className={`font-black ${idx === current ? "text-[#c5ad97]" : "text-zinc-500"}`}>
+                <span className={`font-black ${idx === current ? "text-[#0f2b5c]" : "text-slate-400"}`}>
                   0{idx + 1}
                 </span>
-                <span className="text-[10px] text-zinc-400 truncate max-w-[80px]">{slide.district}</span>
+                <span className="text-[10px] text-slate-500 truncate max-w-[80px]">{slide.district}</span>
               </div>
-              <div className="text-xs font-bold truncate text-zinc-200">
+              <div className="text-xs font-bold truncate text-slate-900">
                 {slide.title}
               </div>
-              <div className="text-[10px] text-zinc-400 truncate mt-0.5">
+              <div className="text-[10px] text-slate-500 truncate mt-0.5">
                 {slide.category}
               </div>
 
               {/* Progress bar line for active slide */}
               {idx === current && (
-                <div className="w-full bg-zinc-800 h-0.5 rounded-full mt-2.5 overflow-hidden">
-                  <div className="bg-[#c5ad97] h-full w-full" />
+                <div className="w-full bg-slate-200 h-1 rounded-full mt-2.5 overflow-hidden">
+                  <div className="bg-[#0f2b5c] h-full w-full" />
                 </div>
               )}
             </button>

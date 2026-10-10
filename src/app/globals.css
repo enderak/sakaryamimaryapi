@@ -1,283 +1,29 @@
 @import "tailwindcss";
 
 @theme {
-  --color-vizon: #c5ad97;
-  --color-vizon-light: #ded0c3;
-  --color-vizon-dark: #a68c74;
-  --color-graphite: #131417;
-  --color-graphite-light: #1c1d22;
-  --color-graphite-border: #2b2d35;
-  --color-titanium: #e2e8f0;
+  --color-corporate-navy: #0f2b5c;
+  --color-corporate-navy-dark: #0a1b3a;
+  --color-corporate-gold: #c28b38;
+  --color-corporate-gold-light: #dfa856;
+  --color-corporate-gold-dark: #a17025;
 }
 
 :root {
-  --background: #090e24;
-  --foreground: #f8fafc;
+  --background: #f8fafc;
+  --foreground: #0f172a;
 }
 
 body {
+  background-color: #f8fafc;
+  color: #0f172a;
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* =========================================================================
-   1. DERİN GÜVEN LACİVERTİ (DEFAULT / TRUST THEME)
-   Bilimsel Güven, Mühendislik Taahhüdü & Sıcak Mimari Altın
-   ========================================================================= */
-:root,
-html[data-theme="navy"],
-html[data-theme="navy"] body {
-  background-color: #090e24 !important;
-  color: #f8fafc !important;
-}
-
-html[data-theme="navy"] ::selection {
-  background-color: #c9a86a;
-  color: #090e24;
-}
-
-html[data-theme="navy"] .bg-\[\#121316\] {
-  background-color: #090e24 !important;
-}
-
-html[data-theme="navy"] .bg-\[\#18191d\] {
-  background-color: #0f1938 !important;
-}
-
-html[data-theme="navy"] .bg-\[\#141518\] {
-  background-color: #0b132e !important;
-}
-
-html[data-theme="navy"] .border-\[\#2b2d35\] {
-  border-color: #1e3366 !important;
-}
-
-html[data-theme="navy"] .text-\[\#c5ad97\] {
-  color: #c9a86a !important;
-}
-
-html[data-theme="navy"] .fill-\[\#c5ad97\] {
-  fill: #c9a86a !important;
-}
-
-html[data-theme="navy"] .text-\[\#ded0c3\] {
-  color: #dec085 !important;
-}
-
-html[data-theme="navy"] .bg-\[\#c5ad97\] {
-  background-color: #c9a86a !important;
-  color: #090e24 !important;
-}
-
-html[data-theme="navy"] .hover\:bg-\[\#ded0c3\]:hover {
-  background-color: #dec085 !important;
-  color: #090e24 !important;
-}
-
-html[data-theme="navy"] .border-\[\#c5ad97\]\/30 {
-  border-color: rgba(201, 168, 106, 0.35) !important;
-}
-
-html[data-theme="navy"] .border-\[\#c5ad97\]\/40 {
-  border-color: rgba(201, 168, 106, 0.45) !important;
-}
-
-html[data-theme="navy"] .border-\[\#c5ad97\]\/50 {
-  border-color: rgba(201, 168, 106, 0.55) !important;
-}
-
-html[data-theme="navy"] .border-\[\#c5ad97\]\/60 {
-  border-color: rgba(201, 168, 106, 0.65) !important;
-}
-
-html[data-theme="navy"] .border-\[\#c5ad97\] {
-  border-color: #c9a86a !important;
-}
-
-html[data-theme="navy"] .hover\:border-\[\#c5ad97\]\/50:hover {
-  border-color: rgba(201, 168, 106, 0.5) !important;
-}
-
-html[data-theme="navy"] .hover\:border-\[\#c5ad97\]\/60:hover {
-  border-color: rgba(201, 168, 106, 0.6) !important;
-}
-
-html[data-theme="navy"] .bg-\[\#c5ad97\]\/15 {
-  background-color: rgba(201, 168, 106, 0.15) !important;
-}
-
-html[data-theme="navy"] .bg-\[\#c5ad97\]\/10 {
-  background-color: rgba(201, 168, 106, 0.10) !important;
-}
-
-html[data-theme="navy"] .bg-\[\#c5ad97\]\/20 {
-  background-color: rgba(201, 168, 106, 0.20) !important;
-}
-
-html[data-theme="navy"] .accent-\[\#c5ad97\] {
-  accent-color: #c9a86a !important;
-}
-
-/* =========================================================================
-   2. MİNİMALİST MAT GRAFİT THEME
-   Mat Taş, Elit Karbon & Sıcak Vizon
-   ========================================================================= */
-html[data-theme="graphite"],
-html[data-theme="graphite"] body {
-  background-color: #121316 !important;
-  color: #f1f2f4 !important;
-}
-
-html[data-theme="graphite"] ::selection {
-  background-color: #c5ad97;
-  color: #121316;
-}
-
-html[data-theme="graphite"] .bg-\[\#121316\] {
-  background-color: #121316 !important;
-}
-
-html[data-theme="graphite"] .bg-\[\#18191d\] {
-  background-color: #18191d !important;
-}
-
-html[data-theme="graphite"] .bg-\[\#141518\] {
-  background-color: #141518 !important;
-}
-
-html[data-theme="graphite"] .border-\[\#2b2d35\] {
-  border-color: #2b2d35 !important;
-}
-
-html[data-theme="graphite"] .text-\[\#c5ad97\] {
-  color: #c5ad97 !important;
-}
-
-html[data-theme="graphite"] .fill-\[\#c5ad97\] {
-  fill: #c5ad97 !important;
-}
-
-html[data-theme="graphite"] .text-\[\#ded0c3\] {
-  color: #ded0c3 !important;
-}
-
-html[data-theme="graphite"] .bg-\[\#c5ad97\] {
-  background-color: #c5ad97 !important;
-  color: #121316 !important;
-}
-
-html[data-theme="graphite"] .hover\:bg-\[\#ded0c3\]:hover {
-  background-color: #ded0c3 !important;
-  color: #121316 !important;
-}
-
-/* =========================================================================
-   3. AYDINLIK KURUMSAL THEME
-   Buzul Beyazı Zemin, Derin Mühendislik Laciverti & Çelik Mavisi
-   ========================================================================= */
-html[data-theme="light"],
-html[data-theme="light"] body {
-  background-color: #f8fafc !important;
-  color: #0f172a !important;
-}
-
-html[data-theme="light"] ::selection {
-  background-color: #0d4b82;
-  color: #ffffff;
-}
-
-html[data-theme="light"] .bg-\[\#121316\] {
-  background-color: #f8fafc !important;
-}
-
-html[data-theme="light"] .bg-\[\#18191d\] {
-  background-color: #ffffff !important;
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
-}
-
-html[data-theme="light"] .bg-\[\#141518\] {
-  background-color: #f1f5f9 !important;
-}
-
-html[data-theme="light"] .border-\[\#2b2d35\] {
-  border-color: #e2e8f0 !important;
-}
-
-html[data-theme="light"] h1,
-html[data-theme="light"] h2,
-html[data-theme="light"] h3,
-html[data-theme="light"] h4,
-html[data-theme="light"] strong,
-html[data-theme="light"] .text-white:not([data-overlay-text]) {
-  color: #0f172a !important;
-}
-
-/* Preserve white text on dark photo badges, slider captions, overlays */
-html[data-theme="light"] .relative .absolute .text-white,
-html[data-theme="light"] [data-theme-ignore] .text-white,
-html[data-theme="light"] button.bg-emerald-600,
-html[data-theme="light"] button.bg-emerald-600 *,
-html[data-theme="light"] a.bg-emerald-600,
-html[data-theme="light"] a.bg-emerald-600 * {
-  color: #ffffff !important;
-}
-
-html[data-theme="light"] .text-slate-300,
-html[data-theme="light"] .text-slate-400 {
-  color: #475569 !important;
-}
-
-html[data-theme="light"] .text-\[\#c5ad97\] {
-  color: #0d4b82 !important;
-}
-
-html[data-theme="light"] .fill-\[\#c5ad97\] {
-  fill: #0d4b82 !important;
-}
-
-html[data-theme="light"] .text-\[\#ded0c3\] {
-  color: #1e3a8a !important;
-}
-
-html[data-theme="light"] .bg-\[\#c5ad97\] {
-  background-color: #0d4b82 !important;
-  color: #ffffff !important;
-}
-
-html[data-theme="light"] .hover\:bg-\[\#ded0c3\]:hover {
-  background-color: #1e3a8a !important;
-  color: #ffffff !important;
-}
-
-html[data-theme="light"] .border-\[\#c5ad97\]\/30,
-html[data-theme="light"] .border-\[\#c5ad97\]\/40,
-html[data-theme="light"] .border-\[\#c5ad97\]\/50,
-html[data-theme="light"] .border-\[\#c5ad97\]\/60 {
-  border-color: rgba(13, 75, 130, 0.25) !important;
-}
-
-html[data-theme="light"] .border-\[\#c5ad97\] {
-  border-color: #0d4b82 !important;
-}
-
-html[data-theme="light"] .bg-\[\#c5ad97\]\/15,
-html[data-theme="light"] .bg-\[\#c5ad97\]\/10,
-html[data-theme="light"] .bg-\[\#c5ad97\]\/20 {
-  background-color: rgba(13, 75, 130, 0.08) !important;
-}
-
-html[data-theme="light"] .accent-\[\#c5ad97\] {
-  accent-color: #0d4b82 !important;
-}
-
-html[data-theme="light"] input,
-html[data-theme="light"] select,
-html[data-theme="light"] textarea {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-  border-color: #cbd5e1 !important;
+::selection {
+  background-color: #e0e7ff;
+  color: #0f2b5c;
 }
 
 /* Custom smooth scrollbar */
@@ -285,12 +31,12 @@ html[data-theme="light"] textarea {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #090e24;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e3366;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #c9a86a;
+  background: #94a3b8;
 }
