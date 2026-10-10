@@ -38,7 +38,7 @@ export const projects: Project[] = [
     scope: "320m² müstakil çelik karkas villa, sonsuzluk havuzu ve peyzaj",
     coverImage: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1000&q=80",
     hasBeforeAfter: true,
-    beforeImage: "https://images.unsplash.com/photo-1541888946425-d0fbb1861593?auto=format&fit=crop&w=1000&q=80",
+    beforeImage: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1000&q=80",
     afterImage: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1000&q=80",
     description: "Doğayla bütünleşik geniş cam cepheli, yerden ısıtmalı ve akıllı ev altyapısına sahip butik villa projemiz tam vaktinde teslim edildi."
   },

@@ -44,7 +44,7 @@ const slides: ConstructionSlide[] = [
     subtitle: "Modern Mimari Çizgiler, Depreme Dayanıklı Perde Beton Sistemi",
     district: "Serdivan (Mavi Durak)",
     category: "Konut İnşaatı",
-    image: "https://images.unsplash.com/photo-1541888946425-d0fbb1861593?auto=format&fit=crop&w=1920&q=85",
+    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1920&q=85",
     scope: "12 dairelik butik konut projesi; kaba yapı, elektrik-su altyapısı, şap ve ince işçilik.",
     features: [
       "Perde kolon ve radye jeneral temel mimarisi",
