@@ -2,8 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { CheckCircle2, Phone, Star, ShieldCheck, MapPin, Calculator, ArrowRight, UserCheck } from "lucide-react";
 import { companyInfo } from "@/data/company";
+import { HeroConfig, defaultHomeModulesConfig } from "@/data/homeModules";
 
-export default function Hero() {
+interface HeroProps {
+  config?: HeroConfig;
+}
+
+export default function Hero({ config }: HeroProps) {
+  const c = config || defaultHomeModulesConfig.content.hero;
+
   return (
     <section className="relative min-h-[80vh] flex items-center bg-gradient-to-b from-white via-slate-50 to-white text-slate-900 overflow-hidden border-b border-slate-200">
       {/* Background Subtle Architectural Pattern / Soft Lighting */}
@@ -19,45 +26,45 @@ export default function Hero() {
             {/* Top Local Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#0f2b5c] text-xs font-semibold tracking-wide shadow-xs">
               <MapPin className="w-3.5 h-3.5 text-[#0f2b5c] shrink-0" />
-              <span>Serdivan, Arabacıalanı • Çark Cad. No:148</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#0f2b5c]"></span>
-              <span className="text-slate-700 font-medium">Tüm Sakarya Geneli Ücretsiz Keşif</span>
+              <span>{c.badgeLocation}</span>
+              {c.badgeNote && (
+                <>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#0f2b5c]"></span>
+                  <span className="text-slate-700 font-medium">{c.badgeNote}</span>
+                </>
+              )}
             </div>
 
             {/* Main Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] text-slate-950">
-              Sakarya&apos;da Yaşam Alanınızı <br />
+              {c.titleLine1} <br />
               <span className="text-[#0f2b5c]">
-                Sözleşmeli & Mimari Güvenceyle
-              </span> <br />
-              Yeniden İnşa Ediyoruz.
+                {c.titleHighlight}
+              </span>{" "}
+              {c.titleLine2 && <><br />{c.titleLine2}</>}
             </h1>
 
             {/* Description */}
             <p className="text-base sm:text-lg text-slate-600 max-w-2xl font-normal leading-relaxed">
-              <strong className="text-slate-900 font-semibold">Sakarya Mimar Yapı</strong>; komple ev ve daire tadilatı, modern mutfak & banyo yenileme, Sapanca villa inşaatı ve 3D iç mimarlık projelendirmesi sunar. Gününde teslim ve 2 yıl resmi işçilik garantisi.
+              {c.description}
             </p>
 
             {/* Trust points */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-              <div className="flex items-center gap-2.5 bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="text-xs sm:text-sm font-semibold text-slate-800">
-                  Ücretsiz 3D Keşif
-                </span>
-              </div>
-              <div className="flex items-center gap-2.5 bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs">
-                <ShieldCheck className="w-4 h-4 text-[#0f2b5c] shrink-0" />
-                <span className="text-xs sm:text-sm font-semibold text-slate-800">
-                  2 Yıl Firma Garantisi
-                </span>
-              </div>
-              <div className="flex items-center gap-2.5 bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs">
-                <Star className="w-4 h-4 text-amber-500 fill-amber-500 shrink-0" />
-                <span className="text-xs sm:text-sm font-semibold text-slate-800">
-                  350+ Teslim Edilen Proje
-                </span>
-              </div>
+              {c.trustPoints.map((tp, idx) => (
+                <div key={idx} className="flex items-center gap-2.5 bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs">
+                  {tp.icon === "check" ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  ) : tp.icon === "shield" ? (
+                    <ShieldCheck className="w-4 h-4 text-[#0f2b5c] shrink-0" />
+                  ) : (
+                    <Star className="w-4 h-4 text-amber-500 fill-amber-500 shrink-0" />
+                  )}
+                  <span className="text-xs sm:text-sm font-semibold text-slate-800">
+                    {tp.text}
+                  </span>
+                </div>
+              ))}
             </div>
 
             {/* Action Buttons */}

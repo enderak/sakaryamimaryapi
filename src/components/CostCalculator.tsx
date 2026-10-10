@@ -5,6 +5,11 @@ import Link from "next/link";
 import { Calculator, CheckCircle2, MessageCircle, Send, Sparkles, PhoneCall, ShieldCheck, UserCheck } from "lucide-react";
 import { sakaryaDistricts } from "@/data/districts";
 import { companyInfo } from "@/data/company";
+import { CalculatorSectionConfig, defaultHomeModulesConfig } from "@/data/homeModules";
+
+interface CostCalculatorProps {
+  config?: CalculatorSectionConfig;
+}
 
 interface ServiceCostRate {
   id: string;
@@ -22,7 +27,8 @@ const serviceRates: ServiceCostRate[] = [
   { id: "boya", name: "Boya Badana & Asma Tavan", baseMinM2: 300, baseMaxM2: 650 }
 ];
 
-export default function CostCalculator() {
+export default function CostCalculator({ config }: CostCalculatorProps = {}) {
+  const c = config || defaultHomeModulesConfig.content.calculator;
   const [selectedService, setSelectedService] = useState(serviceRates[0].id);
   const [district, setDistrict] = useState("serdivan");
   const [area, setArea] = useState(120);
@@ -84,13 +90,13 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
         <div className="text-center max-w-3xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#0f2b5c] text-xs font-bold tracking-wider uppercase mb-3">
             <Calculator className="w-4 h-4 text-[#0f2b5c]" />
-            <span>Şeffaf & Anında Hesaplama</span>
+            <span>{c.badge}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900">
-            Sakarya Mimar Yapı <span className="text-[#0f2b5c]">Fiyat Hesaplayıcı</span>
+            {c.title} <span className="text-[#0f2b5c]">{c.titleHighlight}</span>
           </h2>
           <p className="mt-4 text-slate-600 text-base sm:text-lg">
-            Evinizin ya da iş yerinizin özelliklerini seçin; 2026 piyasa koşullarına uygun yaklaşık maliyet aralığını anında görün. Serdivan merkez ofisimizden tüm Sakarya&apos;ya ücretsiz keşif hizmeti.
+            {c.description}
           </p>
         </div>
 

@@ -1,9 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import { blogPosts } from "@/data/blog";
+import { BlogPreviewSectionConfig, defaultHomeModulesConfig } from "@/data/homeModules";
 import { BookOpen, ArrowRight, Clock, Calendar } from "lucide-react";
 
-export default function BlogPreviewSection() {
+interface BlogPreviewSectionProps {
+  config?: BlogPreviewSectionConfig;
+}
+
+export default function BlogPreviewSection({ config }: BlogPreviewSectionProps = {}) {
+  const c = config || defaultHomeModulesConfig.content.blog;
+
   return (
     <section className="py-24 bg-white text-slate-900 relative border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,13 +18,13 @@ export default function BlogPreviewSection() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0f2b5c] text-xs font-bold uppercase tracking-wider mb-2">
               <BookOpen className="w-4 h-4 text-[#0f2b5c]" />
-              <span>Sakarya Tadilat Rehberi</span>
+              <span>{c.badge}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
-              Faydalı Bilgiler & <span className="text-[#0f2b5c]">Tadilat Tüyoları</span>
+              {c.title} <span className="text-[#0f2b5c]">{c.titleHighlight}</span>
             </h2>
             <p className="mt-3 text-slate-600 max-w-2xl text-base">
-              Bütçenizi korumanızı, doğru malzeme seçmenizi ve evinizi en verimli şekilde yenilemenizi sağlayacak mimari ipuçları.
+              {c.description}
             </p>
           </div>
 
@@ -25,7 +32,7 @@ export default function BlogPreviewSection() {
             href="/blog"
             className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs border border-slate-300 shadow-sm transition-colors shrink-0 self-start md:self-auto"
           >
-            <span>Tüm Rehberi Oku</span>
+            <span>{c.ctaText || "Tüm Rehberi Oku"}</span>
             <ArrowRight className="w-4 h-4 text-[#0f2b5c]" />
           </Link>
         </div>

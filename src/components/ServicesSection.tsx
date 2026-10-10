@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { services } from "@/data/services";
+import { ServicesSectionConfig, defaultHomeModulesConfig } from "@/data/homeModules";
 import { Hammer, Bath, Home, PenTool, ShieldCheck, Building2, ArrowRight, Check } from "lucide-react";
 
 const iconMap: Record<string, React.ElementType> = {
@@ -12,7 +13,13 @@ const iconMap: Record<string, React.ElementType> = {
   Building2
 };
 
-export default function ServicesSection() {
+interface ServicesSectionProps {
+  config?: ServicesSectionConfig;
+}
+
+export default function ServicesSection({ config }: ServicesSectionProps = {}) {
+  const c = config || defaultHomeModulesConfig.content.services;
+
   return (
     <section className="py-20 bg-white text-slate-900 relative border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -20,21 +27,21 @@ export default function ServicesSection() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0f2b5c] text-xs font-bold uppercase tracking-wider mb-2">
               <Hammer className="w-3.5 h-3.5 text-[#0f2b5c]" />
-              <span>Uzmanlık Alanlarımız</span>
+              <span>{c.badge}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
-              Sakarya Tadilat & <span className="text-[#0f2b5c]">Mimarlık Hizmetleri</span>
+              {c.title} <span className="text-[#0f2b5c]">{c.titleHighlight}</span>
             </h2>
             <p className="mt-2 text-slate-600 max-w-2xl text-sm sm:text-base">
-              Kaba inşaattan en ince detayına kadar profesyonel mimar ve usta kadromuzla yanınızdayız.
+              {c.description}
             </p>
           </div>
 
           <Link
-            href="/hizmetler"
+            href={c.ctaLink || "/hizmetler"}
             className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs border border-slate-300 transition-colors shrink-0 self-start md:self-auto shadow-sm"
           >
-            <span>Tüm Hizmetleri Gör</span>
+            <span>{c.ctaText || "Tüm Hizmetleri Gör"}</span>
             <ArrowRight className="w-3.5 h-3.5 text-[#0f2b5c]" />
           </Link>
         </div>

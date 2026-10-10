@@ -6,8 +6,14 @@ import { projects, Project } from "@/data/projects";
 import BeforeAfterSlider from "./BeforeAfterSlider";
 import { MapPin, Clock, ArrowRight, Sparkles } from "lucide-react";
 import { companyInfo } from "@/data/company";
+import { ProjectsSectionConfig, defaultHomeModulesConfig } from "@/data/homeModules";
 
-export default function ProjectsGallery() {
+interface ProjectsGalleryProps {
+  config?: ProjectsSectionConfig;
+}
+
+export default function ProjectsGallery({ config }: ProjectsGalleryProps = {}) {
+  const c = config || defaultHomeModulesConfig.content.projects;
   const [activeCategory, setActiveCategory] = useState<string>("Tümü");
 
   const categories = ["Tümü", "Daire Tadilatı", "Villa", "Mutfak & Banyo", "Ticari / Ofis"];
@@ -16,7 +22,9 @@ export default function ProjectsGallery() {
     ? projects
     : projects.filter((p) => p.category === activeCategory);
 
-  const featuredBeforeAfter = projects.find((p) => p.hasBeforeAfter && p.beforeImage && p.afterImage);
+  const featuredBeforeAfter = (c.showBeforeAfter !== false)
+    ? projects.find((p) => p.hasBeforeAfter && p.beforeImage && p.afterImage)
+    : null;
 
   return (
     <section id="projeler" className="py-24 bg-slate-50 text-slate-900 relative border-b border-slate-200">
@@ -24,13 +32,13 @@ export default function ProjectsGallery() {
         <div className="text-center max-w-3xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0f2b5c] text-xs font-bold uppercase tracking-wider mb-2">
             <Sparkles className="w-4 h-4 text-[#0f2b5c]" />
-            <span>Referans Portföyümüz</span>
+            <span>{c.badge}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
-            Sakarya&apos;da Tamamlanan <span className="text-[#0f2b5c]">Projelerimiz</span>
+            {c.title} <span className="text-[#0f2b5c]">{c.titleHighlight}</span>
           </h2>
           <p className="mt-3 text-slate-600 text-base">
-            Serdivan, Sapanca, Adapazarı ve Erenler lokasyonlarında anahtar teslim tamamladığımız gerçek işlerimizden seçkiler.
+            {c.description}
           </p>
         </div>
 

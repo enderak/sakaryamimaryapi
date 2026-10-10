@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Rss, ExternalLink, RefreshCw, Calendar, Sparkles } from "lucide-react";
+import { RssNewsSectionConfig, defaultHomeModulesConfig } from "@/data/homeModules";
 
 interface NewsItem {
   id: string;
@@ -13,7 +14,12 @@ interface NewsItem {
   contentSnippet: string;
 }
 
-export default function RssNewsSection() {
+interface RssNewsSectionProps {
+  config?: RssNewsSectionConfig;
+}
+
+export default function RssNewsSection({ config }: RssNewsSectionProps = {}) {
+  const c = config || defaultHomeModulesConfig.content.news;
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<string>("");
@@ -24,7 +30,7 @@ export default function RssNewsSection() {
       const res = await fetch("/api/rss");
       const data = await res.json();
       if (data.items) {
-        setNews(data.items.slice(0, 4));
+        setNews(data.items.slice(0, c.itemsToShow || 4));
         setLastUpdated(new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }));
       }
     } catch (err) {
@@ -45,13 +51,13 @@ export default function RssNewsSection() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0f2b5c] text-xs font-bold uppercase tracking-wider mb-2">
               <Rss className="w-4 h-4 text-[#0f2b5c] animate-pulse" />
-              <span>Canlı Sektör & Mimarlık Gündemi (RSS)</span>
+              <span>{c.badge}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
-              İnşaat, Kentsel Dönüşüm & <span className="text-[#0f2b5c]">Tadilat Haberleri</span>
+              {c.title} <span className="text-[#0f2b5c]">{c.titleHighlight}</span>
             </h2>
             <p className="mt-3 text-slate-600 max-w-2xl text-base">
-              Sakarya ve Türkiye genelinde yapı sektörü, konut trendleri ve kentsel dönüşümle ilgili güncel RSS akışları.
+              {c.description}
             </p>
           </div>
 

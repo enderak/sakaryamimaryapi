@@ -197,6 +197,10 @@ export default function Footer() {
         <div className="pt-12 mt-12 border-t border-[#16274a] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <p>© 2026 Sakarya Mimar Yapı İnşaat Dekorasyon Tadilat. Tüm hakları saklıdır.</p>
           <div className="flex items-center gap-4 text-[11px]">
+            <Link href="/admin/moduller" className="text-amber-400 hover:text-amber-300 font-bold transition-colors flex items-center gap-1">
+              <span>⚙️ Modül Yönetimi</span>
+            </Link>
+            <span>•</span>
             <Link href="/kvkk-aydinlatma-metni" className="hover:text-amber-300 transition-colors">
               KVKK Metni
             </Link>

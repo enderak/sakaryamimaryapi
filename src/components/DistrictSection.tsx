@@ -1,22 +1,29 @@
 import Link from "next/link";
 import { sakaryaDistricts } from "@/data/districts";
 import { companyInfo } from "@/data/company";
+import { DistrictSectionConfig, defaultHomeModulesConfig } from "@/data/homeModules";
 import { MapPin, ArrowRight, ShieldCheck, PhoneCall } from "lucide-react";
 
-export default function DistrictSection() {
+interface DistrictSectionProps {
+  config?: DistrictSectionConfig;
+}
+
+export default function DistrictSection({ config }: DistrictSectionProps = {}) {
+  const c = config || defaultHomeModulesConfig.content.districts;
+
   return (
     <section className="py-24 bg-slate-50 text-slate-900 relative border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0f2b5c] text-xs font-bold uppercase tracking-wider mb-2">
             <MapPin className="w-4 h-4 text-[#0f2b5c]" />
-            <span>Sakarya Geneli Hizmet Ağı</span>
+            <span>{c.badge}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
-            İlçenize Özel <span className="text-[#0f2b5c]">Tadilat & İnşaat</span> Çözümleri
+            {c.title} <span className="text-[#0f2b5c]">{c.titleHighlight}</span>
           </h2>
           <p className="mt-3 text-slate-600 text-base">
-            Sakarya&apos;nın her ilçesinin mimari karakterine ve iklim koşullarına uygun uzman usta ve teknik kadromuzla adrese teslim hizmet veriyoruz.
+            {c.description}
           </p>
         </div>
 

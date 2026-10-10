@@ -1,20 +1,27 @@
 import { testimonials } from "@/data/testimonials";
+import { TestimonialsSectionConfig, defaultHomeModulesConfig } from "@/data/homeModules";
 import { Star, MessageSquareQuote, CheckCircle2 } from "lucide-react";
 
-export default function TestimonialsSection() {
+interface TestimonialsSectionProps {
+  config?: TestimonialsSectionConfig;
+}
+
+export default function TestimonialsSection({ config }: TestimonialsSectionProps = {}) {
+  const c = config || defaultHomeModulesConfig.content.testimonials;
+
   return (
     <section className="py-24 bg-white text-slate-900 relative border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0f2b5c] text-xs font-bold uppercase tracking-wider mb-2">
             <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-            <span>Müşteri Memnuniyeti</span>
+            <span>{c.badge}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
-            Sakaryalı Hemşehrilerimiz <span className="text-[#0f2b5c]">Ne Diyor?</span>
+            {c.title} <span className="text-[#0f2b5c]">{c.titleHighlight}</span>
           </h2>
           <p className="mt-3 text-slate-600 text-base">
-            Serdivan, Sapanca ve Adapazarı&apos;nda evini veya ofisini teslim ettiğimiz müşterilerimizin gerçek deneyimleri.
+            {c.description}
           </p>
         </div>
 

@@ -5,6 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, HardHat, MapPin, ShieldCheck, CheckCircle2, ArrowRight, Play, Pause } from "lucide-react";
 import { companyInfo } from "@/data/company";
+import { SliderConfig, defaultHomeModulesConfig } from "@/data/homeModules";
+
+interface ConstructionSliderProps {
+  config?: SliderConfig;
+}
 
 interface ConstructionSlide {
   id: string;
@@ -97,7 +102,8 @@ const slides: ConstructionSlide[] = [
   }
 ];
 
-export default function ConstructionSlider() {
+export default function ConstructionSlider({ config }: ConstructionSliderProps = {}) {
+  const c = config || defaultHomeModulesConfig.content.constructionSlider;
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const touchStartX = useRef<number | null>(null);
@@ -106,9 +112,9 @@ export default function ConstructionSlider() {
     if (!isPlaying) return;
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
-    }, 5500);
+    }, c.autoPlayIntervalMs || 5500);
     return () => clearInterval(interval);
-  }, [isPlaying]);
+  }, [isPlaying, c.autoPlayIntervalMs]);
 
   const nextSlide = () => {
     setCurrent((prev) => (prev + 1) % slides.length);
@@ -140,10 +146,10 @@ export default function ConstructionSlider() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0f2b5c] text-xs font-bold uppercase tracking-wider mb-3">
               <HardHat className="w-3.5 h-3.5 text-[#0f2b5c]" />
-              <span>Şantiye & Saha Çalışmalarımız</span>
+              <span>{c.badgeText}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
-              Sakarya <span className="text-[#0f2b5c]">İnşaat Projelerimiz</span>
+              {c.sectionTitle} <span className="text-[#0f2b5c]">{c.sectionSubtitle}</span>
             </h2>
             <p className="mt-2 text-slate-600 max-w-2xl text-sm sm:text-base">
               Sapanca villalarından Serdivan konutlarına, kaba inşaattan çelik konstrüksiyona kadar mühendislik güvencemizle yükselen yapılarımız.
