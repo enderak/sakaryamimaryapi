@@ -36,11 +36,13 @@ import {
   Share2,
   Video,
   ShieldCheck,
-  Play
+  Play,
+  BookOpen
 } from "lucide-react";
 import { HomePageModulesConfig, defaultHomeModulesConfig } from "@/data/homeModules";
 import { SeoGeoConfig, defaultSeoGeoConfig, MerchantServiceOffer } from "@/data/seoGeo";
 import { SocialMediaConfig, defaultSocialMediaConfig, extractYouTubeId, SocialPostItem } from "@/data/socialMedia";
+import AdminGuideSection from "@/components/AdminGuideSection";
 
 export default function AdminModulesPage() {
   const router = useRouter();
@@ -51,7 +53,7 @@ export default function AdminModulesPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
-  const [activeTab, setActiveTab] = useState<"visibility" | "content" | "seo" | "social">("visibility");
+  const [activeTab, setActiveTab] = useState<"visibility" | "content" | "seo" | "social" | "guide">("visibility");
   const [selectedModuleKey, setSelectedModuleKey] = useState<string>("hero");
 
   useEffect(() => {
@@ -310,6 +312,19 @@ export default function AdminModulesPage() {
             </Link>
 
             <button
+              onClick={() => setActiveTab("guide")}
+              className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-xs ${
+                activeTab === "guide"
+                  ? "bg-amber-400 text-slate-950 font-black shadow-md ring-2 ring-amber-300"
+                  : "bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200"
+              }`}
+              title="Kullanım Kılavuzu & Arama Motoru Rehberi"
+            >
+              <BookOpen className="w-4 h-4 text-amber-700" />
+              <span>Kullanım Kılavuzu</span>
+            </button>
+
+            <button
               onClick={handleReset}
               disabled={saving}
               className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white hover:bg-rose-50 text-rose-600 font-semibold text-xs border border-rose-200 transition-colors"
@@ -405,6 +420,18 @@ export default function AdminModulesPage() {
           >
             <Share2 className="w-4 h-4 text-rose-500" />
             <span>Sosyal Medya & Videolar (Instagram, YouTube, TikTok)</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("guide")}
+            className={`pb-3 px-4 text-sm font-bold border-b-2 flex items-center gap-2 transition-colors ${
+              activeTab === "guide"
+                ? "border-[#0f2b5c] text-[#0f2b5c]"
+                : "border-transparent text-slate-500 hover:text-slate-800"
+            }`}
+          >
+            <BookOpen className="w-4 h-4 text-amber-600" />
+            <span>Kullanım Kılavuzu & Arama Rehberi</span>
           </button>
         </div>
 
@@ -2908,6 +2935,11 @@ export default function AdminModulesPage() {
               </button>
             </div>
           </div>
+        )}
+
+        {/* TAB 5: KULLANIM KILAVUZU & ARAMA MOTORU REHBERİ */}
+        {activeTab === "guide" && (
+          <AdminGuideSection canonicalUrl={seoConfig?.meta?.canonicalUrl} />
         )}
 
       </div>
