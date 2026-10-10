@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { 
   Sliders, 
@@ -17,11 +18,15 @@ import {
   ExternalLink,
   ChevronRight,
   Shield,
-  Sparkles
+  Sparkles,
+  LogOut,
+  UserCheck
 } from "lucide-react";
 import { HomePageModulesConfig, defaultHomeModulesConfig } from "@/data/homeModules";
 
 export default function AdminModulesPage() {
+  const router = useRouter();
+  const [currentUser, setCurrentUser] = useState<{ email: string } | null>(null);
   const [config, setConfig] = useState<HomePageModulesConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -30,12 +35,22 @@ export default function AdminModulesPage() {
   const [selectedModuleKey, setSelectedModuleKey] = useState<string>("hero");
 
   useEffect(() => {
-    fetchConfig();
+    checkAuthAndFetch();
   }, []);
 
-  const fetchConfig = async () => {
+  const checkAuthAndFetch = async () => {
     try {
       setLoading(true);
+      // 1. Check Session
+      const authRes = await fetch("/api/auth");
+      const authData = await authRes.json();
+      if (!authData.authenticated) {
+        router.push("/admin/login");
+        return;
+      }
+      setCurrentUser(authData.session);
+
+      // 2. Fetch Modules Config
       const res = await fetch("/api/modules");
       const data = await res.json();
       if (data.success && data.config) {
@@ -48,6 +63,19 @@ export default function AdminModulesPage() {
       setConfig(defaultHomeModulesConfig);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "logout" })
+      });
+      router.push("/admin/login");
+    } catch {
+      router.push("/admin/login");
     }
   };
 
@@ -174,6 +202,13 @@ export default function AdminModulesPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
+            {currentUser && (
+              <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold border border-slate-200">
+                <UserCheck className="w-3.5 h-3.5 text-emerald-600" />
+                <span>{currentUser.email}</span>
+              </div>
+            )}
+
             <Link
               href="/"
               target="_blank"
@@ -200,6 +235,15 @@ export default function AdminModulesPage() {
             >
               <Save className="w-4 h-4 text-amber-400" />
               <span>{saving ? "Kaydediliyor..." : "Değişiklikleri Yayınla"}</span>
+            </button>
+
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-rose-700 font-semibold text-xs border border-slate-300 transition-colors"
+              title="Güvenli Çıkış Yap"
+            >
+              <LogOut className="w-3.5 h-3.5 text-rose-500" />
+              <span>Çıkış Yap</span>
             </button>
           </div>
         </div>

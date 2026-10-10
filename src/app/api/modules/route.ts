@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getHomeModulesConfig, saveHomeModulesConfig } from "@/lib/modulesStorage";
 import { defaultHomeModulesConfig, HomePageModulesConfig } from "@/data/homeModules";
+import { getAdminSession } from "@/lib/adminAuth";
 
 export async function GET() {
   try {
@@ -16,6 +17,15 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    // Verify admin session
+    const session = await getAdminSession();
+    if (!session) {
+      return NextResponse.json(
+        { success: false, message: "Yetkisiz işlem. Lütfen Gmail ile giriş yapınız." },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
     
     // Check if reset action
