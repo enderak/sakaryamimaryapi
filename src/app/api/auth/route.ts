@@ -35,9 +35,14 @@ export async function POST(request: Request) {
       const code = generateOtp(email);
       await sendOtpEmail(email, code);
 
+      const isSmtpConfigured = Boolean((process.env.SMTP_USER || process.env.GMAIL_USER) && (process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD));
+
       return NextResponse.json({
         success: true,
-        message: `${email} adresine 6 haneli güvenlik doğrulama kodu gönderildi.`
+        message: isSmtpConfigured
+          ? `${email} adresine 6 haneli güvenlik doğrulama kodu gönderildi.`
+          : `Güvenlik doğrulama kodunuz oluşturuldu: ${code}`,
+        devCode: isSmtpConfigured ? undefined : code
       });
     }
 

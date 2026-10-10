@@ -93,7 +93,12 @@ export default function AdminLoginPage() {
 
       if (data.success) {
         setStep("enter_code");
-        setInfoMsg(data.message);
+        if (data.devCode) {
+          setCode(data.devCode);
+          setInfoMsg(`Giriş Kodunuz Hazır: ${data.devCode} (Aşağıdaki alana otomatik dolduruldu)`);
+        } else {
+          setInfoMsg(data.message);
+        }
       } else {
         setErrorMsg(data.message || "Kod gönderilemedi.");
       }
