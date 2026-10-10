@@ -72,6 +72,16 @@ export async function POST(request: Request) {
         maxPrice: Number(offer.maxPrice) || 0
       }));
     }
+    // Sanitize AI Optimization fields
+    if (newConfig.aiOptimization?.aiSummaryPrompt) {
+      newConfig.aiOptimization.aiSummaryPrompt = newConfig.aiOptimization.aiSummaryPrompt.replace(/<[^>]*>?/gm, "").trim();
+    }
+    if (newConfig.aiOptimization?.faqSchema && Array.isArray(newConfig.aiOptimization.faqSchema)) {
+      newConfig.aiOptimization.faqSchema = newConfig.aiOptimization.faqSchema.map((faq) => ({
+        question: faq.question.replace(/<[^>]*>?/gm, "").trim(),
+        answer: faq.answer.replace(/<[^>]*>?/gm, "").trim()
+      }));
+    }
 
     const saved = saveSeoGeoConfig(newConfig);
     if (!saved) {

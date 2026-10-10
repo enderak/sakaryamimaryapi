@@ -29,7 +29,10 @@ import {
   Plus,
   Trash2,
   Map,
-  Star
+  Star,
+  Bot,
+  Sparkles,
+  HelpCircle
 } from "lucide-react";
 import { HomePageModulesConfig, defaultHomeModulesConfig } from "@/data/homeModules";
 import { SeoGeoConfig, defaultSeoGeoConfig, MerchantServiceOffer } from "@/data/seoGeo";
@@ -1672,6 +1675,264 @@ export default function AdminModulesPage() {
               </div>
             </div>
 
+            {/* Section 6: Yapay Zeka Arama Motorları (AIO & GEO) & Modern Algoritma Optimizasyonu */}
+            <div className="space-y-5 pt-6 border-t border-slate-100">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-sm font-extrabold text-[#0f2b5c] uppercase tracking-wider flex items-center gap-2">
+                    <Bot className="w-4 h-4 text-purple-600" />
+                    <span>6. Yapay Zeka Arama Motorları (AIO & GEO) & Güncel Arama Desteği</span>
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    ChatGPT, Perplexity, Google Gemini, Claude ve Microsoft Copilot gibi yapay zekaların ve modern arama motorlarının sitenizi tam yetkiyle tarayıp doğrudan kaynak göstermesini sağlar.
+                  </p>
+                </div>
+                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-purple-50 text-purple-700 border border-purple-200 shrink-0">
+                  ChatGPT • Gemini • Perplexity • Copilot
+                </span>
+              </div>
+
+              {/* Bot İzni & Bing/Yandex Doğrulamaları */}
+              <div className="p-4 rounded-2xl bg-purple-50/50 border border-purple-100 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-xs font-bold text-slate-800 flex items-center gap-2">
+                      <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                      <span>Yapay Zeka Tarayıcılarına Açık İzin Ver (GPTBot, PerplexityBot, ClaudeBot vb.)</span>
+                    </label>
+                    <p className="text-[11px] text-slate-500 mt-0.5">
+                      robots.txt üzerinden yapay zeka botlarına tam tarama izni verir, aramalarda önerilmenizi sağlar.
+                    </p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={seoConfig.aiOptimization?.enableAiCrawlers ?? true}
+                      onChange={(e) => setSeoConfig({
+                        ...seoConfig,
+                        aiOptimization: {
+                          ...(seoConfig.aiOptimization || defaultSeoGeoConfig.aiOptimization),
+                          enableAiCrawlers: e.target.checked
+                        }
+                      })}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                  </label>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-purple-100">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                      Microsoft Bing (Copilot) Kodu
+                    </label>
+                    <input
+                      type="text"
+                      value={seoConfig.aiOptimization?.bingVerification || ""}
+                      onChange={(e) => setSeoConfig({
+                        ...seoConfig,
+                        aiOptimization: {
+                          ...(seoConfig.aiOptimization || defaultSeoGeoConfig.aiOptimization),
+                          bingVerification: e.target.value
+                        }
+                      })}
+                      placeholder="msvalidate.01 meta kodu"
+                      className="w-full text-xs px-3 py-2 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-purple-600"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                      Yandex Webmaster Kodu
+                    </label>
+                    <input
+                      type="text"
+                      value={seoConfig.aiOptimization?.yandexVerification || ""}
+                      onChange={(e) => setSeoConfig({
+                        ...seoConfig,
+                        aiOptimization: {
+                          ...(seoConfig.aiOptimization || defaultSeoGeoConfig.aiOptimization),
+                          yandexVerification: e.target.value
+                        }
+                      })}
+                      placeholder="yandex-verification kodu"
+                      className="w-full text-xs px-3 py-2 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-purple-600"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                      Pinterest Doğrulama Kodu
+                    </label>
+                    <input
+                      type="text"
+                      value={seoConfig.aiOptimization?.pinterestVerification || ""}
+                      onChange={(e) => setSeoConfig({
+                        ...seoConfig,
+                        aiOptimization: {
+                          ...(seoConfig.aiOptimization || defaultSeoGeoConfig.aiOptimization),
+                          pinterestVerification: e.target.value
+                        }
+                      })}
+                      placeholder="p:domain_verify kodu"
+                      className="w-full text-xs px-3 py-2 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-purple-600"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Doğrudan Yapay Zeka Özeti (AI Summary Prompt) */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Yapay Zeka ve LLM Sistem Özeti (Direct AI Context Prompt)
+                </label>
+                <textarea
+                  rows={3}
+                  value={seoConfig.aiOptimization?.aiSummaryPrompt || ""}
+                  onChange={(e) => setSeoConfig({
+                    ...seoConfig,
+                    aiOptimization: {
+                      ...(seoConfig.aiOptimization || defaultSeoGeoConfig.aiOptimization),
+                      aiSummaryPrompt: e.target.value
+                    }
+                  })}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-600 leading-relaxed"
+                  placeholder="Yapay zekanın kullanıcıya sitenizi özetlerken referans alacağı doğrudan şirket bilgisi..."
+                />
+                <p className="text-[10px] text-slate-400 mt-1">
+                  Yapay zekalar (ChatGPT, Gemini, Perplexity) sitenizi okurken buradaki bilgileri baz alarak kullanıcılara tavsiye ve doğrudan yanıt üretir.
+                </p>
+              </div>
+
+              {/* LSI & Semantik Anahtar Kelimeler */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Semantik LSI Anahtar Kelimeler (Virgülle ayırın)
+                </label>
+                <input
+                  type="text"
+                  value={seoConfig.aiOptimization?.primaryKeywordsLsi?.join(", ") || ""}
+                  onChange={(e) => {
+                    const lsiArr = e.target.value.split(",").map((k) => k.trim()).filter(Boolean);
+                    setSeoConfig({
+                      ...seoConfig,
+                      aiOptimization: {
+                        ...(seoConfig.aiOptimization || defaultSeoGeoConfig.aiOptimization),
+                        primaryKeywordsLsi: lsiArr
+                      }
+                    });
+                  }}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-purple-600"
+                  placeholder="Sakarya en iyi tadilat ustası, Serdivan daire yenileme fiyatları, Sapanca villa müteahhiti"
+                />
+                <p className="text-[10px] text-slate-400 mt-1">
+                  Arama motorlarının ve vektörel yapay zeka modellerinin içeriğinizi sektör uzmanlığıyla eşleştirmesini sağlar.
+                </p>
+              </div>
+
+              {/* Yapılandırılmış SSS (FAQ Schema) */}
+              <div className="space-y-3 pt-4 border-t border-slate-100">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                      <HelpCircle className="w-3.5 h-3.5 text-blue-600" />
+                      <span>Google & Yapay Zeka SSS Şeması (FAQPage Schema.org)</span>
+                    </h4>
+                    <p className="text-[11px] text-slate-500 mt-0.5">
+                      Google arama sonuçlarında genişletilebilir soru-cevap akordeonları olarak görünür ve AI Overviews tarafından doğrudan yanıt olarak alıntılanır.
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newFaq = {
+                        question: "Yeni Sıkça Sorulan Soru?",
+                        answer: "Bu sorunun detaylı ve güven veren açıklaması."
+                      };
+                      setSeoConfig({
+                        ...seoConfig,
+                        aiOptimization: {
+                          ...(seoConfig.aiOptimization || defaultSeoGeoConfig.aiOptimization),
+                          faqSchema: [...(seoConfig.aiOptimization?.faqSchema || defaultSeoGeoConfig.aiOptimization.faqSchema), newFaq]
+                        }
+                      });
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-50 text-purple-700 hover:bg-purple-100 text-xs font-bold border border-purple-200 transition-colors shrink-0"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Soru & Cevap Ekle</span>
+                  </button>
+                </div>
+
+                <div className="space-y-3">
+                  {(seoConfig.aiOptimization?.faqSchema || defaultSeoGeoConfig.aiOptimization.faqSchema).map((faq, fIdx) => (
+                    <div key={fIdx} className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-[11px] font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded-md">
+                          Soru #{fIdx + 1}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const currentFaqs = seoConfig.aiOptimization?.faqSchema || defaultSeoGeoConfig.aiOptimization.faqSchema;
+                            const updated = currentFaqs.filter((_, idx) => idx !== fIdx);
+                            setSeoConfig({
+                              ...seoConfig,
+                              aiOptimization: {
+                                ...(seoConfig.aiOptimization || defaultSeoGeoConfig.aiOptimization),
+                                faqSchema: updated
+                              }
+                            });
+                          }}
+                          className="p-1 text-slate-400 hover:text-rose-600 rounded transition-colors"
+                          title="Soruyu Sil"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+
+                      <input
+                        type="text"
+                        value={faq.question}
+                        onChange={(e) => {
+                          const currentFaqs = [...(seoConfig.aiOptimization?.faqSchema || defaultSeoGeoConfig.aiOptimization.faqSchema)];
+                          currentFaqs[fIdx].question = e.target.value;
+                          setSeoConfig({
+                            ...seoConfig,
+                            aiOptimization: {
+                              ...(seoConfig.aiOptimization || defaultSeoGeoConfig.aiOptimization),
+                              faqSchema: currentFaqs
+                            }
+                          });
+                        }}
+                        className="w-full text-xs font-bold px-3 py-2 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-purple-600"
+                        placeholder="Örn: Sakarya'da komple ev tadilatı ne kadar sürer?"
+                      />
+
+                      <textarea
+                        rows={2}
+                        value={faq.answer}
+                        onChange={(e) => {
+                          const currentFaqs = [...(seoConfig.aiOptimization?.faqSchema || defaultSeoGeoConfig.aiOptimization.faqSchema)];
+                          currentFaqs[fIdx].answer = e.target.value;
+                          setSeoConfig({
+                            ...seoConfig,
+                            aiOptimization: {
+                              ...(seoConfig.aiOptimization || defaultSeoGeoConfig.aiOptimization),
+                              faqSchema: currentFaqs
+                            }
+                          });
+                        }}
+                        className="w-full text-xs px-3 py-2 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-purple-600"
+                        placeholder="Cevap detayları..."
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
             {/* Bottom Save Action */}
             <div className="pt-6 border-t border-slate-100 flex justify-end">
               <button
@@ -1680,7 +1941,7 @@ export default function AdminModulesPage() {
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-[#0f2b5c] hover:bg-[#163a75] text-white font-bold text-xs shadow-md shadow-blue-900/10 transition-all hover:scale-[1.02]"
               >
                 <Save className="w-4 h-4 text-amber-400" />
-                <span>{saving ? "Kaydediliyor..." : "Tüm SEO, Yerler & Merchant Ayarlarını Kaydet"}</span>
+                <span>{saving ? "Kaydediliyor..." : "Tüm SEO, Harita & Yapay Zeka Ayarlarını Kaydet"}</span>
               </button>
             </div>
 

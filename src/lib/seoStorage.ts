@@ -36,6 +36,11 @@ export function getSeoGeoConfig(): SeoGeoConfig {
         ...(parsed.merchant || {}),
         offers: parsed.merchant?.offers || defaultSeoGeoConfig.merchant.offers
       },
+      aiOptimization: {
+        ...defaultSeoGeoConfig.aiOptimization,
+        ...(parsed.aiOptimization || {}),
+        faqSchema: parsed.aiOptimization?.faqSchema || defaultSeoGeoConfig.aiOptimization.faqSchema
+      },
       schema: {
         ...defaultSeoGeoConfig.schema,
         ...(parsed.schema || {})

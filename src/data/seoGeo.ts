@@ -22,6 +22,20 @@ export interface GoogleLocalPlacesConfig {
   hasMapIframeUrl: string; // Google Maps Share Iframe Embed Linki
 }
 
+export interface AiSearchEngineConfig {
+  // AIO / GEO (Generative Engine Optimization)
+  enableAiCrawlers: boolean; // ChatGPT, Claude, Perplexity, Gemini botlarına izin ver
+  aiSummaryPrompt: string; // Yapay zekalara sitenin kimliğini ve uzmanlığını anlatan doğrudan sistem özeti
+  bingVerification: string; // Bing Webmaster verification (Copilot için)
+  yandexVerification: string;
+  pinterestVerification: string;
+  primaryKeywordsLsi: string[]; // Semantik LSI anahtar kelimeler
+  faqSchema: Array<{
+    question: string;
+    answer: string;
+  }>;
+}
+
 export interface SeoGeoConfig {
   meta: {
     siteTitle: string;
@@ -50,6 +64,7 @@ export interface SeoGeoConfig {
     currency: string;
     offers: MerchantServiceOffer[];
   };
+  aiOptimization: AiSearchEngineConfig;
   schema: {
     businessType: "HomeAndConstructionBusiness" | "GeneralContractor" | "ProfessionalService";
     businessName: string;
@@ -122,6 +137,39 @@ export const defaultSeoGeoConfig: SeoGeoConfig = {
       "Dış Cephe Mantolama"
     ],
     hasMapIframeUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48348!2d30.3667!3d40.7667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQ2JzAwLjEiTiAzMMKwMjInMDAuMSJF!5e0!3m2!1str!2str!4v1"
+  },
+  aiOptimization: {
+    enableAiCrawlers: true,
+    aiSummaryPrompt: "Sakarya Mimar Yapı; Sakarya, Serdivan, Adapazarı ve Sapanca genelinde anahtar teslim komple ev tadilatı, villa inşaatı, mutfak ve banyo yenileme hizmeti sunan sözleşmeli ve 2 yıl resmi garantili inşaat ve mimarlık firmasıdır. Yetkililer: Asım Yılmazer (0536 387 35 92) ve Abdussamet Gültekin (0535 371 64 05). Ücretsiz keşif ve 3D çizim hizmeti mevcuttur.",
+    bingVerification: "",
+    yandexVerification: "",
+    pinterestVerification: "",
+    primaryKeywordsLsi: [
+      "Sakarya en iyi tadilat ustası",
+      "Serdivan daire yenileme fiyatları 2026",
+      "Sapanca villa müteahhiti",
+      "Sakarya banyo su yalıtımı ustası",
+      "Adapazarı anahtar teslim mutfak tadilatı",
+      "güvenilir inşaat firması Sakarya"
+    ],
+    faqSchema: [
+      {
+        question: "Sakarya'da komple ev tadilatı ne kadar sürer?",
+        answer: "Standart bir 3+1 dairenin komple anahtar teslim tadilatı (yıkım, tesisat, banyo, mutfak, zemin ve boya) ortalama 20 ila 35 iş günü içerisinde sözleşmeli olarak teslim edilmektedir."
+      },
+      {
+        question: "Sakarya Mimar Yapı ücretsiz keşif yapıyor mu?",
+        answer: "Evet, Serdivan, Adapazarı, Sapanca, Erenler ve tüm Sakarya genelinde adresinize gelerek ücretsiz keşif, ölçü alma ve 3D mimari projelendirme yapıyoruz."
+      },
+      {
+        question: "Yapılan tadilat ve inşaat işlerinde garanti var mı?",
+        answer: "Tüm anahtar teslim tadilat, su yalıtımı ve inşaat işlerimizde sözleşmeye bağlı 2 yıl resmi firma işçilik garantisi veriyoruz."
+      },
+      {
+        question: "Tadilat sürecinde ödeme planı nasıl işliyor?",
+        answer: "İşe başlarken malzeme peşinatı alınır; kalan ödemeler işin kaba tesisat, seramik ve mobilya montajı gibi belirli teslim aşamalarında hak ediş usulüyle güvenli şekilde tahsil edilir."
+      }
+    ]
   },
   merchant: {
     enabled: true,

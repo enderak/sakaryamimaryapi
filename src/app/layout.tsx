@@ -25,7 +25,7 @@ export const viewport: Viewport = {
 
 export async function generateMetadata(): Promise<Metadata> {
   const seoConfig = getSeoGeoConfig();
-  const { meta, geo } = seoConfig;
+  const { meta, geo, aiOptimization } = seoConfig;
 
   return {
     title: meta.siteTitle,
@@ -54,7 +54,11 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     verification: {
       google: meta.googleSiteVerification || undefined,
-      yandex: meta.yandexVerification || undefined
+      yandex: meta.yandexVerification || aiOptimization?.yandexVerification || undefined,
+      other: {
+        ...(aiOptimization?.bingVerification ? { "msvalidate.01": [aiOptimization.bingVerification] } : {}),
+        ...(aiOptimization?.pinterestVerification ? { "p:domain_verify": [aiOptimization.pinterestVerification] } : {})
+      }
     },
     other: {
       "geo.region": geo.region,
@@ -63,7 +67,8 @@ export async function generateMetadata(): Promise<Metadata> {
       "ICBM": geo.icbm,
       "distribution": "Global",
       "rating": "General",
-      "revisit-after": "7 days"
+      "revisit-after": "7 days",
+      ...(aiOptimization?.aiSummaryPrompt ? { "ai-summary": aiOptimization.aiSummaryPrompt } : {})
     }
   };
 }
@@ -74,7 +79,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const seoConfig = getSeoGeoConfig();
-  const { meta, geo, schema, googlePlaces, merchant } = seoConfig;
+  const { meta, geo, schema, googlePlaces, merchant, aiOptimization } = seoConfig;
 
   // LocalBusiness + Google Places + Merchant Offerings Schema.org JSON-LD
   const jsonLd = {
@@ -82,6 +87,12 @@ export default function RootLayout({
     "@type": schema.businessType || "GeneralContractor",
     "name": googlePlaces?.businessExactName || schema.businessName,
     "alternateName": "Sakarya Tadilat & Mimar Yapı",
+    "description": aiOptimization?.aiSummaryPrompt || meta.siteDescription,
+    "knowsAbout": aiOptimization?.primaryKeywordsLsi || [
+      "Sakarya komple ev tadilatı",
+      "Serdivan banyo mutfak yenileme",
+      "Sapanca villa inşaatı"
+    ],
     "image": [
       meta.ogImage,
       "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80",
@@ -168,6 +179,21 @@ export default function RootLayout({
       : {})
   };
 
+  const faqJsonLd = aiOptimization?.faqSchema?.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": aiOptimization.faqSchema.map((item) => ({
+          "@type": "Question",
+          "name": item.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": item.answer
+          }
+        }))
+      }
+    : null;
+
   return (
     <html
       lang="tr"
@@ -178,6 +204,12 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {faqJsonLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          />
+        )}
       </head>
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-900 selection:bg-amber-100 selection:text-amber-900">
         <Navbar />
