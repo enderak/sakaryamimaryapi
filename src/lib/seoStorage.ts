@@ -27,6 +27,15 @@ export function getSeoGeoConfig(): SeoGeoConfig {
         ...defaultSeoGeoConfig.geo,
         ...(parsed.geo || {})
       },
+      googlePlaces: {
+        ...defaultSeoGeoConfig.googlePlaces,
+        ...(parsed.googlePlaces || {})
+      },
+      merchant: {
+        ...defaultSeoGeoConfig.merchant,
+        ...(parsed.merchant || {}),
+        offers: parsed.merchant?.offers || defaultSeoGeoConfig.merchant.offers
+      },
       schema: {
         ...defaultSeoGeoConfig.schema,
         ...(parsed.schema || {})

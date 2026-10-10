@@ -23,10 +23,16 @@ import {
   MapPin,
   Search,
   FileCode,
-  Check
+  Check,
+  Store,
+  ShoppingBag,
+  Plus,
+  Trash2,
+  Map,
+  Star
 } from "lucide-react";
 import { HomePageModulesConfig, defaultHomeModulesConfig } from "@/data/homeModules";
-import { SeoGeoConfig, defaultSeoGeoConfig } from "@/data/seoGeo";
+import { SeoGeoConfig, defaultSeoGeoConfig, MerchantServiceOffer } from "@/data/seoGeo";
 
 export default function AdminModulesPage() {
   const router = useRouter();
@@ -1426,6 +1432,246 @@ export default function AdminModulesPage() {
               </div>
             </div>
 
+            {/* Section 4: Google Haritalar & Yerler (Places / Local Pack) */}
+            <div className="space-y-5 pt-6 border-t border-slate-100">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-extrabold text-[#0f2b5c] uppercase tracking-wider flex items-center gap-2">
+                  <Store className="w-4 h-4 text-blue-600" />
+                  <span>4. Google Haritalar & &ldquo;Yerler&rdquo; (Local Pack) Sıralama Ayarları</span>
+                </h3>
+                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-blue-50 text-[#0f2b5c] border border-blue-200">
+                  Google Haritalar 1. Sıra Optimizasyonu
+                </span>
+              </div>
+              <p className="text-xs text-slate-500">
+                Google&apos;da &ldquo;sakarya tadilat&rdquo; arandığında çıkan 3&apos;lü harita kutucuğunda (Google Local 3-Pack) en üstte listelenmek için işletme adı, Place ID ve yorum bağlantılarını tanımlayın.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Google Haritalar İşletme Tam Adı (GMB Name)
+                  </label>
+                  <input
+                    type="text"
+                    value={seoConfig.googlePlaces?.businessExactName || ""}
+                    onChange={(e) => setSeoConfig({
+                      ...seoConfig,
+                      googlePlaces: {
+                        ...(seoConfig.googlePlaces || defaultSeoGeoConfig.googlePlaces),
+                        businessExactName: e.target.value
+                      }
+                    })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                    placeholder="Sakarya Mimar Yapı - Ev Tadilat & İnşaat Dekorasyon"
+                  />
+                  <p className="text-[10px] text-slate-400 mt-1">Öneri: Anahtar kelimeyi içeren resmi işletme adı (&ldquo;Sakarya Mimar Yapı - Tadilat & Dekorasyon&rdquo;)</p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Google Maps Profil URL (Doğrudan Harita Linki)
+                  </label>
+                  <input
+                    type="url"
+                    value={seoConfig.googlePlaces?.googleMapsProfileUrl || ""}
+                    onChange={(e) => setSeoConfig({
+                      ...seoConfig,
+                      googlePlaces: {
+                        ...(seoConfig.googlePlaces || defaultSeoGeoConfig.googlePlaces),
+                        googleMapsProfileUrl: e.target.value
+                      }
+                    })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                    placeholder="https://maps.google.com/?cid=..."
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Google Yorum İsteme Linki (Review Link)
+                  </label>
+                  <input
+                    type="url"
+                    value={seoConfig.googlePlaces?.googleReviewUrl || ""}
+                    onChange={(e) => setSeoConfig({
+                      ...seoConfig,
+                      googlePlaces: {
+                        ...(seoConfig.googlePlaces || defaultSeoGeoConfig.googlePlaces),
+                        googleReviewUrl: e.target.value
+                      }
+                    })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                    placeholder="https://g.page/r/.../review"
+                  />
+                  <p className="text-[10px] text-slate-400 mt-1">Müşterilerinize tek tıkla 5 yıldız verdiren Google kısa linki</p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Google Maps Place ID
+                  </label>
+                  <input
+                    type="text"
+                    value={seoConfig.googlePlaces?.googlePlaceId || ""}
+                    onChange={(e) => setSeoConfig({
+                      ...seoConfig,
+                      googlePlaces: {
+                        ...(seoConfig.googlePlaces || defaultSeoGeoConfig.googlePlaces),
+                        googlePlaceId: e.target.value
+                      }
+                    })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                    placeholder="ChIJb_mimar_yapi_sakarya"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 5: Google Merchant & Hizmet/Fiyat Kataloğu (Rich Products) */}
+            <div className="space-y-5 pt-6 border-t border-slate-100">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-sm font-extrabold text-[#0f2b5c] uppercase tracking-wider flex items-center gap-2">
+                    <ShoppingBag className="w-4 h-4 text-amber-500" />
+                    <span>5. Google Merchant & Yapılandırılmış Hizmet Fiyat Kataloğu</span>
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Google arama sonuçlarında fiyat aralıkları (₺) ve hizmet kartlarının &ldquo;Stokta / Hemen Keşif&rdquo; şeklinde zengin gösterilmesini sağlar.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newOffer: MerchantServiceOffer = {
+                        id: `serv-${Date.now()}`,
+                        name: "Yeni Tadilat Hizmeti",
+                        description: "Hizmet detay açıklaması ve garanti şartları",
+                        category: "Ev Tadilatı",
+                        minPrice: 50000,
+                        maxPrice: 150000,
+                        priceCurrency: "TRY",
+                        availability: "https://schema.org/InStock"
+                      };
+                      setSeoConfig({
+                        ...seoConfig,
+                        merchant: {
+                          ...(seoConfig.merchant || defaultSeoGeoConfig.merchant),
+                          offers: [...(seoConfig.merchant?.offers || []), newOffer]
+                        }
+                      });
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 text-[#0f2b5c] hover:bg-blue-100 text-xs font-bold border border-blue-200 transition-colors"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Hizmet / Fiyat Ekle</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Offerings list */}
+              <div className="space-y-3">
+                {seoConfig.merchant?.offers?.map((offer, oIdx) => (
+                  <div key={offer.id || oIdx} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="w-6 h-6 rounded-lg bg-blue-100 text-[#0f2b5c] font-bold text-xs flex items-center justify-center">
+                          {oIdx + 1}
+                        </span>
+                        <input
+                          type="text"
+                          value={offer.name}
+                          onChange={(e) => {
+                            const updated = [...seoConfig.merchant.offers];
+                            updated[oIdx].name = e.target.value;
+                            setSeoConfig({
+                              ...seoConfig,
+                              merchant: { ...seoConfig.merchant, offers: updated }
+                            });
+                          }}
+                          className="font-bold text-xs sm:text-sm text-slate-900 bg-white px-3 py-1.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#0f2b5c]"
+                          placeholder="Hizmet Adı"
+                        />
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const updated = seoConfig.merchant.offers.filter((_, idx) => idx !== oIdx);
+                          setSeoConfig({
+                            ...seoConfig,
+                            merchant: { ...seoConfig.merchant, offers: updated }
+                          });
+                        }}
+                        className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg transition-colors"
+                        title="Hizmeti Sil"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                      <div className="sm:col-span-7">
+                        <label className="block text-[11px] font-semibold text-slate-600 mb-1">Açıklama</label>
+                        <input
+                          type="text"
+                          value={offer.description}
+                          onChange={(e) => {
+                            const updated = [...seoConfig.merchant.offers];
+                            updated[oIdx].description = e.target.value;
+                            setSeoConfig({
+                              ...seoConfig,
+                              merchant: { ...seoConfig.merchant, offers: updated }
+                            });
+                          }}
+                          className="w-full text-xs px-3 py-2 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#0f2b5c]"
+                          placeholder="Hizmet kapsamı..."
+                        />
+                      </div>
+
+                      <div className="sm:col-span-2">
+                        <label className="block text-[11px] font-semibold text-slate-600 mb-1">Min Fiyat (₺)</label>
+                        <input
+                          type="number"
+                          value={offer.minPrice}
+                          onChange={(e) => {
+                            const updated = [...seoConfig.merchant.offers];
+                            updated[oIdx].minPrice = Number(e.target.value) || 0;
+                            setSeoConfig({
+                              ...seoConfig,
+                              merchant: { ...seoConfig.merchant, offers: updated }
+                            });
+                          }}
+                          className="w-full text-xs px-3 py-2 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#0f2b5c]"
+                        />
+                      </div>
+
+                      <div className="sm:col-span-3">
+                        <label className="block text-[11px] font-semibold text-slate-600 mb-1">Max Fiyat (₺)</label>
+                        <input
+                          type="number"
+                          value={offer.maxPrice}
+                          onChange={(e) => {
+                            const updated = [...seoConfig.merchant.offers];
+                            updated[oIdx].maxPrice = Number(e.target.value) || 0;
+                            setSeoConfig({
+                              ...seoConfig,
+                              merchant: { ...seoConfig.merchant, offers: updated }
+                            });
+                          }}
+                          className="w-full text-xs px-3 py-2 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#0f2b5c]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Bottom Save Action */}
             <div className="pt-6 border-t border-slate-100 flex justify-end">
               <button
@@ -1434,7 +1680,7 @@ export default function AdminModulesPage() {
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-[#0f2b5c] hover:bg-[#163a75] text-white font-bold text-xs shadow-md shadow-blue-900/10 transition-all hover:scale-[1.02]"
               >
                 <Save className="w-4 h-4 text-amber-400" />
-                <span>{saving ? "Kaydediliyor..." : "Tüm SEO & Geo Değişikliklerini Kaydet"}</span>
+                <span>{saving ? "Kaydediliyor..." : "Tüm SEO, Yerler & Merchant Ayarlarını Kaydet"}</span>
               </button>
             </div>
 

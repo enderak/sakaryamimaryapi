@@ -74,21 +74,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const seoConfig = getSeoGeoConfig();
-  const { meta, geo, schema } = seoConfig;
+  const { meta, geo, schema, googlePlaces, merchant } = seoConfig;
 
-  // LocalBusiness Schema.org JSON-LD
+  // LocalBusiness + Google Places + Merchant Offerings Schema.org JSON-LD
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": schema.businessType || "GeneralContractor",
-    "name": schema.businessName,
-    "image": meta.ogImage,
-    "@id": `${meta.canonicalUrl}/#business`,
+    "name": googlePlaces?.businessExactName || schema.businessName,
+    "alternateName": "Sakarya Tadilat & Mimar Yapı",
+    "image": [
+      meta.ogImage,
+      "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "@id": `${meta.canonicalUrl}/#localbusiness`,
     "url": meta.canonicalUrl,
     "telephone": companyInfo.primaryPhoneRaw,
+    "email": companyInfo.email,
     "priceRange": schema.priceRange,
+    "currenciesAccepted": "TRY",
+    "paymentAccepted": "Nakit, Banka Havalesi / EFT, Kredi Kartı",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": geo.streetAddress,
+      "streetAddress": googlePlaces?.streetAddress || geo.streetAddress,
       "addressLocality": "Serdivan",
       "addressRegion": "Sakarya",
       "postalCode": geo.postalCode,
@@ -99,6 +107,13 @@ export default function RootLayout({
       "latitude": geo.latitude,
       "longitude": geo.longitude
     },
+    "hasMap": googlePlaces?.googleMapsProfileUrl || `https://maps.google.com/?q=${geo.latitude},${geo.longitude}`,
+    "sameAs": [
+      googlePlaces?.googleMapsProfileUrl,
+      googlePlaces?.googleReviewUrl,
+      "https://instagram.com/sakaryamimaryapi",
+      "https://facebook.com/sakaryamimaryapi"
+    ].filter(Boolean),
     "openingHoursSpecification": [
       {
         "@type": "OpeningHoursSpecification",
@@ -107,15 +122,50 @@ export default function RootLayout({
         "closes": "19:30"
       }
     ],
-    "areaServed": geo.targetDistricts.map((d) => ({
-      "@type": "AdministrativeArea",
-      "name": `${d}, Sakarya`
-    })),
+    "areaServed": [
+      {
+        "@type": "City",
+        "name": "Sakarya",
+        "sameAs": "https://tr.wikipedia.org/wiki/Sakarya_(il)"
+      },
+      ...geo.targetDistricts.map((d) => ({
+        "@type": "AdministrativeArea",
+        "name": `${d}, Sakarya`
+      }))
+    ],
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": schema.ratingValue,
-      "reviewCount": schema.reviewCount
-    }
+      "reviewCount": schema.reviewCount,
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    ...(merchant?.enabled && merchant?.offers?.length
+      ? {
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Sakarya Tadilat ve İnşaat Hizmetleri Kataloğu",
+            "itemListElement": merchant.offers.map((offer) => ({
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": offer.name,
+                "description": offer.description,
+                "serviceType": offer.category,
+                "areaServed": "Sakarya"
+              },
+              "priceSpecification": {
+                "@type": "PriceSpecification",
+                "minPrice": offer.minPrice,
+                "maxPrice": offer.maxPrice,
+                "priceCurrency": offer.priceCurrency || "TRY"
+              },
+              "availability": "https://schema.org/InStock",
+              "url": `${meta.canonicalUrl}/#fiyat-hesapla`
+            }))
+          }
+        }
+      : {})
   };
 
   return (

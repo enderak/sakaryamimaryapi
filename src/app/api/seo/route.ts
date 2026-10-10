@@ -53,6 +53,25 @@ export async function POST(request: Request) {
     if (newConfig.meta.siteDescription) {
       newConfig.meta.siteDescription = newConfig.meta.siteDescription.replace(/<[^>]*>?/gm, "").trim();
     }
+    if (newConfig.googlePlaces?.businessExactName) {
+      newConfig.googlePlaces.businessExactName = newConfig.googlePlaces.businessExactName.replace(/<[^>]*>?/gm, "").trim();
+    }
+    if (newConfig.googlePlaces?.googleMapsProfileUrl) {
+      newConfig.googlePlaces.googleMapsProfileUrl = newConfig.googlePlaces.googleMapsProfileUrl.trim();
+    }
+    if (newConfig.googlePlaces?.googleReviewUrl) {
+      newConfig.googlePlaces.googleReviewUrl = newConfig.googlePlaces.googleReviewUrl.trim();
+    }
+    // Sanitize merchant offers
+    if (newConfig.merchant?.offers && Array.isArray(newConfig.merchant.offers)) {
+      newConfig.merchant.offers = newConfig.merchant.offers.map((offer) => ({
+        ...offer,
+        name: offer.name.replace(/<[^>]*>?/gm, "").trim(),
+        description: offer.description.replace(/<[^>]*>?/gm, "").trim(),
+        minPrice: Number(offer.minPrice) || 0,
+        maxPrice: Number(offer.maxPrice) || 0
+      }));
+    }
 
     const saved = saveSeoGeoConfig(newConfig);
     if (!saved) {
