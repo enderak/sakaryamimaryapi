@@ -14,7 +14,6 @@ const EMAILS_FILE = path.join(process.cwd(), "data", "admin-emails.json");
 // Default Allowed Admin Emails
 const DEFAULT_ALLOWED_EMAILS = [
   "sakaryamimaryapi@gmail.com",
-  "enderak@gmail.com",
   "enderakar@outlook.com",
   "enderakar@gmail.com"
 ];

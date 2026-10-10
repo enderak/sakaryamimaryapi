@@ -253,10 +253,10 @@ export default function AdminLoginPage() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setEmail("enderak@gmail.com")}
+                    onClick={() => setEmail("enderakar@gmail.com")}
                     className="px-2 py-0.5 rounded-lg bg-slate-100 text-slate-700 font-medium hover:bg-slate-200 border border-slate-200 transition-colors"
                   >
-                    enderak@gmail.com
+                    enderakar@gmail.com
                   </button>
                   <button
                     type="button"
