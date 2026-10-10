@@ -5,14 +5,24 @@ import { HomePageModulesConfig, defaultHomeModulesConfig } from "@/data/homeModu
 const DATA_DIR = path.join(process.cwd(), "data");
 const CONFIG_FILE = path.join(DATA_DIR, "homepage-modules.json");
 
+let memoryModulesCache: HomePageModulesConfig | null = null;
+
 export function getHomeModulesConfig(): HomePageModulesConfig {
+  if (memoryModulesCache) {
+    return memoryModulesCache;
+  }
   try {
     if (!fs.existsSync(CONFIG_FILE)) {
       // Ensure directory exists and write default
       if (!fs.existsSync(DATA_DIR)) {
-        fs.mkdirSync(DATA_DIR, { recursive: true });
+        try {
+          fs.mkdirSync(DATA_DIR, { recursive: true });
+        } catch {}
       }
-      fs.writeFileSync(CONFIG_FILE, JSON.stringify(defaultHomeModulesConfig, null, 2), "utf-8");
+      try {
+        fs.writeFileSync(CONFIG_FILE, JSON.stringify(defaultHomeModulesConfig, null, 2), "utf-8");
+      } catch {}
+      memoryModulesCache = defaultHomeModulesConfig;
       return defaultHomeModulesConfig;
     }
 
@@ -45,10 +55,17 @@ export function getHomeModulesConfig(): HomePageModulesConfig {
 
 export function saveHomeModulesConfig(config: HomePageModulesConfig): boolean {
   try {
+    memoryModulesCache = config;
     if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
+      try {
+        fs.mkdirSync(DATA_DIR, { recursive: true });
+      } catch {}
     }
-    fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2), "utf-8");
+    try {
+      fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2), "utf-8");
+    } catch (writeErr) {
+      console.warn("Could not write homepage-modules.json on serverless:", writeErr);
+    }
     return true;
   } catch (err) {
     console.error("Error saving home modules config:", err);

@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     const saved = saveSiteSettings(newConfig);
     if (!saved) {
       return NextResponse.json(
-        { success: false, message: "Ayarlar kaydedilemedi." },
+        { success: false, message: "Ayarlar dosyasına yazılamadı." },
         { status: 500 }
       );
     }
@@ -65,10 +65,14 @@ export async function POST(request: Request) {
       message: "Tüm ayarlar (Şifre/Erişim, RSS, Blog, Tema) başarıyla güncellendi.",
       config: newConfig
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Settings POST error:", error);
     return NextResponse.json(
-      { success: false, message: "Sunucu hatası meydana geldi.", error },
+      { 
+        success: false, 
+        message: error?.message || "Ayarlar kaydedilirken sunucu hatası meydana geldi.", 
+        error: String(error) 
+      },
       { status: 500 }
     );
   }

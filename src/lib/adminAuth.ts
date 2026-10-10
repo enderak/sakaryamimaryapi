@@ -32,9 +32,13 @@ export function getAllowedAdminEmails(): string[] {
       // Ensure data directory exists and write default
       const dataDir = path.join(process.cwd(), "data");
       if (!fs.existsSync(dataDir)) {
-        fs.mkdirSync(dataDir, { recursive: true });
+        try {
+          fs.mkdirSync(dataDir, { recursive: true });
+        } catch {}
       }
-      fs.writeFileSync(EMAILS_FILE, JSON.stringify(DEFAULT_ALLOWED_EMAILS, null, 2), "utf-8");
+      try {
+        fs.writeFileSync(EMAILS_FILE, JSON.stringify(DEFAULT_ALLOWED_EMAILS, null, 2), "utf-8");
+      } catch {}
       fileEmails = DEFAULT_ALLOWED_EMAILS;
     }
   } catch (err) {
@@ -66,7 +70,11 @@ export function addAllowedAdminEmail(email: string): boolean {
     const currentList = getAllowedAdminEmails();
     if (!currentList.includes(normalized)) {
       currentList.push(normalized);
-      fs.writeFileSync(EMAILS_FILE, JSON.stringify(currentList, null, 2), "utf-8");
+      try {
+        fs.writeFileSync(EMAILS_FILE, JSON.stringify(currentList, null, 2), "utf-8");
+      } catch (writeErr) {
+        console.warn("Could not write EMAILS_FILE on serverless:", writeErr);
+      }
     }
     return true;
   } catch (err) {

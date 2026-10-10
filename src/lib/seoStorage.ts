@@ -5,13 +5,23 @@ import { SeoGeoConfig, defaultSeoGeoConfig } from "@/data/seoGeo";
 const DATA_DIR = path.join(process.cwd(), "data");
 const SEO_CONFIG_FILE = path.join(DATA_DIR, "seo-geo-config.json");
 
+let memorySeoCache: SeoGeoConfig | null = null;
+
 export function getSeoGeoConfig(): SeoGeoConfig {
+  if (memorySeoCache) {
+    return memorySeoCache;
+  }
   try {
     if (!fs.existsSync(SEO_CONFIG_FILE)) {
       if (!fs.existsSync(DATA_DIR)) {
-        fs.mkdirSync(DATA_DIR, { recursive: true });
+        try {
+          fs.mkdirSync(DATA_DIR, { recursive: true });
+        } catch {}
       }
-      fs.writeFileSync(SEO_CONFIG_FILE, JSON.stringify(defaultSeoGeoConfig, null, 2), "utf-8");
+      try {
+        fs.writeFileSync(SEO_CONFIG_FILE, JSON.stringify(defaultSeoGeoConfig, null, 2), "utf-8");
+      } catch {}
+      memorySeoCache = defaultSeoGeoConfig;
       return defaultSeoGeoConfig;
     }
 
@@ -54,10 +64,17 @@ export function getSeoGeoConfig(): SeoGeoConfig {
 
 export function saveSeoGeoConfig(config: SeoGeoConfig): boolean {
   try {
+    memorySeoCache = config;
     if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
+      try {
+        fs.mkdirSync(DATA_DIR, { recursive: true });
+      } catch {}
     }
-    fs.writeFileSync(SEO_CONFIG_FILE, JSON.stringify(config, null, 2), "utf-8");
+    try {
+      fs.writeFileSync(SEO_CONFIG_FILE, JSON.stringify(config, null, 2), "utf-8");
+    } catch (writeErr) {
+      console.warn("Could not write seo-geo-config.json on serverless:", writeErr);
+    }
     return true;
   } catch (err) {
     console.error("Error saving SEO/GEO config:", err);

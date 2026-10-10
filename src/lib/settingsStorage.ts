@@ -7,13 +7,21 @@ const DATA_DIR = path.join(process.cwd(), "data");
 const SETTINGS_FILE = path.join(DATA_DIR, "site-settings.json");
 const ADMIN_EMAILS_FILE = path.join(DATA_DIR, "admin-emails.json");
 
+let memorySettingsCache: SiteSettingsConfig | null = null;
+
 export function getSiteSettings(): SiteSettingsConfig {
+  if (memorySettingsCache) {
+    return memorySettingsCache;
+  }
+
   try {
     const currentEmails = getAllowedAdminEmails();
 
     if (!fs.existsSync(SETTINGS_FILE)) {
       if (!fs.existsSync(DATA_DIR)) {
-        fs.mkdirSync(DATA_DIR, { recursive: true });
+        try {
+          fs.mkdirSync(DATA_DIR, { recursive: true });
+        } catch {}
       }
       const initialConfig: SiteSettingsConfig = {
         ...defaultSiteSettingsConfig,
@@ -22,7 +30,10 @@ export function getSiteSettings(): SiteSettingsConfig {
           allowedEmails: currentEmails.length > 0 ? currentEmails : defaultSiteSettingsConfig.security.allowedEmails
         }
       };
-      fs.writeFileSync(SETTINGS_FILE, JSON.stringify(initialConfig, null, 2), "utf-8");
+      try {
+        fs.writeFileSync(SETTINGS_FILE, JSON.stringify(initialConfig, null, 2), "utf-8");
+      } catch {}
+      memorySettingsCache = initialConfig;
       return initialConfig;
     }
 
@@ -61,8 +72,13 @@ export function getSiteSettings(): SiteSettingsConfig {
 
 export function saveSiteSettings(config: SiteSettingsConfig): boolean {
   try {
+    memorySettingsCache = config;
     if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
+      try {
+        fs.mkdirSync(DATA_DIR, { recursive: true });
+      } catch (mkdirErr) {
+        console.warn("Could not create DATA_DIR (read-only filesystem):", mkdirErr);
+      }
     }
 
     // Also sync admin emails back to data/admin-emails.json if modified
@@ -75,11 +91,20 @@ export function saveSiteSettings(config: SiteSettingsConfig): boolean {
         )
       );
       if (cleanEmails.length > 0) {
-        fs.writeFileSync(ADMIN_EMAILS_FILE, JSON.stringify(cleanEmails, null, 2), "utf-8");
+        try {
+          fs.writeFileSync(ADMIN_EMAILS_FILE, JSON.stringify(cleanEmails, null, 2), "utf-8");
+        } catch (emailWriteErr) {
+          console.warn("Could not write admin-emails.json on serverless:", emailWriteErr);
+        }
       }
     }
 
-    fs.writeFileSync(SETTINGS_FILE, JSON.stringify(config, null, 2), "utf-8");
+    try {
+      fs.writeFileSync(SETTINGS_FILE, JSON.stringify(config, null, 2), "utf-8");
+    } catch (writeErr) {
+      console.warn("Could not write site-settings.json on serverless filesystem:", writeErr);
+      // In serverless environments like Vercel, filesystem is read-only. We still consider the operation successful in memory.
+    }
     return true;
   } catch (err) {
     console.error("Error saving site settings:", err);

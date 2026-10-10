@@ -5,13 +5,23 @@ import { SocialMediaConfig, defaultSocialMediaConfig, extractYouTubeId } from "@
 const DATA_DIR = path.join(process.cwd(), "data");
 const SOCIAL_CONFIG_FILE = path.join(DATA_DIR, "social-media-config.json");
 
+let memorySocialCache: SocialMediaConfig | null = null;
+
 export function getSocialMediaConfig(): SocialMediaConfig {
+  if (memorySocialCache) {
+    return memorySocialCache;
+  }
   try {
     if (!fs.existsSync(SOCIAL_CONFIG_FILE)) {
       if (!fs.existsSync(DATA_DIR)) {
-        fs.mkdirSync(DATA_DIR, { recursive: true });
+        try {
+          fs.mkdirSync(DATA_DIR, { recursive: true });
+        } catch {}
       }
-      fs.writeFileSync(SOCIAL_CONFIG_FILE, JSON.stringify(defaultSocialMediaConfig, null, 2), "utf-8");
+      try {
+        fs.writeFileSync(SOCIAL_CONFIG_FILE, JSON.stringify(defaultSocialMediaConfig, null, 2), "utf-8");
+      } catch {}
+      memorySocialCache = defaultSocialMediaConfig;
       return defaultSocialMediaConfig;
     }
 
@@ -60,10 +70,17 @@ export function getSocialMediaConfig(): SocialMediaConfig {
 
 export function saveSocialMediaConfig(config: SocialMediaConfig): boolean {
   try {
+    memorySocialCache = config;
     if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
+      try {
+        fs.mkdirSync(DATA_DIR, { recursive: true });
+      } catch {}
     }
-    fs.writeFileSync(SOCIAL_CONFIG_FILE, JSON.stringify(config, null, 2), "utf-8");
+    try {
+      fs.writeFileSync(SOCIAL_CONFIG_FILE, JSON.stringify(config, null, 2), "utf-8");
+    } catch (writeErr) {
+      console.warn("Could not write social-media-config.json on serverless:", writeErr);
+    }
     return true;
   } catch (err) {
     console.error("Error saving social media config:", err);

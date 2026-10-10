@@ -216,15 +216,23 @@ export default function AdminModulesPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ config: settingsConfig })
       });
-      const data = await res.json();
-      if (data.success) {
+      let data: any = {};
+      try {
+        data = await res.json();
+      } catch {
+        data = { success: false, message: `Sunucu yanıtı okunamadı (HTTP ${res.status}).` };
+      }
+      if (res.ok && data.success) {
         setStatusMessage({ type: "success", text: "Tüm ayarlar (Şifre, RSS, Blog, Tema) başarıyla güncellendi!" });
+        if (data.config) {
+          setSettingsConfig(data.config);
+        }
         setTimeout(() => setStatusMessage(null), 4000);
       } else {
-        setStatusMessage({ type: "error", text: data.message || "Ayarlar kaydedilemedi." });
+        setStatusMessage({ type: "error", text: data.message || `Ayarlar kaydedilemedi (HTTP ${res.status}).` });
       }
-    } catch {
-      setStatusMessage({ type: "error", text: "Ayarlar kaydedilirken sunucu hatası oluştu." });
+    } catch (err: any) {
+      setStatusMessage({ type: "error", text: err?.message || "Ayarlar kaydedilirken bağlantı hatası oluştu." });
     } finally {
       setSaving(false);
     }
