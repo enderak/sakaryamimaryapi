@@ -77,38 +77,71 @@ export default function AdminModulesPage() {
       setCurrentUser(authData.session);
 
       // 2. Fetch Modules Config
-      const res = await fetch("/api/modules");
-      const data = await res.json();
-      if (data.success && data.config) {
-        setConfig(data.config);
-      } else {
+      try {
+        const res = await fetch("/api/modules");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.config) {
+            setConfig(data.config);
+          } else {
+            setConfig(defaultHomeModulesConfig);
+          }
+        } else {
+          setConfig(defaultHomeModulesConfig);
+        }
+      } catch {
         setConfig(defaultHomeModulesConfig);
       }
 
       // 3. Fetch SEO Config
-      const seoRes = await fetch("/api/seo");
-      const seoData = await seoRes.json();
-      if (seoData.success && seoData.config) {
-        setSeoConfig(seoData.config);
-      } else {
+      try {
+        const seoRes = await fetch("/api/seo");
+        if (seoRes.ok) {
+          const seoData = await seoRes.json();
+          if (seoData.success && seoData.config) {
+            setSeoConfig(seoData.config);
+          } else {
+            setSeoConfig(defaultSeoGeoConfig);
+          }
+        } else {
+          setSeoConfig(defaultSeoGeoConfig);
+        }
+      } catch {
         setSeoConfig(defaultSeoGeoConfig);
       }
 
       // 4. Fetch Social Media Config
-      const socialRes = await fetch("/api/social");
-      const socialData = await socialRes.json();
-      if (socialData.success && socialData.config) {
-        setSocialConfig(socialData.config);
-      } else {
+      try {
+        const socialRes = await fetch("/api/social");
+        if (socialRes.ok) {
+          const socialData = await socialRes.json();
+          if (socialData.success && socialData.config) {
+            setSocialConfig(socialData.config);
+          } else {
+            setSocialConfig(defaultSocialMediaConfig);
+          }
+        } else {
+          setSocialConfig(defaultSocialMediaConfig);
+        }
+      } catch {
         setSocialConfig(defaultSocialMediaConfig);
       }
 
       // 5. Fetch Site Settings Config
-      const settingsRes = await fetch("/api/settings");
-      const settingsData = await settingsRes.json();
-      if (settingsData.success && settingsData.config) {
-        setSettingsConfig(settingsData.config);
-      } else {
+      try {
+        const settingsRes = await fetch("/api/settings");
+        if (settingsRes.ok) {
+          const settingsData = await settingsRes.json();
+          if (settingsData.success && settingsData.config) {
+            setSettingsConfig(settingsData.config);
+          } else {
+            setSettingsConfig(defaultSiteSettingsConfig);
+          }
+        } else {
+          setSettingsConfig(defaultSiteSettingsConfig);
+        }
+      } catch (settingsErr) {
+        console.warn("Settings fetch fallback used:", settingsErr);
         setSettingsConfig(defaultSiteSettingsConfig);
       }
     } catch (e) {
