@@ -45,7 +45,12 @@ export interface SeoGeoConfig {
     author: string;
     ogImage: string;
     googleSiteVerification: string;
+    googleHtmlVerificationFile: string;
     yandexVerification: string;
+    bingVerification: string;
+    pinterestVerification: string;
+    facebookVerification: string;
+    baiduVerification: string;
   };
   geo: {
     region: string; // e.g. TR-54
@@ -98,7 +103,12 @@ export const defaultSeoGeoConfig: SeoGeoConfig = {
     author: "Sakarya Mimar Yapı",
     ogImage: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
     googleSiteVerification: "",
-    yandexVerification: ""
+    googleHtmlVerificationFile: "",
+    yandexVerification: "",
+    bingVerification: "",
+    pinterestVerification: "",
+    facebookVerification: "",
+    baiduVerification: ""
   },
   geo: {
     region: "TR-54",

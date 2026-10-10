@@ -53,12 +53,27 @@ export async function generateMetadata(): Promise<Metadata> {
         }
       ]
     },
+    twitter: {
+      card: "summary_large_image",
+      title: meta.siteTitle,
+      description: meta.siteDescription,
+      images: [meta.ogImage],
+      creator: "@sakaryamimaryapi"
+    },
+    manifest: "/manifest.webmanifest",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: "Sakarya Mimar Yapı"
+    },
     verification: {
       google: meta.googleSiteVerification || undefined,
       yandex: meta.yandexVerification || aiOptimization?.yandexVerification || undefined,
       other: {
-        ...(aiOptimization?.bingVerification ? { "msvalidate.01": [aiOptimization.bingVerification] } : {}),
-        ...(aiOptimization?.pinterestVerification ? { "p:domain_verify": [aiOptimization.pinterestVerification] } : {})
+        ...(meta.bingVerification || aiOptimization?.bingVerification ? { "msvalidate.01": [meta.bingVerification || aiOptimization?.bingVerification] } : {}),
+        ...(meta.pinterestVerification || aiOptimization?.pinterestVerification ? { "p:domain_verify": [meta.pinterestVerification || aiOptimization?.pinterestVerification] } : {}),
+        ...(meta.facebookVerification ? { "facebook-domain-verification": [meta.facebookVerification] } : {}),
+        ...(meta.baiduVerification ? { "baidu-site-verification": [meta.baiduVerification] } : {})
       }
     },
     other: {

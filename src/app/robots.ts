@@ -18,9 +18,23 @@ export default function robots(): MetadataRoute.Robots {
     "Bingbot"
   ];
 
+  const searchEngineBots = [
+    "Googlebot",
+    "Bingbot",
+    "Applebot",
+    "YandexBot",
+    "DuckDuckBot",
+    "Baiduspider"
+  ];
+
   const rules: MetadataRoute.Robots["rules"] = [
     {
       userAgent: "*",
+      allow: "/",
+      disallow: ["/admin/", "/api/"]
+    },
+    {
+      userAgent: searchEngineBots,
       allow: "/",
       disallow: ["/admin/", "/api/"]
     }
@@ -41,6 +55,7 @@ export default function robots(): MetadataRoute.Robots {
 
   return {
     rules,
-    sitemap: `${baseUrl}/sitemap.xml`
+    sitemap: `${baseUrl}/sitemap.xml`,
+    host: baseUrl
   };
 }

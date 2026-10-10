@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import { NextResponse } from "next/server";
 import { getSeoGeoConfig, saveSeoGeoConfig } from "@/lib/seoStorage";
 import { defaultSeoGeoConfig, SeoGeoConfig } from "@/data/seoGeo";
@@ -61,6 +63,50 @@ export async function POST(request: Request) {
     }
     if (newConfig.googlePlaces?.googleReviewUrl) {
       newConfig.googlePlaces.googleReviewUrl = newConfig.googlePlaces.googleReviewUrl.trim();
+    }
+    // Sanitize Webmaster Verification fields
+    if (newConfig.meta.googleSiteVerification) {
+      newConfig.meta.googleSiteVerification = newConfig.meta.googleSiteVerification.replace(/<[^>]*>?/gm, "").trim();
+    }
+    if (newConfig.meta.bingVerification) {
+      newConfig.meta.bingVerification = newConfig.meta.bingVerification.replace(/<[^>]*>?/gm, "").trim();
+      if (newConfig.aiOptimization) {
+        newConfig.aiOptimization.bingVerification = newConfig.meta.bingVerification;
+      }
+    }
+    if (newConfig.meta.yandexVerification) {
+      newConfig.meta.yandexVerification = newConfig.meta.yandexVerification.replace(/<[^>]*>?/gm, "").trim();
+      if (newConfig.aiOptimization) {
+        newConfig.aiOptimization.yandexVerification = newConfig.meta.yandexVerification;
+      }
+    }
+    if (newConfig.meta.pinterestVerification) {
+      newConfig.meta.pinterestVerification = newConfig.meta.pinterestVerification.replace(/<[^>]*>?/gm, "").trim();
+      if (newConfig.aiOptimization) {
+        newConfig.aiOptimization.pinterestVerification = newConfig.meta.pinterestVerification;
+      }
+    }
+    if (newConfig.meta.facebookVerification) {
+      newConfig.meta.facebookVerification = newConfig.meta.facebookVerification.replace(/<[^>]*>?/gm, "").trim();
+    }
+    if (newConfig.meta.baiduVerification) {
+      newConfig.meta.baiduVerification = newConfig.meta.baiduVerification.replace(/<[^>]*>?/gm, "").trim();
+    }
+    if (newConfig.meta.googleHtmlVerificationFile) {
+      const cleanFileName = newConfig.meta.googleHtmlVerificationFile.replace(/[^a-zA-Z0-9._-]/g, "").trim();
+      newConfig.meta.googleHtmlVerificationFile = cleanFileName;
+      if (cleanFileName.endsWith(".html") && cleanFileName.startsWith("google")) {
+        try {
+          const pubDir = path.join(process.cwd(), "public");
+          if (!fs.existsSync(pubDir)) {
+            fs.mkdirSync(pubDir, { recursive: true });
+          }
+          const verifyPath = path.join(pubDir, cleanFileName);
+          fs.writeFileSync(verifyPath, `google-site-verification: ${cleanFileName}`, "utf-8");
+        } catch (e) {
+          console.error("Error creating google html verification file:", e);
+        }
+      }
     }
     // Sanitize merchant offers
     if (newConfig.merchant?.offers && Array.isArray(newConfig.merchant.offers)) {
