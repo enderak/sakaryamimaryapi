@@ -3,6 +3,7 @@ export interface RssFeedSource {
   name: string;
   url: string;
   enabled: boolean;
+  category?: "sakarya" | "insaat" | "tadilat" | "dekorasyon" | "genel";
 }
 
 export interface SecurityDefenseConfig {
@@ -11,34 +12,38 @@ export interface SecurityDefenseConfig {
   requireOtp: boolean;
   sessionDurationDays: number;
   masterPasswordHint: string;
-  maxLoginAttempts: number; // Hatalı OTP deneme limiti (örn. 5)
+  maxLoginAttempts: number;
 
   // 2. Savunma & WAF Kuralları
-  rateLimitingEnabled: boolean; // IP bazlı istek sınırlandırma
-  maxContactRequestsPer10Min: number; // İletişim formu için 10 dk sınır
-  blockMaliciousUserAgents: boolean; // Bilinen tarama ve saldırı botlarını bloklama
-  blockSqlInjectionPatterns: boolean; // SQL injection ve path traversal desenlerini filtreleme
-  xssProtectionStrict: boolean; // Katı HTML entity temizleme
+  rateLimitingEnabled: boolean;
+  maxContactRequestsPer10Min: number;
+  blockMaliciousUserAgents: boolean;
+  blockSqlInjectionPatterns: boolean;
+  xssProtectionStrict: boolean;
   
   // 3. Güvenlik Başlıkları & İpuçları
-  clickjackingProtection: boolean; // X-Frame-Options: SAMEORIGIN
-  hstsEnabled: boolean; // Strict-Transport-Security (HTTPS zorunlu)
-  nosniffEnabled: boolean; // X-Content-Type-Options: nosniff
+  clickjackingProtection: boolean;
+  hstsEnabled: boolean;
+  nosniffEnabled: boolean;
   
   // 4. IP Engel & İzin Listesi
-  blockedIps: string[]; // Engellenen IP adresleri listesi
-  ipWhitelistForAdmin: string[]; // İsteğe bağlı Admin paneline sadece belirli IP'lerin girmesi
+  blockedIps: string[];
+  ipWhitelistForAdmin: string[];
+}
+
+export interface RssSettingsConfig {
+  enabled: boolean;
+  itemsToShow: number;
+  refreshIntervalMinutes: number;
+  showFallbackOnFail: boolean;
+  filterKeywordsOnly: boolean; // Yalnızca Sakarya, inşaat, tadilat, dekorasyon, mimari ile eşleşenleri göster
+  keywords: string[]; // Filtreleme anahtar kelimeleri
+  feeds: RssFeedSource[];
 }
 
 export interface SiteSettingsConfig {
   security: SecurityDefenseConfig;
-  rss: {
-    enabled: boolean;
-    itemsToShow: number;
-    refreshIntervalMinutes: number;
-    showFallbackOnFail: boolean;
-    feeds: RssFeedSource[];
-  };
+  rss: RssSettingsConfig;
   blog: {
     enabled: boolean;
     postsPerPage: number;
@@ -58,6 +63,49 @@ export interface SiteSettingsConfig {
     primaryAccentColor: string;
   };
 }
+
+export const DEFAULT_SAKARYA_RSS_FEEDS: RssFeedSource[] = [
+  {
+    id: "feed-sakarya-insaat-google",
+    name: "Sakarya İnşaat, Tadilat & Kentsel Dönüşüm (Google Haberler)",
+    url: "https://news.google.com/rss/search?q=sakarya+in%C5%9Faat+OR+tadilat+OR+kentsel+d%C3%B6n%C3%BC%C5%9F%C3%BCm+OR+mimari+OR+dekorasyon&hl=tr&gl=TR&ceid=TR:tr",
+    enabled: true,
+    category: "sakarya"
+  },
+  {
+    id: "feed-trt-ekonomi",
+    name: "TRT Haber - Ekonomi & Gayrimenkul",
+    url: "https://www.trthaber.com/ekonomi_articles.rss",
+    enabled: true,
+    category: "insaat"
+  },
+  {
+    id: "feed-aa-guncel",
+    name: "Anadolu Ajansı - Güncel & Şehircilik",
+    url: "https://www.aa.com.tr/tr/rss/default?cat=guncel",
+    enabled: true,
+    category: "genel"
+  }
+];
+
+export const DEFAULT_RSS_KEYWORDS: string[] = [
+  "sakarya",
+  "adapazarı",
+  "serdivan",
+  "sapanca",
+  "inşaat",
+  "tadilat",
+  "dekorasyon",
+  "kentsel dönüşüm",
+  "mimari",
+  "konut",
+  "villa",
+  "çelik ev",
+  "yalıtım",
+  "mantolama",
+  "bina",
+  "çevre ve şehircilik"
+];
 
 export const defaultSiteSettingsConfig: SiteSettingsConfig = {
   security: {
@@ -83,29 +131,12 @@ export const defaultSiteSettingsConfig: SiteSettingsConfig = {
   },
   rss: {
     enabled: true,
-    itemsToShow: 4,
+    itemsToShow: 6,
     refreshIntervalMinutes: 30,
     showFallbackOnFail: true,
-    feeds: [
-      {
-        id: "feed-trt",
-        name: "TRT Haber Ekonomi & İnşaat",
-        url: "https://www.trthaber.com/ekonomi_articles.rss",
-        enabled: true
-      },
-      {
-        id: "feed-aa",
-        name: "Anadolu Ajansı Güncel",
-        url: "https://www.aa.com.tr/tr/rss/default?cat=guncel",
-        enabled: true
-      },
-      {
-        id: "feed-csb",
-        name: "Çevre ve Şehircilik Bakanlığı",
-        url: "https://csb.gov.tr/rss",
-        enabled: false
-      }
-    ]
+    filterKeywordsOnly: true,
+    keywords: DEFAULT_RSS_KEYWORDS,
+    feeds: DEFAULT_SAKARYA_RSS_FEEDS
   },
   blog: {
     enabled: true,

@@ -7,31 +7,64 @@
     ],
     "requireOtp": true,
     "sessionDurationDays": 7,
-    "masterPasswordHint": "Sakarya 2026 Admin Şifresi / OTP ile doğrulama"
+    "masterPasswordHint": "Sakarya 2026 Admin Şifresi / OTP ile doğrulama",
+    "maxLoginAttempts": 5,
+    "rateLimitingEnabled": true,
+    "maxContactRequestsPer10Min": 5,
+    "blockMaliciousUserAgents": true,
+    "blockSqlInjectionPatterns": true,
+    "xssProtectionStrict": true,
+    "clickjackingProtection": true,
+    "hstsEnabled": true,
+    "nosniffEnabled": true,
+    "blockedIps": [],
+    "ipWhitelistForAdmin": []
   },
   "rss": {
     "enabled": true,
-    "itemsToShow": 4,
+    "itemsToShow": 6,
     "refreshIntervalMinutes": 30,
     "showFallbackOnFail": true,
+    "filterKeywordsOnly": true,
+    "keywords": [
+      "sakarya",
+      "adapazarı",
+      "serdivan",
+      "sapanca",
+      "inşaat",
+      "tadilat",
+      "dekorasyon",
+      "kentsel dönüşüm",
+      "mimari",
+      "konut",
+      "villa",
+      "çelik ev",
+      "yalıtım",
+      "mantolama",
+      "bina",
+      "çevre ve şehircilik"
+    ],
     "feeds": [
       {
-        "id": "feed-trt",
-        "name": "TRT Haber Ekonomi & İnşaat",
+        "id": "feed-sakarya-insaat-google",
+        "name": "Sakarya İnşaat, Tadilat & Kentsel Dönüşüm (Google Haberler)",
+        "url": "https://news.google.com/rss/search?q=sakarya+in%C5%9Faat+OR+tadilat+OR+kentsel+d%C3%B6n%C3%BC%C5%9F%C3%BCm+OR+mimari+OR+dekorasyon&hl=tr&gl=TR&ceid=TR:tr",
+        "enabled": true,
+        "category": "sakarya"
+      },
+      {
+        "id": "feed-trt-ekonomi",
+        "name": "TRT Haber - Ekonomi & Gayrimenkul",
         "url": "https://www.trthaber.com/ekonomi_articles.rss",
-        "enabled": true
+        "enabled": true,
+        "category": "insaat"
       },
       {
-        "id": "feed-aa",
-        "name": "Anadolu Ajansı Güncel",
+        "id": "feed-aa-guncel",
+        "name": "Anadolu Ajansı - Güncel & Şehircilik",
         "url": "https://www.aa.com.tr/tr/rss/default?cat=guncel",
-        "enabled": true
-      },
-      {
-        "id": "feed-csb",
-        "name": "Çevre ve Şehircilik Bakanlığı",
-        "url": "https://csb.gov.tr/rss",
-        "enabled": false
+        "enabled": true,
+        "category": "genel"
       }
     ]
   },

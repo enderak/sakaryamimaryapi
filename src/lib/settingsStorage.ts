@@ -40,7 +40,8 @@ export function getSiteSettings(): SiteSettingsConfig {
       rss: {
         ...defaultSiteSettingsConfig.rss,
         ...(parsed.rss || {}),
-        feeds: parsed.rss?.feeds || defaultSiteSettingsConfig.rss.feeds
+        feeds: parsed.rss?.feeds || defaultSiteSettingsConfig.rss.feeds,
+        keywords: parsed.rss?.keywords || defaultSiteSettingsConfig.rss.keywords
       },
       blog: {
         ...defaultSiteSettingsConfig.blog,

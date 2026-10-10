@@ -58,6 +58,7 @@ export default function AdminSettingsSection({
   // New RSS Feed State
   const [newFeedName, setNewFeedName] = useState("");
   const [newFeedUrl, setNewFeedUrl] = useState("");
+  const [newKeyword, setNewKeyword] = useState("");
   const [newCategory, setNewCategory] = useState("");
 
   // Handle Email Add
@@ -183,6 +184,39 @@ export default function AdminSettingsSection({
         rss: {
           ...base.rss,
           feeds: base.rss.feeds.filter(f => f.id !== id)
+        }
+      };
+    });
+  };
+
+  // Handle RSS Keyword Add
+  const handleAddKeyword = () => {
+    const trimmed = newKeyword.trim().toLowerCase();
+    if (!trimmed) return;
+    const currentKws = settings.rss.keywords || [];
+    if (currentKws.map(k => k.toLowerCase()).includes(trimmed)) return;
+    setSettings(prev => {
+      const base = prev || settings;
+      return {
+        ...base,
+        rss: {
+          ...base.rss,
+          keywords: [...(base.rss.keywords || []), trimmed]
+        }
+      };
+    });
+    setNewKeyword("");
+  };
+
+  // Handle RSS Keyword Remove
+  const handleRemoveKeyword = (kw: string) => {
+    setSettings(prev => {
+      const base = prev || settings;
+      return {
+        ...base,
+        rss: {
+          ...base.rss,
+          keywords: (base.rss.keywords || []).filter(k => k.toLowerCase() !== kw.toLowerCase())
         }
       };
     });
@@ -830,6 +864,81 @@ export default function AdminSettingsSection({
                 <Plus className="w-4 h-4" />
                 <span>RSS Kaynağını Ekle</span>
               </button>
+            </div>
+
+            {/* Keyword Filtering & Content Rules */}
+            <div className="pt-5 border-t border-slate-100 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h4 className="text-xs font-bold text-slate-900 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>Sakarya İnşaat, Tadilat & Dekorasyon Filtresi</span>
+                  </h4>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    Yalnızca bu anahtar kelimeleri içeren sektörel haberlerin akışa girmesine izin verilir.
+                  </p>
+                </div>
+                <label className="inline-flex items-center gap-2 cursor-pointer bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+                  <input
+                    type="checkbox"
+                    checked={settings.rss.filterKeywordsOnly ?? true}
+                    onChange={(e) =>
+                      setSettings(prev => {
+                        const base = prev || settings;
+                        return {
+                          ...base,
+                          rss: { ...base.rss, filterKeywordsOnly: e.target.checked }
+                        };
+                      })
+                    }
+                    className="w-4 h-4 text-emerald-600 rounded"
+                  />
+                  <span className="text-xs font-bold text-slate-800">Filtreyi Uygula</span>
+                </label>
+              </div>
+
+              {/* Keywords Tag List */}
+              <div className="flex flex-wrap gap-1.5">
+                {(settings.rss.keywords || []).map((kw) => (
+                  <span
+                    key={kw}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200 text-xs font-medium"
+                  >
+                    <span>{kw}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveKeyword(kw)}
+                      className="text-emerald-700 hover:text-rose-600 rounded-sm font-bold ml-0.5"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+
+              {/* Add New Keyword */}
+              <div className="flex gap-2 max-w-sm">
+                <input
+                  type="text"
+                  value={newKeyword}
+                  onChange={(e) => setNewKeyword(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleAddKeyword();
+                    }
+                  }}
+                  placeholder="Yeni anahtar kelime ekle..."
+                  className="flex-1 text-xs px-3 py-2 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-emerald-600"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddKeyword}
+                  className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs"
+                >
+                  Ekle
+                </button>
+              </div>
             </div>
           </div>
         </div>

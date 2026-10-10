@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Parser from "rss-parser";
 import { getSiteSettings } from "@/lib/settingsStorage";
+import { DEFAULT_SAKARYA_RSS_FEEDS, DEFAULT_RSS_KEYWORDS } from "@/data/siteSettings";
 
 interface FeedItem {
   id: string;
@@ -9,76 +10,76 @@ interface FeedItem {
   pubDate: string;
   source: string;
   contentSnippet: string;
+  isSakaryaRelated?: boolean;
 }
 
 const parser = new Parser({
-  timeout: 4000,
+  timeout: 5000,
   headers: {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SakaryaMimarYapi/1.0",
     "Accept": "application/rss+xml, application/xml, text/xml",
   }
 });
 
-const DEFAULT_FEED_URLS = [
-  { url: "https://www.trthaber.com/ekonomi_articles.rss", source: "TRT Haber Ekonomi" },
-  { url: "https://www.aa.com.tr/tr/rss/default?cat=guncel", source: "Anadolu Ajansı" }
-];
-
 const FALLBACK_NEWS: FeedItem[] = [
   {
     id: "f1",
     title: "Sakarya'da Kentsel Dönüşüm ve Deprem Dayanıklı Yapılaşma Hız Kazanıyor",
     link: "https://www.sakarya.bel.tr",
-    pubDate: "9 Mart 2026",
+    pubDate: "Güncel",
     source: "Sakarya Şehir Bülteni",
-    contentSnippet: "Adapazarı ve Serdivan genelinde eski yapı stokunun modern, deprem standartlarına uygun yenilenmesi için mimari projeler ve teşvikler artırıldı."
+    contentSnippet: "Adapazarı ve Serdivan genelinde eski yapı stokunun modern, deprem standartlarına uygun yenilenmesi için mimari projeler ve teşvikler artırıldı.",
+    isSakaryaRelated: true
   },
   {
     id: "f2",
     title: "2026 İnşaat ve Konut Tadilatında Enerji Verimliliği ve Isı Yalıtımı Standartları",
     link: "https://csb.gov.tr",
-    pubDate: "7 Mart 2026",
+    pubDate: "Güncel",
     source: "Çevre ve Şehircilik Bakanlığı",
-    contentSnippet: "Binalarda mantolama ve A sınıfı enerji kimlik belgesi uygulamaları konut sahiplerine kış aylarında %50'ye varan doğalgaz tasarrufu sağlıyor."
+    contentSnippet: "Binalarda mantolama ve A sınıfı enerji kimlik belgesi uygulamaları konut sahiplerine kış aylarında %50'ye varan doğalgaz tasarrufu sağlıyor.",
+    isSakaryaRelated: true
   },
   {
     id: "f3",
     title: "Sapanca Bölgesinde Ekolojik ve Çelik Villa Projelerine İlgi Katlandı",
     link: "https://sakarya.ktb.gov.tr",
-    pubDate: "4 Mart 2026",
+    pubDate: "Güncel",
     source: "Sektörel Mimari Rapor",
-    contentSnippet: "Göl havzasında doğa ile uyumlu, çevreye zarar vermeyen hafif çelik yapılar ve butik konaklama tesisleri son dönemin en popüler mimari trendi oldu."
+    contentSnippet: "Göl havzasında doğa ile uyumlu, çevreye zarar vermeyen hafif çelik yapılar ve butik konaklama tesisleri son dönemin en popüler mimari trendi oldu.",
+    isSakaryaRelated: true
   },
   {
     id: "f4",
     title: "Ev Tadilatında 3D Görselleştirme ve Sözleşmeli Teslimat Tüketiciyi Koruyor",
     link: "https://www.sakaryamimaryapi.com/blog",
-    pubDate: "1 Mart 2026",
+    pubDate: "Güncel",
     source: "TMMOB Mimarlar Odası",
-    contentSnippet: "Uzmanlar, anahtar teslim tadilat yaptıracak vatandaşların sürpriz maliyetlerle karşılaşmamak için kurumsal iç mimarlık firmalarıyla çalışmalarını öneriyor."
+    contentSnippet: "Uzmanlar, anahtar teslim tadilat yaptıracak vatandaşların sürpriz maliyetlerle karşılaşmamak için kurumsal iç mimarlık firmalarıyla çalışmalarını öneriyor.",
+    isSakaryaRelated: true
   }
 ];
 
-// Güvenli metin temizleyici (HTML taglerini ve scriptleri temizler)
-function stripHtml(input: string, maxLen = 200): string {
+// Güvenli metin temizleyici (HTML etiketlerini ve zararlı scriptleri temizler, entity'leri düzeltir)
+function stripHtml(input: string, maxLen = 220): string {
   if (!input) return "";
-  return input
+  let text = input
     .replace(/<[^>]*>/g, "")
-    .replace(/[<>'"&]/g, (char) => {
-      const map: Record<string, string> = {
-        "<": "&lt;",
-        ">": "&gt;",
-        "'": "&#39;",
-        '"': "&quot;",
-        "&": "&amp;",
-      };
-      return map[char] || char;
-    })
+    .replace(/&amp;/g, "&")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&nbsp;/g, " ");
+
+  // Güvenlik için tekrar zararlı script parantezlerini escape et
+  return text
+    .replace(/[<>]/g, "")
     .slice(0, maxLen)
     .trim();
 }
 
-// Güvenli URL doğrulayıcı (javascript: veya data: bağlantılarını engeller)
+// Güvenli URL doğrulayıcı
 function sanitizeUrl(url?: string): string {
   if (!url) return "#";
   const trimmed = url.trim();
@@ -86,6 +87,12 @@ function sanitizeUrl(url?: string): string {
     return trimmed;
   }
   return "#";
+}
+
+// Sakarya inşaat/tadilat/dekorasyon filtre kontrolü
+function matchesConstructionKeywords(title: string, snippet: string, keywords: string[]): boolean {
+  const combined = (title + " " + snippet).toLowerCase();
+  return keywords.some(kw => combined.includes(kw.toLowerCase()));
 }
 
 export async function GET() {
@@ -103,51 +110,85 @@ export async function GET() {
     }
 
     const activeFeeds = (rssConfig?.feeds && rssConfig.feeds.filter(f => f.enabled).length > 0)
-      ? rssConfig.feeds.filter(f => f.enabled).map(f => ({ url: f.url, source: f.name }))
-      : DEFAULT_FEED_URLS;
+      ? rssConfig.feeds.filter(f => f.enabled)
+      : DEFAULT_SAKARYA_RSS_FEEDS;
 
+    const keywords = (rssConfig?.keywords && rssConfig.keywords.length > 0)
+      ? rssConfig.keywords
+      : DEFAULT_RSS_KEYWORDS;
+
+    const filterEnabled = rssConfig?.filterKeywordsOnly ?? true;
     const maxItems = rssConfig?.itemsToShow || 6;
-    const fetchedItems: FeedItem[] = [];
+    const allFetchedItems: FeedItem[] = [];
 
+    // Feeds'leri tara
     for (const feed of activeFeeds) {
       try {
         const feedData = await parser.parseURL(feed.url);
         if (feedData.items && feedData.items.length > 0) {
-          feedData.items.slice(0, maxItems).forEach((item, index) => {
-            if (item.title) {
-              const cleanTitle = stripHtml(item.title, 120);
-              const cleanSnippet = stripHtml(item.contentSnippet || item.content || "", 200);
-              const safeLink = sanitizeUrl(item.link);
+          for (const item of feedData.items) {
+            if (!item.title) continue;
 
-              fetchedItems.push({
-                id: `rss-${index}-${Date.now()}`,
-                title: cleanTitle,
+            const cleanTitle = stripHtml(item.title, 140);
+            const cleanSnippet = stripHtml(item.contentSnippet || item.content || "", 220);
+            const safeLink = sanitizeUrl(item.link);
+
+            // Sakarya ve İnşaat/Tadilat/Dekorasyon filtre kontrolü
+            const isRelevant = matchesConstructionKeywords(cleanTitle, cleanSnippet, keywords);
+
+            if (!filterEnabled || isRelevant) {
+              const formattedDate = item.pubDate
+                ? new Date(item.pubDate).toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" })
+                : "Güncel";
+
+              // Kaynak adı belirleme (Google News ise başlık sonundaki gazeteyi veya feed adını kullan)
+              let sourceName = feed.name;
+              if (cleanTitle.includes(" - ")) {
+                const parts = cleanTitle.split(" - ");
+                const candidateSource = parts[parts.length - 1].trim();
+                if (candidateSource.length > 1 && candidateSource.length < 35) {
+                  sourceName = candidateSource;
+                }
+              }
+
+              allFetchedItems.push({
+                id: `rss-${allFetchedItems.length}-${Date.now()}`,
+                title: cleanTitle.split(" - ")[0].trim(),
                 link: safeLink,
-                pubDate: item.pubDate ? new Date(item.pubDate).toLocaleDateString("tr-TR") : "Güncel",
-                source: feed.source,
-                contentSnippet: cleanSnippet || "Sektörel haber detayı için tıklayınız."
+                pubDate: formattedDate,
+                source: sourceName,
+                contentSnippet: cleanSnippet || "Haber detayı için tıklayınız.",
+                isSakaryaRelated: isRelevant
               });
+
+              if (allFetchedItems.length >= maxItems * 2) {
+                break;
+              }
             }
-          });
-          break; // İlk çalışan feed yeterli
+          }
         }
-      } catch {
+      } catch (err) {
+        console.error(`Feed fetch error for ${feed.name}:`, err);
         continue;
       }
     }
 
-    if (fetchedItems.length === 0) {
+    // İstenen limit kadar döndür
+    const finalItems = allFetchedItems.slice(0, maxItems);
+
+    if (finalItems.length === 0) {
       return NextResponse.json({
         success: true,
         isFallback: true,
-        items: FALLBACK_NEWS
+        items: FALLBACK_NEWS.slice(0, maxItems)
       });
     }
 
     return NextResponse.json({
       success: true,
       isFallback: false,
-      items: fetchedItems
+      totalCount: finalItems.length,
+      items: finalItems
     });
   } catch {
     return NextResponse.json({
