@@ -5,29 +5,33 @@ import Link from "next/link";
 import { Phone, MessageCircle, Menu, X, Compass, ChevronRight, Calculator } from "lucide-react";
 import { companyInfo } from "@/data/company";
 
+import ThemeSwitcher from "./ThemeSwitcher";
+
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-[#121316]/95 backdrop-blur-md border-b border-zinc-800/80 text-white shadow-xl">
-      {/* Top bar info */}
-      <div className="hidden md:block bg-[#181a20] text-zinc-300 text-xs py-2 px-4 border-b border-zinc-800/60 font-medium">
+    <header className="sticky top-0 z-50 bg-[#121316]/95 backdrop-blur-md border-b border-[#2b2d35] text-white shadow-xl">
+      {/* Top bar info with Theme Switcher */}
+      <div className="hidden md:block bg-[#18191d] text-slate-300 text-xs py-2 px-4 border-b border-[#2b2d35] font-medium">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <span className="text-zinc-400 flex items-center gap-1.5">
+          <span className="text-slate-400 flex items-center gap-1.5">
             <span className="text-[#c5ad97]">📍</span>
             <span>{companyInfo.address}</span>
           </span>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4">
+            <ThemeSwitcher />
+            <span className="text-[#2b2d35]">|</span>
             <span className="flex items-center gap-1.5">
-              <span className="text-zinc-400">Asım Yılmazer:</span>
-              <a href={`tel:${companyInfo.team[0].rawPhone}`} className="text-zinc-200 hover:text-[#c5ad97] font-semibold transition-colors">
+              <span className="text-slate-400">Asım Yılmazer:</span>
+              <a href={`tel:${companyInfo.team[0].rawPhone}`} className="text-slate-200 hover:text-[#c5ad97] font-semibold transition-colors">
                 {companyInfo.team[0].phone}
               </a>
             </span>
-            <span className="text-zinc-600">•</span>
+            <span className="text-slate-600">•</span>
             <span className="flex items-center gap-1.5">
-              <span className="text-zinc-400">Abdussamet Gültekin:</span>
-              <a href={`tel:${companyInfo.team[1].rawPhone}`} className="text-zinc-200 hover:text-[#c5ad97] font-semibold transition-colors">
+              <span className="text-slate-400">Abdussamet Gültekin:</span>
+              <a href={`tel:${companyInfo.team[1].rawPhone}`} className="text-slate-200 hover:text-[#c5ad97] font-semibold transition-colors">
                 {companyInfo.team[1].phone}
               </a>
             </span>
@@ -121,14 +125,18 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#181a20] border-b border-zinc-800 px-4 pt-3 pb-6 space-y-3">
+        <div className="md:hidden bg-[#18191d] border-b border-[#2b2d35] px-4 pt-3 pb-6 space-y-3">
+          <div className="flex items-center justify-between pb-3 border-b border-[#2b2d35]">
+            <span className="text-xs text-slate-400 font-semibold">Tema Rengi:</span>
+            <ThemeSwitcher />
+          </div>
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center justify-between py-2 text-sm font-semibold text-zinc-200 border-b border-zinc-800/80"
+            className="flex items-center justify-between py-2 text-sm font-semibold text-slate-200 border-b border-[#2b2d35]"
           >
             <span>Ana Sayfa</span>
-            <ChevronRight className="w-4 h-4 text-zinc-500" />
+            <ChevronRight className="w-4 h-4 text-slate-500" />
           </Link>
           <Link
             href="/hizmetler"
