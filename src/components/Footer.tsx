@@ -261,6 +261,11 @@ export default function Footer() {
                   İletişim & Konum
                 </Link>
               </li>
+              <li>
+                <Link href="/oyun" className="text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1.5 font-bold">
+                  <span>🎮 Tuğla Aşırtma Oyunu</span>
+                </Link>
+              </li>
               <li className="pt-2 border-t border-[#16274a]">
                 <Link href="/kvkk-aydinlatma-metni" className="text-slate-400 hover:text-amber-300 transition-colors flex items-center gap-1">
                   <span>🔒 KVKK Aydınlatma Metni</span>

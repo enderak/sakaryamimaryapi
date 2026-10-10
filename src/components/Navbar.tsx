@@ -74,6 +74,9 @@ export default function Navbar() {
             <Link href="/blog" className="hover:text-[#0f2b5c] transition-colors">
               Tadilat Rehberi
             </Link>
+            <Link href="/oyun" className="hover:text-amber-600 font-bold transition-colors flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
+              <span>🎮 Tuğla Oyunu</span>
+            </Link>
             <Link href="/iletisim" className="hover:text-[#0f2b5c] transition-colors">
               İletişim
             </Link>
@@ -169,6 +172,17 @@ export default function Navbar() {
           >
             <span>Tadilat Rehberi & Fiyatlar</span>
             <ChevronRight className="w-4 h-4 text-slate-400" />
+          </Link>
+          <Link
+            href="/oyun"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between py-2.5 text-sm font-bold text-amber-800 bg-amber-50 px-3 rounded-xl border border-amber-200"
+          >
+            <span className="flex items-center gap-2">
+              <span>🎮</span>
+              <span>Tuğla Aşırtma Oyunu</span>
+            </span>
+            <span className="text-[10px] bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full font-extrabold">Ödüllü</span>
           </Link>
           <Link
             href="/iletisim"
