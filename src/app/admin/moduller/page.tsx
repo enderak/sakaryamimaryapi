@@ -37,12 +37,15 @@ import {
   Video,
   ShieldCheck,
   Play,
-  BookOpen
+  BookOpen,
+  Settings
 } from "lucide-react";
 import { HomePageModulesConfig, defaultHomeModulesConfig } from "@/data/homeModules";
 import { SeoGeoConfig, defaultSeoGeoConfig, MerchantServiceOffer } from "@/data/seoGeo";
 import { SocialMediaConfig, defaultSocialMediaConfig, extractYouTubeId, SocialPostItem } from "@/data/socialMedia";
+import { SiteSettingsConfig, defaultSiteSettingsConfig } from "@/data/siteSettings";
 import AdminGuideSection from "@/components/AdminGuideSection";
+import AdminSettingsSection from "@/components/AdminSettingsSection";
 
 export default function AdminModulesPage() {
   const router = useRouter();
@@ -50,10 +53,11 @@ export default function AdminModulesPage() {
   const [config, setConfig] = useState<HomePageModulesConfig | null>(null);
   const [seoConfig, setSeoConfig] = useState<SeoGeoConfig | null>(null);
   const [socialConfig, setSocialConfig] = useState<SocialMediaConfig | null>(null);
+  const [settingsConfig, setSettingsConfig] = useState<SiteSettingsConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
-  const [activeTab, setActiveTab] = useState<"visibility" | "content" | "seo" | "social" | "guide">("visibility");
+  const [activeTab, setActiveTab] = useState<"visibility" | "content" | "seo" | "social" | "settings" | "guide">("visibility");
   const [selectedModuleKey, setSelectedModuleKey] = useState<string>("hero");
 
   useEffect(() => {
@@ -98,11 +102,21 @@ export default function AdminModulesPage() {
       } else {
         setSocialConfig(defaultSocialMediaConfig);
       }
+
+      // 5. Fetch Site Settings Config
+      const settingsRes = await fetch("/api/settings");
+      const settingsData = await settingsRes.json();
+      if (settingsData.success && settingsData.config) {
+        setSettingsConfig(settingsData.config);
+      } else {
+        setSettingsConfig(defaultSiteSettingsConfig);
+      }
     } catch (e) {
       console.error(e);
       setConfig(defaultHomeModulesConfig);
       setSeoConfig(defaultSeoGeoConfig);
       setSocialConfig(defaultSocialMediaConfig);
+      setSettingsConfig(defaultSiteSettingsConfig);
     } finally {
       setLoading(false);
     }
@@ -154,6 +168,54 @@ export default function AdminModulesPage() {
       }
     } catch {
       setStatusMessage({ type: "error", text: "Sosyal medya kaydedilirken sunucu hatası oluştu." });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSaveSettings = async () => {
+    if (!settingsConfig) return;
+    try {
+      setSaving(true);
+      setStatusMessage(null);
+      const res = await fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ config: settingsConfig })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStatusMessage({ type: "success", text: "Tüm ayarlar (Şifre, RSS, Blog, Tema) başarıyla güncellendi!" });
+        setTimeout(() => setStatusMessage(null), 4000);
+      } else {
+        setStatusMessage({ type: "error", text: data.message || "Ayarlar kaydedilemedi." });
+      }
+    } catch {
+      setStatusMessage({ type: "error", text: "Ayarlar kaydedilirken sunucu hatası oluştu." });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleResetSettings = async () => {
+    if (!confirm("Şifre, RSS, Blog ve Tema ayarlarını varsayılan fabrika ayarlarına döndürmek istiyor musunuz?")) {
+      return;
+    }
+    try {
+      setSaving(true);
+      const res = await fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "reset" })
+      });
+      const data = await res.json();
+      if (data.success && data.config) {
+        setSettingsConfig(data.config);
+        setStatusMessage({ type: "success", text: "Ayarlar varsayılana sıfırlandı." });
+        setTimeout(() => setStatusMessage(null), 4000);
+      }
+    } catch {
+      setStatusMessage({ type: "error", text: "Sıfırlama başarısız oldu." });
     } finally {
       setSaving(false);
     }
@@ -312,6 +374,19 @@ export default function AdminModulesPage() {
             </Link>
 
             <button
+              onClick={() => setActiveTab("settings")}
+              className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-xs ${
+                activeTab === "settings"
+                  ? "bg-indigo-600 text-white font-black shadow-md ring-2 ring-indigo-300"
+                  : "bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200"
+              }`}
+              title="Şifre, RSS, Blog ve Tema Ayarları"
+            >
+              <Settings className="w-4 h-4 text-indigo-600" />
+              <span>Ayarlar</span>
+            </button>
+
+            <button
               onClick={() => setActiveTab("guide")}
               className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-xs ${
                 activeTab === "guide"
@@ -419,7 +494,19 @@ export default function AdminModulesPage() {
             }`}
           >
             <Share2 className="w-4 h-4 text-rose-500" />
-            <span>Sosyal Medya & Videolar (Instagram, YouTube, TikTok)</span>
+            <span>Sosyal Medya & Videolar</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("settings")}
+            className={`pb-3 px-4 text-sm font-bold border-b-2 flex items-center gap-2 transition-colors ${
+              activeTab === "settings"
+                ? "border-[#0f2b5c] text-[#0f2b5c]"
+                : "border-transparent text-slate-500 hover:text-slate-800"
+            }`}
+          >
+            <Settings className="w-4 h-4 text-indigo-600" />
+            <span>Ayarlar (Şifre, RSS, Blog, Tema)</span>
           </button>
 
           <button
@@ -2937,7 +3024,19 @@ export default function AdminModulesPage() {
           </div>
         )}
 
-        {/* TAB 5: KULLANIM KILAVUZU & ARAMA MOTORU REHBERİ */}
+        {/* TAB 5: AYARLAR (ŞİFRE, RSS, BLOG, TEMA) */}
+        {activeTab === "settings" && settingsConfig && (
+          <AdminSettingsSection
+            settings={settingsConfig}
+            setSettings={(newSettings) => setSettingsConfig(newSettings)}
+            currentUserEmail={currentUser?.email}
+            onSave={handleSaveSettings}
+            onReset={handleResetSettings}
+            saving={saving}
+          />
+        )}
+
+        {/* TAB 6: KULLANIM KILAVUZU & ARAMA MOTORU REHBERİ */}
         {activeTab === "guide" && (
           <AdminGuideSection canonicalUrl={seoConfig?.meta?.canonicalUrl} />
         )}

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import Parser from "rss-parser";
+import { getSiteSettings } from "@/lib/settingsStorage";
 
 interface FeedItem {
   id: string;
@@ -89,13 +90,30 @@ function sanitizeUrl(url?: string): string {
 
 export async function GET() {
   try {
+    const siteSettings = getSiteSettings();
+    const rssConfig = siteSettings?.rss;
+
+    // Check if RSS module is enabled globally
+    if (rssConfig && !rssConfig.enabled) {
+      return NextResponse.json({
+        success: true,
+        disabled: true,
+        items: []
+      });
+    }
+
+    const activeFeeds = (rssConfig?.feeds && rssConfig.feeds.filter(f => f.enabled).length > 0)
+      ? rssConfig.feeds.filter(f => f.enabled).map(f => ({ url: f.url, source: f.name }))
+      : DEFAULT_FEED_URLS;
+
+    const maxItems = rssConfig?.itemsToShow || 6;
     const fetchedItems: FeedItem[] = [];
 
-    for (const feed of DEFAULT_FEED_URLS) {
+    for (const feed of activeFeeds) {
       try {
         const feedData = await parser.parseURL(feed.url);
         if (feedData.items && feedData.items.length > 0) {
-          feedData.items.slice(0, 6).forEach((item, index) => {
+          feedData.items.slice(0, maxItems).forEach((item, index) => {
             if (item.title) {
               const cleanTitle = stripHtml(item.title, 120);
               const cleanSnippet = stripHtml(item.contentSnippet || item.content || "", 200);
