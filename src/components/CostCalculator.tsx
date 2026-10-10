@@ -79,19 +79,19 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
   };
 
   return (
-    <section id="fiyat-hesapla" className="py-20 bg-gradient-to-b from-slate-900 to-slate-950 text-white relative overflow-hidden">
+    <section id="fiyat-hesapla" className="py-24 bg-[#121316] text-white relative overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#c5ad97]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#2b2d35]/30 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-black tracking-wider uppercase mb-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#c5ad97]/10 border border-[#c5ad97]/20 text-[#c5ad97] text-xs font-bold tracking-wider uppercase mb-3">
             <Calculator className="w-4 h-4" />
             <span>Şeffaf & Anında Hesaplama</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">
-            Sakarya Mimar Yapı <span className="text-amber-400">Fiyat Hesaplayıcı</span>
+            Sakarya Mimar Yapı <span className="text-[#c5ad97]">Fiyat Hesaplayıcı</span>
           </h2>
           <p className="mt-4 text-slate-300 text-base sm:text-lg">
             Evinizin ya da iş yerinizin özelliklerini seçin; 2026 piyasa koşullarına uygun yaklaşık maliyet aralığını anında görün. Serdivan merkez ofisimizden tüm Sakarya&apos;ya ücretsiz keşif hizmeti.
@@ -100,7 +100,7 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Controls form */}
-          <div className="lg:col-span-7 bg-slate-800/80 backdrop-blur-xl border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl">
+          <div className="lg:col-span-7 bg-[#18191d] border border-[#2b2d35] rounded-3xl p-6 sm:p-8 shadow-2xl">
             <div className="space-y-6">
               {/* Step 1: Service */}
               <div>
@@ -113,10 +113,10 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                       key={s.id}
                       type="button"
                       onClick={() => setSelectedService(s.id)}
-                      className={`p-3 rounded-xl text-left text-xs sm:text-sm font-semibold transition-all border ${
+                      className={`p-3.5 rounded-xl text-left text-xs sm:text-sm font-medium transition-all border ${
                         selectedService === s.id
-                          ? "bg-amber-500 text-slate-950 border-amber-400 shadow-lg shadow-amber-500/20 font-bold"
-                          : "bg-slate-900/60 text-slate-300 border-slate-700 hover:border-slate-500 hover:text-white"
+                          ? "bg-[#c5ad97] text-[#121316] border-[#c5ad97] shadow-lg shadow-black/30 font-bold"
+                          : "bg-[#121316] text-slate-300 border-[#2b2d35] hover:border-[#c5ad97]/40 hover:text-white"
                       }`}
                     >
                       {s.name}
@@ -134,7 +134,7 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                   <select
                     value={district}
                     onChange={(e) => setDistrict(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400 font-medium"
+                    className="w-full bg-[#121316] border border-[#2b2d35] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#c5ad97] font-medium"
                   >
                     {sakaryaDistricts.map((d) => (
                       <option key={d.slug} value={d.slug}>
@@ -150,7 +150,7 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                     <label className="text-sm font-bold text-slate-200">
                       3. Yaklaşık Alan
                     </label>
-                    <span className="text-amber-400 font-black text-sm bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/30">
+                    <span className="text-[#c5ad97] font-black text-sm bg-[#c5ad97]/15 px-2.5 py-0.5 rounded-lg border border-[#c5ad97]/30">
                       {area} m²
                     </span>
                   </div>
@@ -161,7 +161,7 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                     step="5"
                     value={area}
                     onChange={(e) => setArea(Number(e.target.value))}
-                    className="w-full h-2.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500 mt-2"
+                    className="w-full h-2.5 bg-[#2b2d35] rounded-lg appearance-none cursor-pointer accent-[#c5ad97] mt-2"
                   />
                   <div className="flex justify-between text-[11px] text-slate-400 mt-1">
                     <span>20 m² (Oda/Banyo)</span>
@@ -182,8 +182,8 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                     onClick={() => setTier("standard")}
                     className={`p-3 rounded-xl border text-center transition-all ${
                       tier === "standard"
-                        ? "bg-slate-700 border-amber-400 text-white font-bold"
-                        : "bg-slate-900/60 border-slate-700 text-slate-400 hover:text-white"
+                        ? "bg-[#2b2d35] border-[#c5ad97] text-white font-bold"
+                        : "bg-[#121316] border-[#2b2d35] text-slate-400 hover:text-white"
                     }`}
                   >
                     <div className="text-xs font-bold">Standart</div>
@@ -195,15 +195,15 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                     onClick={() => setTier("comfort")}
                     className={`p-3 rounded-xl border text-center transition-all relative ${
                       tier === "comfort"
-                        ? "bg-amber-500 text-slate-950 border-amber-400 font-extrabold shadow-lg shadow-amber-500/20"
-                        : "bg-slate-900/60 border-slate-700 text-slate-400 hover:text-white"
+                        ? "bg-[#c5ad97] text-[#121316] border-[#c5ad97] font-bold shadow-lg shadow-black/20"
+                        : "bg-[#121316] border-[#2b2d35] text-slate-400 hover:text-white"
                     }`}
                   >
-                    <span className="absolute -top-2 left-1/2 -translate-x-1/2 text-[9px] bg-emerald-500 text-white px-2 py-0.2 rounded-full font-black uppercase">
+                    <span className="absolute -top-2 left-1/2 -translate-x-1/2 text-[9px] bg-[#121316] text-[#ded0c3] border border-[#c5ad97] px-2 py-0.2 rounded-full font-bold uppercase">
                       Popüler
                     </span>
                     <div className="text-xs">Konfor</div>
-                    <div className={`text-[10px] mt-0.5 ${tier === "comfort" ? "text-slate-900" : "text-slate-400"}`}>
+                    <div className={`text-[10px] mt-0.5 ${tier === "comfort" ? "text-[#121316]" : "text-slate-400"}`}>
                       1. Sınıf Markalar
                     </div>
                   </button>
@@ -213,8 +213,8 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                     onClick={() => setTier("luxury")}
                     className={`p-3 rounded-xl border text-center transition-all ${
                       tier === "luxury"
-                        ? "bg-slate-700 border-amber-400 text-white font-bold"
-                        : "bg-slate-900/60 border-slate-700 text-slate-400 hover:text-white"
+                        ? "bg-[#2b2d35] border-[#c5ad97] text-white font-bold"
+                        : "bg-[#121316] border-[#2b2d35] text-slate-400 hover:text-white"
                     }`}
                   >
                     <div className="text-xs font-bold">Lüks Mimari</div>
@@ -234,15 +234,15 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                     onClick={() => setTargetContact("asim")}
                     className={`p-3 rounded-xl border text-left transition-all ${
                       targetContact === "asim"
-                        ? "bg-amber-500 text-slate-950 border-amber-400 font-black shadow-lg"
-                        : "bg-slate-900/60 border-slate-700 text-slate-300 hover:border-slate-500"
+                        ? "bg-[#c5ad97] text-[#121316] border-[#c5ad97] font-bold shadow-lg"
+                        : "bg-[#121316] border-[#2b2d35] text-slate-300 hover:border-[#c5ad97]/40"
                     }`}
                   >
                     <div className="text-xs font-bold flex items-center gap-1.5">
                       <UserCheck className="w-3.5 h-3.5" />
                       {companyInfo.team[0].name}
                     </div>
-                    <div className={`text-[11px] mt-0.5 ${targetContact === "asim" ? "text-slate-950 font-semibold" : "text-slate-400"}`}>
+                    <div className={`text-[11px] mt-0.5 ${targetContact === "asim" ? "text-[#121316] font-semibold" : "text-slate-400"}`}>
                       {companyInfo.team[0].phone}
                     </div>
                   </button>
@@ -252,15 +252,15 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                     onClick={() => setTargetContact("abdussamet")}
                     className={`p-3 rounded-xl border text-left transition-all ${
                       targetContact === "abdussamet"
-                        ? "bg-amber-500 text-slate-950 border-amber-400 font-black shadow-lg"
-                        : "bg-slate-900/60 border-slate-700 text-slate-300 hover:border-slate-500"
+                        ? "bg-[#c5ad97] text-[#121316] border-[#c5ad97] font-bold shadow-lg"
+                        : "bg-[#121316] border-[#2b2d35] text-slate-300 hover:border-[#c5ad97]/40"
                     }`}
                   >
                     <div className="text-xs font-bold flex items-center gap-1.5">
                       <UserCheck className="w-3.5 h-3.5" />
                       {companyInfo.team[1].name}
                     </div>
-                    <div className={`text-[11px] mt-0.5 ${targetContact === "abdussamet" ? "text-slate-950 font-semibold" : "text-slate-400"}`}>
+                    <div className={`text-[11px] mt-0.5 ${targetContact === "abdussamet" ? "text-[#121316] font-semibold" : "text-slate-400"}`}>
                       {companyInfo.team[1].phone}
                     </div>
                   </button>
@@ -270,9 +270,9 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
           </div>
 
           {/* Result & Quote Contact Box */}
-          <div className="lg:col-span-5 bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-amber-500/50 rounded-3xl p-6 sm:p-8 shadow-2xl relative">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-700">
-              <span className="text-xs uppercase font-extrabold text-amber-400 tracking-wider">
+          <div className="lg:col-span-5 bg-[#18191d] border border-[#c5ad97]/30 rounded-3xl p-6 sm:p-8 shadow-2xl relative">
+            <div className="flex items-center justify-between pb-4 border-b border-[#2b2d35]">
+              <span className="text-xs uppercase font-extrabold text-[#c5ad97] tracking-wider">
                 Tahmini Bütçe Aralığı
               </span>
               <span className="text-xs text-slate-400">2026 Sakarya Fiyatları</span>
@@ -284,22 +284,22 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                 <span className="text-slate-400 text-2xl font-light mx-2">-</span>
                 {calculation.maxTotal.toLocaleString("tr-TR")} ₺
               </div>
-              <p className="text-xs text-slate-300 mt-2">
+              <p className="text-xs text-slate-400 mt-2">
                 *KDV ve keşif sonrası netleşecek özel malzeme seçimlerine göre kesinleşir.
               </p>
             </div>
 
-            <div className="space-y-3 bg-slate-900/60 rounded-2xl p-4 border border-slate-700/60 text-xs text-slate-300 mb-6">
+            <div className="space-y-3 bg-[#121316] rounded-2xl p-4 border border-[#2b2d35] text-xs text-slate-300 mb-6">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#c5ad97] shrink-0" />
                 <span>Ücretsiz adrese mimari keşif ve 3D çizim</span>
               </div>
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                <ShieldCheck className="w-4 h-4 text-[#c5ad97] shrink-0" />
                 <span>Resmi sözleşmeli taahhüt ve gecikme cezası</span>
               </div>
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-emerald-400 shrink-0" />
+                <Sparkles className="w-4 h-4 text-[#c5ad97] shrink-0" />
                 <span>2 Yıl malzeme ve işçilik garanti sertifikası</span>
               </div>
             </div>
@@ -313,7 +313,7 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                   placeholder="Adınız Soyadınız (İsteğe bağlı)"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                  className="w-full bg-[#121316] border border-[#2b2d35] rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#c5ad97]"
                 />
               </div>
               <div>
@@ -323,7 +323,7 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                   placeholder="Telefon Numaranız (05xx xxx xx xx)"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                  className="w-full bg-[#121316] border border-[#2b2d35] rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#c5ad97]"
                 />
               </div>
               <div>
@@ -333,7 +333,7 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                   placeholder="Eklemek istediğiniz detaylar (Örn: Dairem 2. katta, mutfak dolapları yenilenecek...)"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 resize-none"
+                  className="w-full bg-[#121316] border border-[#2b2d35] rounded-xl px-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#c5ad97] resize-none"
                 />
               </div>
 
@@ -344,10 +344,10 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                   required
                   checked={kvkkAccepted}
                   onChange={(e) => setKvkkAccepted(e.target.checked)}
-                  className="mt-0.5 w-4 h-4 rounded border-slate-700 bg-slate-900 text-amber-500 focus:ring-amber-400 accent-amber-500 shrink-0 cursor-pointer"
+                  className="mt-0.5 w-4 h-4 rounded border-[#2b2d35] bg-[#121316] text-[#c5ad97] focus:ring-[#c5ad97] accent-[#c5ad97] shrink-0 cursor-pointer"
                 />
                 <label htmlFor="calc-kvkk" className="text-[11px] text-slate-400 leading-snug cursor-pointer select-none">
-                  <Link href="/kvkk-aydinlatma-metni" target="_blank" className="text-amber-400 hover:underline font-bold">
+                  <Link href="/kvkk-aydinlatma-metni" target="_blank" className="text-[#ded0c3] hover:underline font-bold">
                     KVKK Aydınlatma Metni
                   </Link>
                   &apos;ni okudum, iletişim ve keşif amacıyla verilerimin işlenmesini onaylıyorum.
@@ -356,7 +356,7 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-black text-sm shadow-xl shadow-emerald-600/30 transition-all hover:scale-[1.02]"
+                className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl bg-[#c5ad97] hover:bg-[#ded0c3] text-[#121316] font-bold text-sm shadow-xl shadow-black/40 transition-all hover:scale-[1.02]"
               >
                 <MessageCircle className="w-5 h-5" />
                 <span>
@@ -368,7 +368,7 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
                 <span>Doğrudan aramak için:</span>
                 <a
                   href={`tel:${targetContact === "asim" ? companyInfo.team[0].rawPhone : companyInfo.team[1].rawPhone}`}
-                  className="text-amber-400 font-bold hover:underline flex items-center gap-1"
+                  className="text-[#c5ad97] font-bold hover:underline flex items-center gap-1"
                 >
                   <PhoneCall className="w-3.5 h-3.5" />
                   {targetContact === "asim" ? companyInfo.team[0].phone : companyInfo.team[1].phone}
@@ -377,7 +377,7 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
             </form>
 
             {submitted && (
-              <div className="mt-4 p-3 rounded-xl bg-emerald-500/20 border border-emerald-500 text-emerald-300 text-xs text-center font-bold">
+              <div className="mt-4 p-3 rounded-xl bg-[#c5ad97]/20 border border-[#c5ad97] text-[#ded0c3] text-xs text-center font-bold">
                 WhatsApp açıldı! Keşif talebiniz yetkilimize ulaştırılıyor.
               </div>
             )}

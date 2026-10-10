@@ -12,16 +12,16 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <div className="py-16 bg-slate-950 text-white min-h-screen">
+    <div className="py-20 bg-[#121316] text-white min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 text-amber-400 text-xs font-black uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-2 text-[#c5ad97] text-xs font-bold uppercase tracking-wider mb-2">
             <Hammer className="w-4 h-4" />
             <span>Kapsamlı Yapı Hizmetleri</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight">
-            Sakarya&apos;da Sunduğumuz <span className="text-amber-400">Hizmetler</span>
+            Sakarya&apos;da Sunduğumuz <span className="text-[#c5ad97]">Hizmetler</span>
           </h1>
           <p className="mt-4 text-slate-300 text-base">
             Tüm tadilat ve inşaat süreçlerinde resmi sözleşme, kaliteli 1. sınıf malzeme ve 2 yıl işçilik garantisi veriyoruz.
@@ -33,13 +33,13 @@ export default function ServicesPage() {
           {services.map((service, index) => (
             <div
               key={service.id}
-              className={`grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-10 ${
+              className={`grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#18191d] border border-[#2b2d35] rounded-3xl p-6 sm:p-10 ${
                 index % 2 === 1 ? "lg:grid-flow-dense" : ""
               }`}
             >
               <div className={`lg:col-span-6 space-y-4 ${index % 2 === 1 ? "lg:col-start-7" : ""}`}>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold">
-                  <MapPin className="w-3.5 h-3.5" />
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#c5ad97]/15 border border-[#c5ad97]/30 text-[#ded0c3] text-xs font-medium">
+                  <MapPin className="w-3.5 h-3.5 text-[#c5ad97]" />
                   <span>En Çok: {service.popularIn.join(", ")}</span>
                 </div>
 
@@ -52,13 +52,13 @@ export default function ServicesPage() {
                 </p>
 
                 <div className="pt-2">
-                  <h4 className="text-xs uppercase font-extrabold text-amber-400 tracking-wider mb-3">
+                  <h4 className="text-xs uppercase font-bold text-[#c5ad97] tracking-wider mb-3">
                     Hizmet Kapsamımız:
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {service.features.map((feat, idx) => (
                       <div key={idx} className="flex items-center gap-2 text-xs text-slate-200">
-                        <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <Check className="w-4 h-4 text-[#c5ad97] shrink-0" />
                         <span>{feat}</span>
                       </div>
                     ))}
@@ -72,7 +72,7 @@ export default function ServicesPage() {
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-colors"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#c5ad97] hover:bg-[#ded0c3] text-[#121316] font-bold text-xs transition-colors shadow-lg shadow-black/30"
                   >
                     <span>Ücretsiz Keşif İste</span>
                     <ArrowRight className="w-4 h-4" />
@@ -80,15 +80,15 @@ export default function ServicesPage() {
 
                   <Link
                     href="/#fiyat-hesapla"
-                    className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition-colors"
+                    className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-[#121316] hover:bg-[#2b2d35] text-[#ded0c3] font-semibold text-xs border border-[#2b2d35] transition-colors"
                   >
-                    <Calculator className="w-4 h-4 text-amber-400" />
+                    <Calculator className="w-4 h-4 text-[#c5ad97]" />
                     <span>Maliyetini Hesapla</span>
                   </Link>
                 </div>
               </div>
 
-              <div className={`lg:col-span-6 relative h-72 sm:h-96 rounded-2xl overflow-hidden border border-slate-800 ${
+              <div className={`lg:col-span-6 relative h-72 sm:h-96 rounded-2xl overflow-hidden border border-[#2b2d35] ${
                 index % 2 === 1 ? "lg:col-start-1" : ""
               }`}>
                 <Image
@@ -98,7 +98,7 @@ export default function ServicesPage() {
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#121316]/70 to-transparent" />
               </div>
             </div>
           ))}

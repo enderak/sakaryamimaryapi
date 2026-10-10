@@ -41,9 +41,9 @@ export default function CookieBanner() {
 
   return (
     <div className="fixed bottom-4 left-4 right-4 sm:left-6 sm:right-auto sm:max-w-lg z-50 animate-in fade-in slide-in-from-bottom-5 duration-300">
-      <div className="bg-slate-900/95 backdrop-blur-xl border border-slate-700/80 rounded-3xl p-5 shadow-2xl text-white">
+      <div className="bg-[#18191d] border border-[#2b2d35] rounded-3xl p-5 shadow-2xl text-white">
         <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-2xl bg-[#c5ad97]/10 border border-[#c5ad97]/25 text-[#c5ad97] flex items-center justify-center shrink-0">
             <Cookie className="w-5 h-5" />
           </div>
 
@@ -51,7 +51,7 @@ export default function CookieBanner() {
             <div className="flex items-center justify-between">
               <h4 className="text-sm font-bold text-white flex items-center gap-1.5">
                 <span>Çerez ve Gizlilik Tercihleri</span>
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <ShieldCheck className="w-4 h-4 text-[#c5ad97]" />
               </h4>
               <button
                 onClick={handleAcceptEssential}
@@ -66,14 +66,14 @@ export default function CookieBanner() {
               Sitemizdeki deneyiminizi geliştirmek, ziyaret istatistiklerini ölçümlemek ve 6698 sayılı KVKK kapsamında güvenliğinizi sağlamak amacıyla çerezler kullanmaktayız. Detaylı bilgi için{" "}
               <Link
                 href="/kvkk-aydinlatma-metni"
-                className="text-amber-400 hover:underline font-semibold"
+                className="text-[#ded0c3] hover:underline font-bold"
               >
                 KVKK Aydınlatma Metni
               </Link>{" "}
               ve{" "}
               <Link
                 href="/cerez-politikasi"
-                className="text-amber-400 hover:underline font-semibold"
+                className="text-[#ded0c3] hover:underline font-bold"
               >
                 Çerez Politikamızı
               </Link>{" "}
@@ -83,13 +83,13 @@ export default function CookieBanner() {
             <div className="pt-2 flex flex-wrap items-center gap-2">
               <button
                 onClick={handleAcceptAll}
-                className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-colors shadow-md shadow-amber-500/20"
+                className="px-5 py-2.5 rounded-xl bg-[#c5ad97] hover:bg-[#ded0c3] text-[#121316] font-bold text-xs transition-colors shadow-md shadow-black/20"
               >
                 Tümünü Kabul Et
               </button>
               <button
                 onClick={handleAcceptEssential}
-                className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold border border-slate-700 transition-colors"
+                className="px-4 py-2.5 rounded-xl bg-[#121316] hover:bg-[#2b2d35] text-slate-300 hover:text-white text-xs font-semibold border border-[#2b2d35] transition-colors"
               >
                 Sadece Zorunluları Kabul Et
               </button>

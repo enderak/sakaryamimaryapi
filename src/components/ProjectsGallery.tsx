@@ -19,39 +19,39 @@ export default function ProjectsGallery() {
   const featuredBeforeAfter = projects.find((p) => p.hasBeforeAfter && p.beforeImage && p.afterImage);
 
   return (
-    <section id="projeler" className="py-20 bg-slate-950 text-white relative">
+    <section id="projeler" className="py-24 bg-[#121316] text-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 text-amber-400 text-xs font-black uppercase tracking-wider mb-2">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <div className="inline-flex items-center gap-2 text-[#c5ad97] text-xs font-bold uppercase tracking-wider mb-2">
             <Sparkles className="w-4 h-4" />
             <span>Referans Portföyümüz</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
-            Sakarya&apos;da Tamamlanan <span className="text-amber-400">Projelerimiz</span>
+            Sakarya&apos;da Tamamlanan <span className="text-[#c5ad97]">Projelerimiz</span>
           </h2>
           <p className="mt-3 text-slate-400 text-base">
-            Serdivan, Sapanca, Adapazarı ve Erenler lokasyonlarında anahtar teslim tamamladığımız gerçek işlerimizden örnekler.
+            Serdivan, Sapanca, Adapazarı ve Erenler lokasyonlarında anahtar teslim tamamladığımız gerçek işlerimizden seçkiler.
           </p>
         </div>
 
         {/* Featured Before/After Interactive Section */}
         {featuredBeforeAfter && (
-          <div className="mb-16 bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
+          <div className="mb-16 bg-[#18191d] border border-[#2b2d35] rounded-3xl p-6 sm:p-8 shadow-2xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-5 space-y-4">
-                <span className="text-xs uppercase font-extrabold px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full border border-amber-500/30">
+                <span className="text-xs uppercase font-extrabold px-3 py-1 bg-[#c5ad97]/15 text-[#ded0c3] rounded-full border border-[#c5ad97]/30">
                   Öne Çıkan Öncesi / Sonrası Dönüşüm
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-black text-white">
                   {featuredBeforeAfter.title}
                 </h3>
                 <div className="flex flex-wrap gap-4 text-xs text-slate-300">
-                  <span className="flex items-center gap-1.5 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
-                    <MapPin className="w-4 h-4 text-amber-400" />
+                  <span className="flex items-center gap-1.5 bg-[#121316] px-3 py-1.5 rounded-lg border border-[#2b2d35]">
+                    <MapPin className="w-4 h-4 text-[#c5ad97]" />
                     {featuredBeforeAfter.district}
                   </span>
-                  <span className="flex items-center gap-1.5 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
-                    <Clock className="w-4 h-4 text-amber-400" />
+                  <span className="flex items-center gap-1.5 bg-[#121316] px-3 py-1.5 rounded-lg border border-[#2b2d35]">
+                    <Clock className="w-4 h-4 text-[#c5ad97]" />
                     Teslim: {featuredBeforeAfter.duration}
                   </span>
                 </div>
@@ -61,7 +61,7 @@ export default function ProjectsGallery() {
                 <div className="pt-2">
                   <a
                     href="#fiyat-hesapla"
-                    className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm shadow-lg shadow-amber-500/20 transition-all hover:scale-105"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#c5ad97] hover:bg-[#ded0c3] text-[#121316] font-bold text-sm shadow-lg shadow-black/40 transition-all hover:scale-105"
                   >
                     <span>Benzer Dairem İçin Fiyat Al</span>
                     <ArrowRight className="w-4 h-4" />
@@ -89,8 +89,8 @@ export default function ProjectsGallery() {
               onClick={() => setActiveCategory(cat)}
               className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeCategory === cat
-                  ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20"
-                  : "bg-slate-900 text-slate-400 border border-slate-800 hover:text-white hover:border-slate-700"
+                  ? "bg-[#c5ad97] text-[#121316] shadow-md shadow-black/20"
+                  : "bg-[#18191d] text-slate-400 border border-[#2b2d35] hover:text-white hover:border-[#c5ad97]/50"
               }`}
             >
               {cat}
@@ -103,7 +103,7 @@ export default function ProjectsGallery() {
           {filteredProjects.map((project: Project) => (
             <div
               key={project.id}
-              className="group bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-amber-500/40 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between"
+              className="group bg-[#18191d] border border-[#2b2d35] rounded-2xl overflow-hidden hover:border-[#c5ad97]/50 transition-all duration-300 hover:shadow-2xl flex flex-col justify-between"
             >
               <div>
                 <div className="relative h-60 w-full overflow-hidden">
@@ -114,26 +114,26 @@ export default function ProjectsGallery() {
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#121316] via-[#121316]/20 to-transparent" />
                   
-                  <div className="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-md text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-slate-700">
+                  <div className="absolute top-4 left-4 bg-[#121316]/85 backdrop-blur-md text-[#ded0c3] text-xs font-semibold px-3 py-1 rounded-full border border-[#2b2d35]">
                     {project.category}
                   </div>
 
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-white">
-                    <span className="flex items-center gap-1 font-semibold bg-black/50 backdrop-blur-sm px-2.5 py-1 rounded-lg">
-                      <MapPin className="w-3.5 h-3.5 text-amber-400" />
+                    <span className="flex items-center gap-1 font-medium bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-lg">
+                      <MapPin className="w-3.5 h-3.5 text-[#c5ad97]" />
                       {project.district}
                     </span>
-                    <span className="flex items-center gap-1 font-semibold bg-black/50 backdrop-blur-sm px-2.5 py-1 rounded-lg">
-                      <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                    <span className="flex items-center gap-1 font-medium bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-lg">
+                      <Clock className="w-3.5 h-3.5 text-[#ded0c3]" />
                       {project.duration}
                     </span>
                   </div>
                 </div>
 
                 <div className="p-6">
-                  <h4 className="text-lg font-bold text-white group-hover:text-amber-400 transition-colors">
+                  <h4 className="text-lg font-bold text-white group-hover:text-[#ded0c3] transition-colors">
                     {project.title}
                   </h4>
                   <p className="mt-2 text-xs text-slate-400 line-clamp-2">
@@ -149,7 +149,7 @@ export default function ProjectsGallery() {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-xl bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-slate-200 font-bold text-xs transition-colors border border-slate-700"
+                  className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-[#121316] hover:bg-[#c5ad97] hover:text-[#121316] text-slate-200 font-semibold text-xs transition-all border border-[#2b2d35] hover:border-[#c5ad97]"
                 >
                   <span>Bu Proje Hakkında Bilgi Al</span>
                   <ArrowRight className="w-3.5 h-3.5" />

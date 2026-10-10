@@ -51,9 +51,9 @@ export default function BeforeAfterSlider({
     <div className="w-full">
       {title && (
         <div className="mb-4">
-          <div className="flex items-center gap-2 text-amber-500 font-bold text-sm uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-[#c5ad97] font-bold text-sm uppercase tracking-wider">
             <Sparkles className="w-4 h-4" />
-            <span>Dönüşüm Mucizesi</span>
+            <span>Dönüşüm Süreci</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mt-1">
             {title}
@@ -68,7 +68,7 @@ export default function BeforeAfterSlider({
 
       <div
         ref={containerRef}
-        className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-2xl overflow-hidden select-none cursor-ew-resize border-2 border-slate-200 dark:border-slate-800 shadow-2xl group"
+        className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-2xl border border-[#2b2d35] overflow-hidden select-none cursor-ew-resize shadow-2xl group"
         onMouseDown={() => setIsDragging(true)}
         onMouseUp={() => setIsDragging(false)}
         onMouseLeave={() => setIsDragging(false)}
@@ -85,8 +85,8 @@ export default function BeforeAfterSlider({
             sizes="(max-width: 1200px) 100vw, 1200px"
             priority
           />
-          <div className="absolute top-4 right-4 bg-emerald-600/90 backdrop-blur-md text-white text-xs font-black uppercase px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 z-10">
-            <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+          <div className="absolute top-4 right-4 bg-[#121316]/90 backdrop-blur-md text-[#ded0c3] border border-[#c5ad97]/40 text-xs font-bold uppercase px-3.5 py-1.5 rounded-full shadow-lg flex items-center gap-2 z-10">
+            <span className="w-2 h-2 rounded-full bg-[#c5ad97] animate-pulse"></span>
             {afterLabel}
           </div>
         </div>
@@ -103,17 +103,17 @@ export default function BeforeAfterSlider({
             className="object-cover"
             sizes="(max-width: 1200px) 100vw, 1200px"
           />
-          <div className="absolute top-4 left-4 bg-slate-900/90 backdrop-blur-md text-white text-xs font-black uppercase px-3 py-1.5 rounded-full shadow-lg z-10">
+          <div className="absolute top-4 left-4 bg-[#121316]/90 backdrop-blur-md text-slate-300 border border-[#2b2d35] text-xs font-bold uppercase px-3.5 py-1.5 rounded-full shadow-lg z-10">
             {beforeLabel}
           </div>
         </div>
 
         {/* Çizgi ve Tutamaç (Handle) */}
         <div
-          className="absolute top-0 bottom-0 w-1 bg-white shadow-[0_0_15px_rgba(0,0,0,0.5)] z-20 pointer-events-none"
+          className="absolute top-0 bottom-0 w-1 bg-[#c5ad97] shadow-[0_0_15px_rgba(0,0,0,0.5)] z-20 pointer-events-none"
           style={{ left: `${sliderPosition}%` }}
         >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 bg-amber-500 rounded-full shadow-2xl flex items-center justify-center border-2 border-white text-slate-950 font-bold group-hover:scale-110 transition-transform">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 bg-[#c5ad97] rounded-full shadow-2xl flex items-center justify-center border-2 border-[#121316] text-[#121316] font-bold group-hover:scale-110 transition-transform">
             <MoveHorizontal className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
         </div>
