@@ -133,7 +133,7 @@ export default function ConstructionSlider() {
   const currentSlide = slides[current];
 
   return (
-    <section className="py-20 bg-slate-950 text-white relative overflow-hidden border-y border-slate-800/80">
+    <section className="pt-6 sm:pt-8 pb-14 sm:pb-16 bg-slate-950 text-white relative overflow-hidden border-b border-slate-800/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">

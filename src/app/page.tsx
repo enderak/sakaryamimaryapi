@@ -1,5 +1,5 @@
-import Hero from "@/components/Hero";
 import ConstructionSlider from "@/components/ConstructionSlider";
+import Hero from "@/components/Hero";
 import ServicesSection from "@/components/ServicesSection";
 import ProjectsGallery from "@/components/ProjectsGallery";
 import CostCalculator from "@/components/CostCalculator";
@@ -11,8 +11,9 @@ import BlogPreviewSection from "@/components/BlogPreviewSection";
 export default function Home() {
   return (
     <>
-      <Hero />
+      {/* Menünün hemen ardından gelen İnşaat Projeleri Slider'ı */}
       <ConstructionSlider />
+      <Hero />
       <ServicesSection />
       <ProjectsGallery />
       <CostCalculator />
