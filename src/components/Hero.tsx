@@ -36,7 +36,7 @@ export default function Hero({ config }: HeroProps) {
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] text-slate-950">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.18] sm:leading-[1.15] text-slate-950">
               {c.titleLine1} <br />
               <span className="text-[#0f2b5c]">
                 {c.titleHighlight}
@@ -50,7 +50,7 @@ export default function Hero({ config }: HeroProps) {
             </p>
 
             {/* Trust points */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-2">
               {c.trustPoints.map((tp, idx) => (
                 <div key={idx} className="flex items-center gap-2.5 bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs">
                   {tp.icon === "check" ? (
@@ -68,10 +68,10 @@ export default function Hero({ config }: HeroProps) {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4 pt-3">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 pt-3">
               <a
                 href="#fiyat-hesapla"
-                className="flex items-center gap-2 px-7 py-3.5 rounded-xl bg-[#0f2b5c] hover:bg-[#153a7a] text-white font-bold text-sm shadow-lg shadow-blue-950/20 transition-all hover:scale-[1.02]"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-[#0f2b5c] hover:bg-[#153a7a] text-white font-bold text-sm shadow-lg shadow-blue-950/20 transition-all hover:scale-[1.02]"
               >
                 <Calculator className="w-4 h-4 text-amber-400" />
                 <span>Hemen Fiyat Hesapla</span>
@@ -83,7 +83,7 @@ export default function Hero({ config }: HeroProps) {
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 font-bold text-sm shadow-xs transition-all hover:scale-[1.02]"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 font-bold text-sm shadow-xs transition-all hover:scale-[1.02]"
               >
                 <Phone className="w-4 h-4 text-emerald-600" />
                 <span>WhatsApp&apos;tan Yazın</span>
@@ -91,7 +91,7 @@ export default function Hero({ config }: HeroProps) {
 
               <Link
                 href="/projeler"
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#0f2b5c] hover:underline ml-2"
+                className="inline-flex items-center justify-center sm:justify-start gap-1.5 text-xs sm:text-sm font-bold text-[#0f2b5c] hover:underline py-1 sm:ml-2"
               >
                 <span>Projelerimizi İnceleyin</span>
                 <ArrowRight className="w-4 h-4" />

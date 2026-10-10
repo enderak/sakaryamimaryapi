@@ -121,7 +121,7 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3 shadow-xl">
+        <div className="md:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3 shadow-xl max-h-[calc(100dvh-5rem)] overflow-y-auto">
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}

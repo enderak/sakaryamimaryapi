@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppFloating from "@/components/WhatsAppFloating";
 import CookieBanner from "@/components/CookieBanner";
+import MobileStickyBar from "@/components/MobileStickyBar";
 import { getSeoGeoConfig } from "@/lib/seoStorage";
 import { getSocialMediaConfig } from "@/lib/socialStorage";
 import { companyInfo } from "@/data/company";
@@ -22,6 +23,13 @@ const geistMono = Geist_Mono({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#0f2b5c" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a1b3a" }
+  ],
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -234,10 +242,11 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-900 selection:bg-amber-100 selection:text-amber-900">
         <Navbar />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 pb-16 md:pb-0">{children}</main>
         <Footer />
         <WhatsAppFloating />
         <CookieBanner />
+        <MobileStickyBar />
       </body>
     </html>
   );

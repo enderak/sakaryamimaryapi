@@ -68,14 +68,14 @@ ${formData.email ? `- E-Posta: ${formData.email}\n` : ""}- İlçe: ${formData.di
   };
 
   return (
-    <div className="py-20 bg-slate-50 text-slate-900 min-h-screen">
+    <div className="py-10 sm:py-20 bg-slate-50 text-slate-900 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0f2b5c] text-xs font-bold uppercase tracking-wider mb-2">
             <MapPin className="w-4 h-4 text-[#0f2b5c]" />
             <span>Serdivan Merkez Ofisimiz & İletişim</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
             Sakarya Mimar Yapı <span className="text-[#0f2b5c]">İletişim</span>
           </h1>
           <p className="mt-3 text-slate-600 text-base">

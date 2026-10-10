@@ -281,10 +281,10 @@ Adresime (${districtName}) ücretsiz keşif ve net fiyat teklifi için görüşm
             </div>
 
             <div className="my-6 text-center">
-              <div className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                {calculation.minTotal.toLocaleString("tr-TR")} ₺
-                <span className="text-slate-400 text-2xl font-light mx-2">-</span>
-                {calculation.maxTotal.toLocaleString("tr-TR")} ₺
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight break-words">
+                <span>{calculation.minTotal.toLocaleString("tr-TR")} ₺</span>
+                <span className="text-slate-400 text-xl sm:text-2xl font-light mx-1.5 sm:mx-2">-</span>
+                <span>{calculation.maxTotal.toLocaleString("tr-TR")} ₺</span>
               </div>
               <p className="text-xs text-slate-500 mt-2">
                 *KDV ve keşif sonrası netleşecek özel malzeme seçimlerine göre kesinleşir.

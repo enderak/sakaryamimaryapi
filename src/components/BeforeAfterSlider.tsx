@@ -38,6 +38,10 @@ export default function BeforeAfterSlider({
     []
   );
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    handleMove(e.touches[0].clientX);
+  };
+
   const handleTouchMove = (e: React.TouchEvent) => {
     handleMove(e.touches[0].clientX);
   };
@@ -68,11 +72,12 @@ export default function BeforeAfterSlider({
 
       <div
         ref={containerRef}
-        className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-2xl border border-slate-200 overflow-hidden select-none cursor-ew-resize shadow-xl group"
+        className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-2xl border border-slate-200 overflow-hidden select-none cursor-ew-resize shadow-xl group touch-pan-y"
         onMouseDown={() => setIsDragging(true)}
         onMouseUp={() => setIsDragging(false)}
         onMouseLeave={() => setIsDragging(false)}
         onMouseMove={handleMouseMove}
+        onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
       >
         {/* AFTER (Yeni Hali - Alt katman) */}

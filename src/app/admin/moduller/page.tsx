@@ -379,25 +379,25 @@ export default function AdminModulesPage() {
   const sortedSections = Object.entries(config.sections).sort((a, b) => a[1].order - b[1].order);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="min-h-screen bg-slate-50 text-slate-900 py-6 sm:py-10 px-3 sm:px-6 lg:px-8 pb-24">
+      <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
         
         {/* Top Header Card */}
-        <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="bg-white border border-slate-200 rounded-3xl p-5 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-5 sm:gap-6">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0f2b5c] text-xs font-bold uppercase tracking-wider mb-2">
               <Layers className="w-3.5 h-3.5 text-[#0f2b5c]" />
               <span>Anasayfa Modül & İçerik Yönetimi</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            <h1 className="text-xl sm:text-3xl font-black text-slate-900 tracking-tight">
               Anasayfa Bölüm Kontrol Paneli
             </h1>
-            <p className="mt-1 text-slate-600 text-sm max-w-2xl">
+            <p className="mt-1 text-slate-600 text-xs sm:text-sm max-w-2xl">
               Anasayfadaki 9 farklı bölümü tek tıkla gizleyebilir, yerlerini yukarı/aşağı taşıyabilir ve başlık/açıklama metinlerini anında güncelleyebilirsiniz.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             {currentUser && (
               <div className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold border border-slate-200">
                 <UserCheck className="w-3.5 h-3.5 text-emerald-600" />
@@ -489,7 +489,7 @@ export default function AdminModulesPage() {
         )}
 
         {/* Tabs: Visibility & Order vs Content Editing */}
-        <div className="flex border-b border-slate-200 gap-3">
+        <div className="flex border-b border-slate-200 gap-2 sm:gap-3 overflow-x-auto no-scrollbar whitespace-nowrap pb-1">
           <button
             onClick={() => setActiveTab("visibility")}
             className={`pb-3 px-4 text-sm font-bold border-b-2 flex items-center gap-2 transition-colors ${
