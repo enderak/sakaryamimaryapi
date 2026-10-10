@@ -7,10 +7,13 @@ import DistrictSection from "@/components/DistrictSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import RssNewsSection from "@/components/RssNewsSection";
 import BlogPreviewSection from "@/components/BlogPreviewSection";
+import SocialShowcaseSection from "@/components/SocialShowcaseSection";
 import { getHomeModulesConfig } from "@/lib/modulesStorage";
+import { getSocialMediaConfig } from "@/lib/socialStorage";
 
 export default function Home() {
   const config = getHomeModulesConfig();
+  const socialConfig = getSocialMediaConfig();
   const { sections, content } = config;
 
   // Build sorted list of enabled sections
@@ -56,6 +59,12 @@ export default function Home() {
       enabled: sections.testimonials?.enabled ?? true,
       order: sections.testimonials?.order ?? 7,
       component: <TestimonialsSection key="testimonials" config={content.testimonials} />
+    },
+    {
+      id: "socialShowcase",
+      enabled: socialConfig.showcaseSection?.enabled ?? true,
+      order: 7.5,
+      component: <SocialShowcaseSection key="socialShowcase" config={socialConfig} />
     },
     {
       id: "news",

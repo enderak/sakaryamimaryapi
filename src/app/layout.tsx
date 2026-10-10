@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import WhatsAppFloating from "@/components/WhatsAppFloating";
 import CookieBanner from "@/components/CookieBanner";
 import { getSeoGeoConfig } from "@/lib/seoStorage";
+import { getSocialMediaConfig } from "@/lib/socialStorage";
 import { companyInfo } from "@/data/company";
 
 const geistSans = Geist({
@@ -79,6 +80,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const seoConfig = getSeoGeoConfig();
+  const socialConfig = getSocialMediaConfig();
   const { meta, geo, schema, googlePlaces, merchant, aiOptimization } = seoConfig;
 
   // LocalBusiness + Google Places + Merchant Offerings Schema.org JSON-LD
@@ -122,8 +124,12 @@ export default function RootLayout({
     "sameAs": [
       googlePlaces?.googleMapsProfileUrl,
       googlePlaces?.googleReviewUrl,
-      "https://instagram.com/sakaryamimaryapi",
-      "https://facebook.com/sakaryamimaryapi"
+      socialConfig.channels.instagram.enabled ? socialConfig.channels.instagram.url : null,
+      socialConfig.channels.youtube.enabled ? socialConfig.channels.youtube.channelUrl : null,
+      socialConfig.channels.tiktok.enabled ? socialConfig.channels.tiktok.url : null,
+      socialConfig.channels.facebook.enabled ? socialConfig.channels.facebook.url : null,
+      socialConfig.channels.linkedin.enabled ? socialConfig.channels.linkedin.url : null,
+      socialConfig.channels.pinterest.enabled ? socialConfig.channels.pinterest.url : null
     ].filter(Boolean),
     "openingHoursSpecification": [
       {
