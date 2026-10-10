@@ -242,9 +242,30 @@ export default function AdminLoginPage() {
                     className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c] transition-all"
                   />
                 </div>
-                <p className="text-[11px] text-slate-500 mt-1">
-                  Varsayılan yetkili: <code className="text-[#0f2b5c] font-bold">sakaryamimaryapi@gmail.com</code>
-                </p>
+                <div className="flex flex-wrap items-center gap-1.5 mt-2 text-[11px] text-slate-600">
+                  <span className="font-semibold text-slate-700">Hızlı Seç:</span>
+                  <button
+                    type="button"
+                    onClick={() => setEmail("sakaryamimaryapi@gmail.com")}
+                    className="px-2 py-0.5 rounded-lg bg-blue-50 text-[#0f2b5c] font-medium hover:bg-blue-100 border border-blue-200 transition-colors"
+                  >
+                    sakaryamimaryapi@gmail.com
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEmail("enderak@gmail.com")}
+                    className="px-2 py-0.5 rounded-lg bg-slate-100 text-slate-700 font-medium hover:bg-slate-200 border border-slate-200 transition-colors"
+                  >
+                    enderak@gmail.com
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEmail("enderakar@outlook.com")}
+                    className="px-2 py-0.5 rounded-lg bg-slate-100 text-slate-700 font-medium hover:bg-slate-200 border border-slate-200 transition-colors"
+                  >
+                    enderakar@outlook.com
+                  </button>
+                </div>
               </div>
 
               <button

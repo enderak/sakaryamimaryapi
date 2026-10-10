@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
@@ -7,11 +9,72 @@ const SECRET_KEY = new TextEncoder().encode(
 
 export const ADMIN_COOKIE_NAME = "smy_admin_session";
 
-// Allowed Gmail / email accounts that have admin access
-export const ALLOWED_ADMIN_EMAILS = [
+const EMAILS_FILE = path.join(process.cwd(), "data", "admin-emails.json");
+
+// Default Allowed Admin Emails
+const DEFAULT_ALLOWED_EMAILS = [
   "sakaryamimaryapi@gmail.com",
-  "enderak@gmail.com"
+  "enderak@gmail.com",
+  "enderakar@outlook.com",
+  "enderakar@gmail.com"
 ];
+
+/**
+ * Gets all authorized admin emails from JSON file and ENV
+ */
+export function getAllowedAdminEmails(): string[] {
+  let fileEmails: string[] = [];
+
+  try {
+    if (fs.existsSync(EMAILS_FILE)) {
+      const content = fs.readFileSync(EMAILS_FILE, "utf-8");
+      fileEmails = JSON.parse(content);
+    } else {
+      // Ensure data directory exists and write default
+      const dataDir = path.join(process.cwd(), "data");
+      if (!fs.existsSync(dataDir)) {
+        fs.mkdirSync(dataDir, { recursive: true });
+      }
+      fs.writeFileSync(EMAILS_FILE, JSON.stringify(DEFAULT_ALLOWED_EMAILS, null, 2), "utf-8");
+      fileEmails = DEFAULT_ALLOWED_EMAILS;
+    }
+  } catch (err) {
+    console.error("Error reading admin emails file:", err);
+    fileEmails = DEFAULT_ALLOWED_EMAILS;
+  }
+
+  const envEmails = process.env.ADMIN_ALLOWED_EMAILS
+    ? process.env.ADMIN_ALLOWED_EMAILS.split(",").map((e) => e.trim().toLowerCase())
+    : [];
+
+  const combined = Array.from(
+    new Set([
+      ...DEFAULT_ALLOWED_EMAILS.map((e) => e.toLowerCase()),
+      ...fileEmails.map((e) => e.trim().toLowerCase()),
+      ...envEmails
+    ])
+  ).filter(Boolean);
+
+  return combined;
+}
+
+/**
+ * Adds a new email to the authorized admin list
+ */
+export function addAllowedAdminEmail(email: string): boolean {
+  try {
+    const normalized = email.trim().toLowerCase();
+    const currentList = getAllowedAdminEmails();
+    if (!currentList.includes(normalized)) {
+      currentList.push(normalized);
+      fs.writeFileSync(EMAILS_FILE, JSON.stringify(currentList, null, 2), "utf-8");
+    }
+    return true;
+  } catch (err) {
+    console.error("Error adding admin email:", err);
+    return false;
+  }
+}
 
 export interface AdminSession {
   email: string;
@@ -57,13 +120,8 @@ export async function getAdminSession(): Promise<AdminSession | null> {
  * Verifies if an email is authorized to access admin panel
  */
 export function isAuthorizedAdminEmail(email: string): boolean {
+  if (!email) return false;
   const normalized = email.trim().toLowerCase();
-  
-  // Custom env override
-  const customEmails = process.env.ADMIN_ALLOWED_EMAILS
-    ? process.env.ADMIN_ALLOWED_EMAILS.split(",").map((e) => e.trim().toLowerCase())
-    : [];
-
-  const allAllowed = [...ALLOWED_ADMIN_EMAILS.map((e) => e.toLowerCase()), ...customEmails];
-  return allAllowed.includes(normalized);
+  const allowed = getAllowedAdminEmails();
+  return allowed.includes(normalized);
 }
