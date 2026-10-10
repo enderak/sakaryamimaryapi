@@ -17,21 +17,26 @@ import {
   Layers, 
   ExternalLink,
   ChevronRight,
-  Shield,
-  Sparkles,
   LogOut,
-  UserCheck
+  UserCheck,
+  Globe,
+  MapPin,
+  Search,
+  FileCode,
+  Check
 } from "lucide-react";
 import { HomePageModulesConfig, defaultHomeModulesConfig } from "@/data/homeModules";
+import { SeoGeoConfig, defaultSeoGeoConfig } from "@/data/seoGeo";
 
 export default function AdminModulesPage() {
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState<{ email: string } | null>(null);
   const [config, setConfig] = useState<HomePageModulesConfig | null>(null);
+  const [seoConfig, setSeoConfig] = useState<SeoGeoConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
-  const [activeTab, setActiveTab] = useState<"visibility" | "content">("visibility");
+  const [activeTab, setActiveTab] = useState<"visibility" | "content" | "seo">("visibility");
   const [selectedModuleKey, setSelectedModuleKey] = useState<string>("hero");
 
   useEffect(() => {
@@ -58,11 +63,45 @@ export default function AdminModulesPage() {
       } else {
         setConfig(defaultHomeModulesConfig);
       }
+
+      // 3. Fetch SEO Config
+      const seoRes = await fetch("/api/seo");
+      const seoData = await seoRes.json();
+      if (seoData.success && seoData.config) {
+        setSeoConfig(seoData.config);
+      } else {
+        setSeoConfig(defaultSeoGeoConfig);
+      }
     } catch (e) {
       console.error(e);
       setConfig(defaultHomeModulesConfig);
+      setSeoConfig(defaultSeoGeoConfig);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSaveSeo = async () => {
+    if (!seoConfig) return;
+    try {
+      setSaving(true);
+      setStatusMessage(null);
+      const res = await fetch("/api/seo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ config: seoConfig })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStatusMessage({ type: "success", text: "SEO, Meta ve Geo etiketleri başarıyla güncellendi!" });
+        setTimeout(() => setStatusMessage(null), 4000);
+      } else {
+        setStatusMessage({ type: "error", text: data.message || "Kaydedilemedi." });
+      }
+    } catch {
+      setStatusMessage({ type: "error", text: "SEO kaydedilirken sunucu hatası oluştu." });
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -290,6 +329,18 @@ export default function AdminModulesPage() {
           >
             <Edit3 className="w-4 h-4" />
             <span>Modül İçerik & Başlıklarını Düzenle</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("seo")}
+            className={`pb-3 px-4 text-sm font-bold border-b-2 flex items-center gap-2 transition-colors ${
+              activeTab === "seo"
+                ? "border-[#0f2b5c] text-[#0f2b5c]"
+                : "border-transparent text-slate-500 hover:text-slate-800"
+            }`}
+          >
+            <Globe className="w-4 h-4 text-amber-500" />
+            <span>SEO & Yerel Geo (Harita) Yönetimi</span>
           </button>
         </div>
 
@@ -1059,7 +1110,339 @@ export default function AdminModulesPage() {
           </div>
         )}
 
+        {/* TAB 3: SEO & GEO MANAGEMENT */}
+        {activeTab === "seo" && seoConfig && (
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-100 gap-4">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0f2b5c] text-xs font-bold uppercase tracking-wider mb-2">
+                  <Globe className="w-3.5 h-3.5 text-[#0f2b5c]" />
+                  <span>Google & Yerel Arama Optimizasyonu</span>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                  SEO Meta Etiketleri & Yerel Geo (Harita) Yapılandırması
+                </h2>
+                <p className="text-xs text-slate-500 mt-1">
+                  Google, Yandex ve harita botlarının Sakarya içi yerel aramalarda sitenizi en üst sıralara çıkarmasını sağlayan teknik meta ve koordinat ayarları.
+                </p>
+              </div>
+
+              <button
+                onClick={handleSaveSeo}
+                disabled={saving}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#0f2b5c] hover:bg-[#163a75] text-white font-bold text-xs shadow-md shadow-blue-900/10 transition-all hover:scale-[1.02] shrink-0 self-start sm:self-auto"
+              >
+                <Save className="w-4 h-4 text-amber-400" />
+                <span>{saving ? "Kaydediliyor..." : "SEO Ayarlarını Kaydet"}</span>
+              </button>
+            </div>
+
+            {/* Section 1: Meta Tags */}
+            <div className="space-y-5">
+              <h3 className="text-sm font-extrabold text-[#0f2b5c] uppercase tracking-wider flex items-center gap-2">
+                <Search className="w-4 h-4" />
+                <span>1. Genel Arama Motoru Meta Bilgileri</span>
+              </h3>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Site Başlığı (Title Tag - Max 60-70 karakter)
+                </label>
+                <input
+                  type="text"
+                  value={seoConfig.meta.siteTitle}
+                  onChange={(e) => setSeoConfig({
+                    ...seoConfig,
+                    meta: { ...seoConfig.meta, siteTitle: e.target.value }
+                  })}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                />
+                <p className="text-[11px] text-slate-400 mt-1">
+                  Karakter sayısı: {seoConfig.meta.siteTitle.length} (Önerilen: 50-65)
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Site Açıklaması (Meta Description - Max 150-160 karakter)
+                </label>
+                <textarea
+                  rows={3}
+                  value={seoConfig.meta.siteDescription}
+                  onChange={(e) => setSeoConfig({
+                    ...seoConfig,
+                    meta: { ...seoConfig.meta, siteDescription: e.target.value }
+                  })}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                />
+                <p className="text-[11px] text-slate-400 mt-1">
+                  Karakter sayısı: {seoConfig.meta.siteDescription.length} (Önerilen: 120-160)
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Anahtar Kelimeler (Keywords - Virgülle ayırınız)
+                </label>
+                <input
+                  type="text"
+                  value={seoConfig.meta.keywords.join(", ")}
+                  onChange={(e) => setSeoConfig({
+                    ...seoConfig,
+                    meta: {
+                      ...seoConfig.meta,
+                      keywords: e.target.value.split(",").map((k) => k.trim()).filter(Boolean)
+                    }
+                  })}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Google Search Console Doğrulama Kodu (google-site-verification)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Örn: 4Z3x_example_code"
+                    value={seoConfig.meta.googleSiteVerification}
+                    onChange={(e) => setSeoConfig({
+                      ...seoConfig,
+                      meta: { ...seoConfig.meta, googleSiteVerification: e.target.value }
+                    })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Yandex Webmaster Doğrulama Kodu (yandex-verification)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Örn: a1b2c3d4e5f6"
+                    value={seoConfig.meta.yandexVerification}
+                    onChange={(e) => setSeoConfig({
+                      ...seoConfig,
+                      meta: { ...seoConfig.meta, yandexVerification: e.target.value }
+                    })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 2: GEO & Location Tags */}
+            <div className="space-y-5 pt-6 border-t border-slate-100">
+              <h3 className="text-sm font-extrabold text-[#0f2b5c] uppercase tracking-wider flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-emerald-600" />
+                <span>2. Yerel Geo (Coğrafi Konum & Harita) Etiketleri</span>
+              </h3>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Geo Bölge (geo.region)</label>
+                  <input
+                    type="text"
+                    value={seoConfig.geo.region}
+                    onChange={(e) => setSeoConfig({
+                      ...seoConfig,
+                      geo: { ...seoConfig.geo, region: e.target.value }
+                    })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Yer Adı (geo.placename)</label>
+                  <input
+                    type="text"
+                    value={seoConfig.geo.placename}
+                    onChange={(e) => setSeoConfig({
+                      ...seoConfig,
+                      geo: { ...seoConfig.geo, placename: e.target.value }
+                    })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Posta Kodu</label>
+                  <input
+                    type="text"
+                    value={seoConfig.geo.postalCode}
+                    onChange={(e) => setSeoConfig({
+                      ...seoConfig,
+                      geo: { ...seoConfig.geo, postalCode: e.target.value }
+                    })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Enlem (Latitude)</label>
+                  <input
+                    type="number"
+                    step="0.0001"
+                    value={seoConfig.geo.latitude}
+                    onChange={(e) => {
+                      const lat = parseFloat(e.target.value) || 0;
+                      setSeoConfig({
+                        ...seoConfig,
+                        geo: {
+                          ...seoConfig.geo,
+                          latitude: lat,
+                          position: `${lat};${seoConfig.geo.longitude}`,
+                          icbm: `${lat}, ${seoConfig.geo.longitude}`
+                        }
+                      });
+                    }}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Boylam (Longitude)</label>
+                  <input
+                    type="number"
+                    step="0.0001"
+                    value={seoConfig.geo.longitude}
+                    onChange={(e) => {
+                      const lng = parseFloat(e.target.value) || 0;
+                      setSeoConfig({
+                        ...seoConfig,
+                        geo: {
+                          ...seoConfig.geo,
+                          longitude: lng,
+                          position: `${seoConfig.geo.latitude};${lng}`,
+                          icbm: `${seoConfig.geo.latitude}, ${lng}`
+                        }
+                      });
+                    }}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Hedef İlçe ve Hizmet Bölgeleri (Virgülle ayırınız)
+                </label>
+                <input
+                  type="text"
+                  value={seoConfig.geo.targetDistricts.join(", ")}
+                  onChange={(e) => setSeoConfig({
+                    ...seoConfig,
+                    geo: {
+                      ...seoConfig.geo,
+                      targetDistricts: e.target.value.split(",").map((d) => d.trim()).filter(Boolean)
+                    }
+                  })}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                />
+              </div>
+            </div>
+
+            {/* Section 3: Schema.org & LocalBusiness */}
+            <div className="space-y-5 pt-6 border-t border-slate-100">
+              <h3 className="text-sm font-extrabold text-[#0f2b5c] uppercase tracking-wider flex items-center gap-2">
+                <FileCode className="w-4 h-4 text-amber-500" />
+                <span>3. Schema.org (Google Zengin Sonuç / Rich Snippet) Yapılandırması</span>
+              </h3>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Google İşletme Türü</label>
+                  <select
+                    value={seoConfig.schema.businessType}
+                    onChange={(e) => setSeoConfig({
+                      ...seoConfig,
+                      schema: { ...seoConfig.schema, businessType: e.target.value as any }
+                    })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c] bg-white"
+                  >
+                    <option value="GeneralContractor">Müteahhit / Genel İnşaatçı (GeneralContractor)</option>
+                    <option value="HomeAndConstructionBusiness">Ev & İnşaat Şirketi (HomeAndConstructionBusiness)</option>
+                    <option value="ProfessionalService">Mimarlık & Profesyonel Hizmet (ProfessionalService)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Resmi İşletme Ünvanı</label>
+                  <input
+                    type="text"
+                    value={seoConfig.schema.businessName}
+                    onChange={(e) => setSeoConfig({
+                      ...seoConfig,
+                      schema: { ...seoConfig.schema, businessName: e.target.value }
+                    })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Çalışma Saatleri</label>
+                  <input
+                    type="text"
+                    value={seoConfig.schema.openingHours}
+                    onChange={(e) => setSeoConfig({
+                      ...seoConfig,
+                      schema: { ...seoConfig.schema, openingHours: e.target.value }
+                    })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Ortalama Puan (1-5)</label>
+                  <input
+                    type="text"
+                    value={seoConfig.schema.ratingValue}
+                    onChange={(e) => setSeoConfig({
+                      ...seoConfig,
+                      schema: { ...seoConfig.schema, ratingValue: e.target.value }
+                    })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Toplam Yorum Sayısı</label>
+                  <input
+                    type="text"
+                    value={seoConfig.schema.reviewCount}
+                    onChange={(e) => setSeoConfig({
+                      ...seoConfig,
+                      schema: { ...seoConfig.schema, reviewCount: e.target.value }
+                    })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f2b5c]"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Save Action */}
+            <div className="pt-6 border-t border-slate-100 flex justify-end">
+              <button
+                onClick={handleSaveSeo}
+                disabled={saving}
+                className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-[#0f2b5c] hover:bg-[#163a75] text-white font-bold text-xs shadow-md shadow-blue-900/10 transition-all hover:scale-[1.02]"
+              >
+                <Save className="w-4 h-4 text-amber-400" />
+                <span>{saving ? "Kaydediliyor..." : "Tüm SEO & Geo Değişikliklerini Kaydet"}</span>
+              </button>
+            </div>
+
+          </div>
+        )}
+
       </div>
     </div>
   );
 }
+
