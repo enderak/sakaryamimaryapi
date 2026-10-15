@@ -93,7 +93,7 @@
     "primaryAccentColor": "#ecc54e"
   },
   "game": {
-    "enabled": true,
+    "enabled": false,
     "title": "Duvardan Tuğla Aşırtma Oyunu",
     "showInNavbar": true,
     "showInFooter": true,

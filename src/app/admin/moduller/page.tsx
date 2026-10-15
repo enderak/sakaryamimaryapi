@@ -317,25 +317,99 @@ export default function AdminModulesPage() {
   };
 
   const handleSave = async () => {
-    if (!config) return;
     try {
       setSaving(true);
       setStatusMessage(null);
-      const res = await fetch("/api/modules", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ config })
-      });
-      const data = await res.json();
-      if (data.success) {
-        setStatusMessage({ type: "success", text: "Değişiklikler anında anasayfaya yansıtıldı!" });
-        setTimeout(() => setStatusMessage(null), 4000);
-      } else {
-        setStatusMessage({ type: "error", text: data.message || "Kaydedilemedi." });
+
+      const tasks: Promise<any>[] = [];
+
+      // 1. Always save modules if config is loaded
+      if (config) {
+        tasks.push(
+          fetch("/api/modules", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ config })
+          }).then(async (res) => {
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || !data.success) {
+              throw new Error(data.message || `Modüller kaydedilemedi (HTTP ${res.status})`);
+            }
+            if (data.config) setConfig(data.config);
+            return "Modüller";
+          })
+        );
       }
-    } catch (e) {
+
+      // 2. Always save site settings (Game, Theme, Security, RSS, Blog) if settingsConfig is loaded
+      if (settingsConfig) {
+        tasks.push(
+          fetch("/api/settings", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ config: settingsConfig })
+          }).then(async (res) => {
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || !data.success) {
+              throw new Error(data.message || `Site ayarları kaydedilemedi (HTTP ${res.status})`);
+            }
+            if (data.config) setSettingsConfig(data.config);
+            return "Site Ayarları & Oyun";
+          })
+        );
+      }
+
+      // 3. If in SEO tab, also save SEO
+      if (activeTab === "seo" && seoConfig) {
+        tasks.push(
+          fetch("/api/seo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ config: seoConfig })
+          }).then(async (res) => {
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || !data.success) {
+              throw new Error(data.message || `SEO kaydedilemedi (HTTP ${res.status})`);
+            }
+            return "SEO";
+          })
+        );
+      }
+
+      // 4. If in Social tab, also save Social
+      if (activeTab === "social" && socialConfig) {
+        tasks.push(
+          fetch("/api/social", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ config: socialConfig })
+          }).then(async (res) => {
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || !data.success) {
+              throw new Error(data.message || `Sosyal medya kaydedilemedi (HTTP ${res.status})`);
+            }
+            return "Sosyal Medya";
+          })
+        );
+      }
+
+      await Promise.all(tasks);
+
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("smy-settings-updated"));
+      }
+
+      setStatusMessage({
+        type: "success",
+        text: "Tüm anasayfa modülleri ve site ayarları (Oyun, Tema, Şifre vb.) başarıyla kaydedildi ve yayına alındı!"
+      });
+      setTimeout(() => setStatusMessage(null), 4000);
+    } catch (e: any) {
       console.error(e);
-      setStatusMessage({ type: "error", text: "Bir sunucu hatası meydana geldi." });
+      setStatusMessage({
+        type: "error",
+        text: e?.message || "Kaydetme sırasında bir sunucu hatası meydana geldi."
+      });
     } finally {
       setSaving(false);
     }
@@ -731,15 +805,29 @@ export default function AdminModulesPage() {
                               headers: { "Content-Type": "application/json" },
                               body: JSON.stringify({ config: newSettings })
                             });
-                            const data = await res.json();
-                            if (data.success) {
+                            const data = await res.json().catch(() => ({}));
+                            if (res.ok && data.success) {
+                              if (data.config) setSettingsConfig(data.config);
+                              if (typeof window !== "undefined") {
+                                window.dispatchEvent(new CustomEvent("smy-settings-updated"));
+                              }
                               setStatusMessage({ 
                                 type: "success", 
                                 text: newG.enabled ? "🎮 Tuğla Oyunu başarıyla AÇILDI ve yayına alındı!" : "🎮 Tuğla Oyunu başarıyla KAPATILDI." 
                               });
                               setTimeout(() => setStatusMessage(null), 4000);
+                            } else {
+                              setStatusMessage({
+                                type: "error",
+                                text: data.message || `Oyun durumu güncellenemedi (HTTP ${res.status}).`
+                              });
                             }
-                          } catch {}
+                          } catch (err: any) {
+                            setStatusMessage({
+                              type: "error",
+                              text: err?.message || "Bağlantı hatası oluştu."
+                            });
+                          }
                         }}
                         className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-colors shadow-xs ${
                           isGameEnabled

@@ -6,7 +6,14 @@ import { getAdminSession } from "@/lib/adminAuth";
 export async function GET() {
   try {
     const config = getSiteSettings();
-    return NextResponse.json({ success: true, config });
+    return NextResponse.json(
+      { success: true, config },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+        },
+      }
+    );
   } catch (error) {
     return NextResponse.json(
       { success: false, message: "Site ayarları alınamadı", error },
@@ -36,28 +43,53 @@ export async function POST(request: Request) {
       });
     }
 
-    const newConfig: SiteSettingsConfig = body.config;
-    if (!newConfig || !newConfig.security || !newConfig.rss || !newConfig.blog || !newConfig.theme) {
+    const incomingConfig = body.config;
+    if (!incomingConfig || typeof incomingConfig !== "object") {
       return NextResponse.json(
         { success: false, message: "Eksik veya geçersiz ayar verisi." },
         { status: 400 }
       );
     }
 
+    const currentConfig = getSiteSettings() || defaultSiteSettingsConfig;
+
+    const mergedConfig: SiteSettingsConfig = {
+      ...defaultSiteSettingsConfig,
+      ...currentConfig,
+      ...incomingConfig,
+      security: {
+        ...defaultSiteSettingsConfig.security,
+        ...(currentConfig?.security || {}),
+        ...(incomingConfig?.security || {})
+      },
+      rss: {
+        ...defaultSiteSettingsConfig.rss,
+        ...(currentConfig?.rss || {}),
+        ...(incomingConfig?.rss || {})
+      },
+      blog: {
+        ...defaultSiteSettingsConfig.blog,
+        ...(currentConfig?.blog || {}),
+        ...(incomingConfig?.blog || {})
+      },
+      theme: {
+        ...defaultSiteSettingsConfig.theme,
+        ...(currentConfig?.theme || {}),
+        ...(incomingConfig?.theme || {})
+      },
+      game: {
+        ...defaultSiteSettingsConfig.game,
+        ...(currentConfig?.game || {}),
+        ...(incomingConfig?.game || {})
+      }
+    };
+
     // Safety check: ensure at least one admin email remains
-    if (!newConfig.security.allowedEmails || newConfig.security.allowedEmails.length === 0) {
-      return NextResponse.json(
-        { success: false, message: "En az bir yönetici e-posta adresi bulunmalıdır." },
-        { status: 400 }
-      );
+    if (!mergedConfig.security.allowedEmails || mergedConfig.security.allowedEmails.length === 0) {
+      mergedConfig.security.allowedEmails = defaultSiteSettingsConfig.security.allowedEmails;
     }
 
-    // Ensure game config fallback exists
-    if (!newConfig.game) {
-      newConfig.game = defaultSiteSettingsConfig.game;
-    }
-
-    const saved = saveSiteSettings(newConfig);
+    const saved = saveSiteSettings(mergedConfig);
     if (!saved) {
       return NextResponse.json(
         { success: false, message: "Ayarlar dosyasına yazılamadı." },
@@ -68,7 +100,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       message: "Tüm ayarlar (Şifre/Erişim, RSS, Blog, Tema, Oyun) başarıyla güncellendi.",
-      config: newConfig
+      config: mergedConfig
     });
   } catch (error: any) {
     console.error("Settings POST error:", error);
@@ -82,3 +114,4 @@ export async function POST(request: Request) {
     );
   }
 }
+

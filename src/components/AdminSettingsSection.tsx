@@ -65,6 +65,10 @@ export default function AdminSettingsSection({
   const [newKeyword, setNewKeyword] = useState("");
   const [newCategory, setNewCategory] = useState("");
 
+  // Inline Notification State
+  const [inlineMessage, setInlineMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [gameToggling, setGameToggling] = useState(false);
+
   // Handle Email Add
   const handleAddEmail = () => {
     setNewEmailError(null);
@@ -1275,9 +1279,55 @@ export default function AdminSettingsSection({
           });
         };
 
+        const handleDirectToggleGame = async () => {
+          try {
+            setGameToggling(true);
+            setInlineMessage(null);
+            const newEnabled = !game.enabled;
+            const newGame = { ...game, enabled: newEnabled };
+            const updatedSettings: SiteSettingsConfig = {
+              ...settings,
+              game: newGame
+            };
+            setSettings(updatedSettings);
+
+            const res = await fetch("/api/settings", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ config: updatedSettings })
+            });
+            const data = await res.json().catch(() => ({}));
+            if (res.ok && data.success) {
+              if (data.config) setSettings(data.config);
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("smy-settings-updated"));
+              }
+              setInlineMessage({
+                type: "success",
+                text: newEnabled 
+                  ? "🎮 Tuğla Oyunu başarıyla AÇILDI ve yayına alındı!" 
+                  : "🎮 Tuğla Oyunu başarıyla KAPATILDI."
+              });
+              setTimeout(() => setInlineMessage(null), 4000);
+            } else {
+              setInlineMessage({
+                type: "error",
+                text: data.message || `Kaydedilemedi (HTTP ${res.status}).`
+              });
+            }
+          } catch (err: any) {
+            setInlineMessage({
+              type: "error",
+              text: err?.message || "Bağlantı hatası oluştu."
+            });
+          } finally {
+            setGameToggling(false);
+          }
+        };
+
         return (
           <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs space-y-6">
-            <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-5">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-slate-100 pb-5">
               <div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 text-amber-900 text-xs font-bold mb-2">
                   <Gamepad2 className="w-3.5 h-3.5 text-amber-600" />
@@ -1289,20 +1339,36 @@ export default function AdminSettingsSection({
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-slate-700">Oyun Durumu:</span>
                 <button
                   type="button"
-                  onClick={() => updateGame(g => ({ ...g, enabled: !g.enabled }))}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition-all shadow-xs ${
-                    game.enabled
-                      ? "bg-emerald-600 text-white hover:bg-emerald-700"
-                      : "bg-rose-600 text-white hover:bg-rose-700"
-                  }`}
+                  onClick={onSave}
+                  disabled={saving}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#0f2b5c] hover:bg-[#163a75] text-white font-bold text-xs shadow-sm transition-all disabled:opacity-50"
+                  title="Oyun ile ilgili tüm metin ve kural değişikliklerini kaydet"
                 >
-                  {game.enabled ? "✓ Açık (Aktif)" : "✕ Kapalı"}
+                  <Save className="w-3.5 h-3.5 text-amber-400" />
+                  <span>{saving ? "Kaydediliyor..." : "Oyun Ayarlarını Kaydet"}</span>
                 </button>
               </div>
             </div>
+
+            {/* Inline Alert */}
+            {inlineMessage && (
+              <div
+                className={`p-4 rounded-2xl border flex items-center gap-3 ${
+                  inlineMessage.type === "success"
+                    ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                    : "bg-rose-50 border-rose-200 text-rose-800"
+                }`}
+              >
+                {inlineMessage.type === "success" ? (
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+                ) : (
+                  <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />
+                )}
+                <span className="text-xs font-bold">{inlineMessage.text}</span>
+              </div>
+            )}
 
             {/* Status Hero Card */}
             <div className={`p-5 rounded-2xl border transition-all ${
@@ -1339,14 +1405,17 @@ export default function AdminSettingsSection({
                 <div className="flex items-center gap-2 self-start sm:self-center">
                   <button
                     type="button"
-                    onClick={() => updateGame(g => ({ ...g, enabled: !g.enabled }))}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                    disabled={gameToggling || saving}
+                    onClick={handleDirectToggleGame}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50 ${
                       game.enabled
                         ? "bg-white hover:bg-rose-50 text-rose-700 border border-rose-300 shadow-xs"
                         : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
                     }`}
                   >
-                    {game.enabled ? "Oyunu Kapat" : "Oyunu Hemen Aç"}
+                    {gameToggling 
+                      ? "Kaydediliyor..." 
+                      : (game.enabled ? "Oyunu Hemen Kapat" : "Oyunu Hemen Aç")}
                   </button>
 
                   <a

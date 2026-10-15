@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Phone, MessageCircle, Menu, X, Compass, ChevronRight, Calculator, MapPin } from "lucide-react";
 import { companyInfo } from "@/data/company";
@@ -15,7 +15,40 @@ interface NavbarProps {
 
 export default function Navbar({ gameConfig }: NavbarProps = {}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isGameVisible = gameConfig ? (gameConfig.enabled && gameConfig.showInNavbar) : true;
+  const [isGameVisible, setIsGameVisible] = useState<boolean>(() => {
+    if (gameConfig) {
+      return Boolean(gameConfig.enabled && gameConfig.showInNavbar);
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    let active = true;
+
+    if (gameConfig) {
+      setIsGameVisible(Boolean(gameConfig.enabled && gameConfig.showInNavbar));
+    }
+
+    const checkLiveGameSettings = () => {
+      fetch("/api/settings", { cache: "no-store" })
+        .then((res) => res.json())
+        .then((data) => {
+          if (active && data.success && data.config?.game) {
+            const g = data.config.game;
+            setIsGameVisible(Boolean(g.enabled && g.showInNavbar));
+          }
+        })
+        .catch(() => {});
+    };
+
+    checkLiveGameSettings();
+
+    window.addEventListener("smy-settings-updated", checkLiveGameSettings);
+    return () => {
+      active = false;
+      window.removeEventListener("smy-settings-updated", checkLiveGameSettings);
+    };
+  }, [gameConfig]);
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 text-slate-800 shadow-sm">

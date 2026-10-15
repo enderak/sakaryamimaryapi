@@ -10,10 +10,6 @@ const ADMIN_EMAILS_FILE = path.join(DATA_DIR, "admin-emails.json");
 let memorySettingsCache: SiteSettingsConfig | null = null;
 
 export function getSiteSettings(): SiteSettingsConfig {
-  if (memorySettingsCache) {
-    return memorySettingsCache;
-  }
-
   try {
     const currentEmails = getAllowedAdminEmails();
 

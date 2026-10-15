@@ -1,23 +1,59 @@
-import { Metadata } from "next";
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, Hammer, Trophy, Sparkles, MessageCircle, Phone, CheckCircle2 } from "lucide-react";
 import BrickTossGame from "@/components/BrickTossGame";
 import { companyInfo } from "@/data/company";
-import { getSiteSettings } from "@/lib/settingsStorage";
-import { defaultSiteSettingsConfig } from "@/data/siteSettings";
-
-export const metadata: Metadata = {
-  title: "Duvardan Tuğla Aşırtma Oyunu | Sakarya Mimar Yapı",
-  description: "Mobil uyumlu şantiye ustası tuğla aşırtma oyunu! Tuğlaları duvardan aşırtın, harç teknesini doldurun ve özel tadilat keşif indirimi kazanın.",
-  robots: {
-    index: true,
-    follow: true,
-  }
-};
+import { defaultSiteSettingsConfig, GameSettingsConfig } from "@/data/siteSettings";
 
 export default function OyunPage() {
-  const siteSettings = getSiteSettings();
-  const gameConfig = siteSettings.game || defaultSiteSettingsConfig.game;
+  const [gameConfig, setGameConfig] = useState<GameSettingsConfig | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchConfig = () => {
+      fetch("/api/settings", { cache: "no-store" })
+        .then((res) => res.json())
+        .then((data) => {
+          if (isMounted) {
+            if (data.success && data.config?.game) {
+              setGameConfig(data.config.game);
+            } else {
+              setGameConfig(defaultSiteSettingsConfig.game);
+            }
+            setLoading(false);
+          }
+        })
+        .catch(() => {
+          if (isMounted) {
+            setGameConfig(defaultSiteSettingsConfig.game);
+            setLoading(false);
+          }
+        });
+    };
+
+    fetchConfig();
+
+    window.addEventListener("smy-settings-updated", fetchConfig);
+    return () => {
+      isMounted = false;
+      window.removeEventListener("smy-settings-updated", fetchConfig);
+    };
+  }, []);
+
+  if (loading || !gameConfig) {
+    return (
+      <div className="py-24 bg-slate-50 min-h-screen text-slate-900 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-3 border-amber-500 border-t-transparent rounded-full animate-spin" />
+          <span className="text-xs font-semibold text-slate-500">Oyun yükleniyor...</span>
+        </div>
+      </div>
+    );
+  }
 
   // Closed State Screen
   if (!gameConfig.enabled) {
