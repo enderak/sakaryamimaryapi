@@ -27,7 +27,11 @@ import {
   Ban,
   Shield,
   Server,
-  Activity
+  Activity,
+  Gamepad2,
+  Trophy,
+  Sparkles,
+  Percent
 } from "lucide-react";
 import { SiteSettingsConfig, defaultSiteSettingsConfig, RssFeedSource } from "@/data/siteSettings";
 import { themeOptions, ThemeType } from "@/components/ThemeSwitcher";
@@ -49,7 +53,7 @@ export default function AdminSettingsSection({
   onReset,
   saving
 }: AdminSettingsSectionProps) {
-  const [activeSubTab, setActiveSubTab] = useState<"security" | "rss" | "blog" | "theme">("security");
+  const [activeSubTab, setActiveSubTab] = useState<"security" | "rss" | "blog" | "theme" | "game">("security");
   const [newEmail, setNewEmail] = useState("");
   const [newEmailError, setNewEmailError] = useState<string | null>(null);
   const [newBlockedIp, setNewBlockedIp] = useState("");
@@ -304,6 +308,21 @@ export default function AdminSettingsSection({
         >
           <Palette className="w-4 h-4 text-fuchsia-400" />
           <span>Tema & Görsel Arayüz</span>
+        </button>
+
+        <button
+          onClick={() => setActiveSubTab("game")}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+            activeSubTab === "game"
+              ? "bg-[#0f2b5c] text-white shadow-sm"
+              : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+          }`}
+        >
+          <Gamepad2 className="w-4 h-4 text-amber-400" />
+          <span>Tuğla Oyunu Ayarları</span>
+          {!(settings.game?.enabled ?? defaultSiteSettingsConfig.game.enabled) && (
+            <span className="text-[10px] px-1.5 py-0.2 rounded-md bg-rose-500/20 text-rose-300 font-extrabold">Kapalı</span>
+          )}
         </button>
       </div>
 
@@ -1240,6 +1259,232 @@ export default function AdminSettingsSection({
           </div>
         </div>
       )}
+
+      {/* 5. GAME SETTINGS */}
+      {activeSubTab === "game" && (() => {
+        const game = settings.game || defaultSiteSettingsConfig.game;
+
+        const updateGame = (updater: (prevGame: typeof game) => typeof game) => {
+          setSettings(prev => {
+            const base = prev || settings;
+            const currentGame = base.game || defaultSiteSettingsConfig.game;
+            return {
+              ...base,
+              game: updater(currentGame)
+            };
+          });
+        };
+
+        return (
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xs space-y-6">
+            <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-5">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 text-amber-900 text-xs font-bold mb-2">
+                  <Gamepad2 className="w-3.5 h-3.5 text-amber-600" />
+                  <span>İnteraktif Şantiye Modülü</span>
+                </div>
+                <h2 className="text-xl font-bold text-slate-900">Tuğla Aşırtma Oyunu & Kampanya Ayarları</h2>
+                <p className="text-xs text-slate-500 mt-1 max-w-2xl">
+                  Ziyaretçiler için tuğla aşırtma oyununun açık/kapalı durumunu, menü butonlarını, skor barajını ve WhatsApp keşif indirimi teklifini buradan kontrol edin.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-slate-700">Oyun Durumu:</span>
+                <button
+                  type="button"
+                  onClick={() => updateGame(g => ({ ...g, enabled: !g.enabled }))}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition-all shadow-xs ${
+                    game.enabled
+                      ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                      : "bg-rose-600 text-white hover:bg-rose-700"
+                  }`}
+                >
+                  {game.enabled ? "✓ Açık (Aktif)" : "✕ Kapalı"}
+                </button>
+              </div>
+            </div>
+
+            {/* Status Hero Card */}
+            <div className={`p-5 rounded-2xl border transition-all ${
+              game.enabled 
+                ? "bg-emerald-50/70 border-emerald-200" 
+                : "bg-rose-50/70 border-rose-200"
+            }`}>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-start gap-3.5">
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm ${
+                    game.enabled ? "bg-emerald-600 text-white" : "bg-rose-600 text-white"
+                  }`}>
+                    <Gamepad2 className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-sm font-black text-slate-900">
+                        {game.enabled ? "Oyun Yayında ve Oynanabilir" : "Oyun Geçici Olarak Kapatıldı"}
+                      </h3>
+                      <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
+                        game.enabled ? "bg-emerald-200 text-emerald-900" : "bg-rose-200 text-rose-900"
+                      }`}>
+                        {game.enabled ? "AKTİF" : "KAPALI"}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-600 mt-1 max-w-xl">
+                      {game.enabled 
+                        ? "Ziyaretçiler /oyun adresine girip oynayabilir, harç teknesini doldurup hedef skoru geçtiklerinde indirim kazanabilir." 
+                        : "Oyun devre dışı bırakıldığında /oyun sayfasında nazik bir bilgilendirme ekranı ile WhatsApp & keşif formu önerilir."}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 self-start sm:self-center">
+                  <button
+                    type="button"
+                    onClick={() => updateGame(g => ({ ...g, enabled: !g.enabled }))}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                      game.enabled
+                        ? "bg-white hover:bg-rose-50 text-rose-700 border border-rose-300 shadow-xs"
+                        : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+                    }`}
+                  >
+                    {game.enabled ? "Oyunu Kapat" : "Oyunu Hemen Aç"}
+                  </button>
+
+                  <a
+                    href="/oyun"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200 shadow-xs"
+                  >
+                    <span>Önizle</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-[#0f2b5c]" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Menu & Navigation Visibility Options */}
+            <div className="space-y-3">
+              <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Menü ve Bağlantı Görünürlüğü
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={game.showInNavbar}
+                      onChange={(e) => updateGame(g => ({ ...g, showInNavbar: e.target.checked }))}
+                      className="w-4 h-4 text-[#0f2b5c] rounded"
+                    />
+                    <span className="text-xs font-bold text-slate-800">Üst Menüde (Navbar) Oyun Butonunu Göster</span>
+                  </label>
+                  <p className="text-[11px] text-slate-500 mt-1 ml-6">
+                    Ana sayfada ve diğer sayfalarda üst menüde (🎮 Tuğla Oyunu) sekmesini gösterir.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={game.showInFooter}
+                      onChange={(e) => updateGame(g => ({ ...g, showInFooter: e.target.checked }))}
+                      className="w-4 h-4 text-[#0f2b5c] rounded"
+                    />
+                    <span className="text-xs font-bold text-slate-800">Alt Bilgide (Footer) Oyun Linkini Göster</span>
+                  </label>
+                  <p className="text-[11px] text-slate-500 mt-1 ml-6">
+                    Sayfanın altındaki hızlı bağlantılar sütununda oyun linkini gösterir.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Reward & Discount Settings */}
+            <div className="space-y-3 pt-4 border-t border-slate-100">
+              <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                <Trophy className="w-4 h-4 text-amber-500" />
+                <span>Oyun Ödülü & WhatsApp İndirim Kampanyası</span>
+              </h3>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5">
+                  <label className="block text-xs font-bold text-slate-800">
+                    Kazanılacak İndirim Oranı (%)
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={game.discountPercentage}
+                      onChange={(e) => updateGame(g => ({ ...g, discountPercentage: Number(e.target.value) || 0 }))}
+                      className="w-full text-xs px-3 py-2.5 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#0f2b5c]"
+                    />
+                    <span className="absolute right-3 top-2.5 text-xs font-bold text-slate-400">%</span>
+                  </div>
+                  <p className="text-[11px] text-slate-500">
+                    Örn: 10 girildiğinde oyuncuya &quot;%10 Keşif & İşçilik İndirimi&quot; hakkı tanınır.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5">
+                  <label className="block text-xs font-bold text-slate-800">
+                    İndirim İçin Gereken Minimum Skor
+                  </label>
+                  <input
+                    type="number"
+                    min="50"
+                    step="50"
+                    value={game.minScoreForDiscount}
+                    onChange={(e) => updateGame(g => ({ ...g, minScoreForDiscount: Number(e.target.value) || 200 }))}
+                    className="w-full text-xs px-3 py-2.5 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#0f2b5c]"
+                  />
+                  <p className="text-[11px] text-slate-500">
+                    Oyuncunun indirim rozetini açması için toplaması gereken puan (varsayılan: 200).
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Custom Texts & Closed Notice */}
+            <div className="space-y-4 pt-4 border-t border-slate-100">
+              <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Başlık ve Bilgilendirme Metinleri
+              </h3>
+
+              <div className="space-y-1.5">
+                <label className="block text-xs font-bold text-slate-800">
+                  Oyun Sayfa Başlığı
+                </label>
+                <input
+                  type="text"
+                  value={game.title}
+                  onChange={(e) => updateGame(g => ({ ...g, title: e.target.value }))}
+                  placeholder="Duvardan Tuğla Aşırtma Oyunu"
+                  className="w-full text-xs px-3 py-2.5 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#0f2b5c]"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-xs font-bold text-slate-800">
+                  Oyun Kapalı Olduğunda Ziyaretçiye Gösterilecek Mesaj
+                </label>
+                <textarea
+                  rows={3}
+                  value={game.disabledMessage}
+                  onChange={(e) => updateGame(g => ({ ...g, disabledMessage: e.target.value }))}
+                  placeholder="Tuğla Aşırtma Oyunu şu anda geçici olarak kapalıdır..."
+                  className="w-full text-xs px-3 py-2 rounded-xl bg-white border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#0f2b5c] resize-y"
+                />
+                <p className="text-[11px] text-slate-500">
+                  Oyun kapatıldığında /oyun sayfasını ziyaret edenlere bu açıklama ve keşif hattı sunulur.
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Global Save / Reset Action Bar */}
       <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">

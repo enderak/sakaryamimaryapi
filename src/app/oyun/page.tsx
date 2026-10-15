@@ -1,8 +1,10 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Hammer, Trophy, Sparkles, MessageCircle, Phone, ShieldCheck, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Hammer, Trophy, Sparkles, MessageCircle, Phone, CheckCircle2 } from "lucide-react";
 import BrickTossGame from "@/components/BrickTossGame";
 import { companyInfo } from "@/data/company";
+import { getSiteSettings } from "@/lib/settingsStorage";
+import { defaultSiteSettingsConfig } from "@/data/siteSettings";
 
 export const metadata: Metadata = {
   title: "Duvardan Tuğla Aşırtma Oyunu | Sakarya Mimar Yapı",
@@ -14,6 +16,70 @@ export const metadata: Metadata = {
 };
 
 export default function OyunPage() {
+  const siteSettings = getSiteSettings();
+  const gameConfig = siteSettings.game || defaultSiteSettingsConfig.game;
+
+  // Closed State Screen
+  if (!gameConfig.enabled) {
+    return (
+      <div className="py-12 sm:py-24 bg-slate-50 min-h-screen text-slate-900">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center space-y-6">
+          <div className="w-20 h-20 rounded-3xl bg-amber-100 text-amber-700 flex items-center justify-center mx-auto shadow-md">
+            <Hammer className="w-10 h-10" />
+          </div>
+
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-200 text-slate-700 text-xs font-bold">
+              <span>Şantiye Molası Kapalı</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {gameConfig.title || "Tuğla Aşırtma Oyunu"} Şu Anda Kapalı
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto leading-relaxed">
+              {gameConfig.disabledMessage || "Tuğla Aşırtma Oyunu şu anda geçici olarak kapalıdır. Tadilat ve mimari keşif talepleriniz için WhatsApp veya telefon hattımızdan bize doğrudan ulaşabilirsiniz."}
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4 max-w-md mx-auto">
+            <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+              Doğrudan İletişim & Ücretsiz Keşif
+            </h3>
+            <div className="flex flex-col gap-2.5">
+              <a
+                href={`https://wa.me/${companyInfo.primaryWhatsapp}?text=${encodeURIComponent(
+                  "Merhaba Sakarya Mimar Yapı, ev tadilatı ve mimari keşif için bilgi almak istiyorum."
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-white shadow-md text-xs transition-all"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>WhatsApp Keşif Hattı</span>
+              </a>
+
+              <a
+                href={`tel:${companyInfo.primaryPhoneRaw}`}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#0f2b5c] hover:bg-[#163a75] font-bold text-white shadow-md text-xs transition-all"
+              >
+                <Phone className="w-4 h-4 text-amber-400" />
+                <span>{companyInfo.primaryPhoneDisplay} (Hemen Ara)</span>
+              </a>
+
+              <Link
+                href="/"
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs border border-slate-200 transition-all"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Ana Sayfaya Dön</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Active Game Screen
   return (
     <div className="py-8 sm:py-16 bg-slate-50 min-h-screen text-slate-900">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
@@ -37,7 +103,7 @@ export default function OyunPage() {
         {/* Intro Banner */}
         <div className="text-center max-w-2xl mx-auto mb-8 space-y-2">
           <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            Duvardan Tuğla <span className="text-[#0f2b5c]">Aşırtma Oyunu</span>
+            {gameConfig.title || "Duvardan Tuğla Aşırtma Oyunu"}
           </h1>
           <p className="text-xs sm:text-sm text-slate-600">
             Parmağınızla tuğlayı geriye çekip nişan alın, duvardan aşırtarak hareketli harç teknesine isabet ettirin!
@@ -46,7 +112,10 @@ export default function OyunPage() {
 
         {/* The Game Canvas Component */}
         <div className="mb-10">
-          <BrickTossGame />
+          <BrickTossGame
+            minScoreForDiscount={gameConfig.minScoreForDiscount}
+            discountPercentage={gameConfig.discountPercentage}
+          />
         </div>
 
         {/* How to Play & Rewards Info Card */}
@@ -78,12 +147,12 @@ export default function OyunPage() {
               <span>Usta Ödülü: Tadilat İndirimi</span>
             </h3>
             <p className="text-xs text-slate-200 leading-relaxed">
-              Oyunda 200 puan ve üzerini geçen tüm Sakaryalı hemşehrilerimiz; ev tadilatı, banyo/mutfak yenileme veya villa inşaatında <strong>%10 işçilik ve keşif indirimi</strong> kazanır!
+              Oyunda {gameConfig.minScoreForDiscount} puan ve üzerini geçen tüm Sakaryalı hemşehrilerimiz; ev tadilatı, banyo/mutfak yenileme veya villa inşaatında <strong>%{gameConfig.discountPercentage} işçilik ve keşif indirimi</strong> kazanır!
             </p>
             <div className="pt-1">
               <a
                 href={`https://wa.me/${companyInfo.primaryWhatsapp}?text=${encodeURIComponent(
-                  "Merhaba Sakarya Mimar Yapı, sitenizdeki Tuğla Aşırtma Oyununu oynadım ve tadilat keşfi için görüşmek istiyorum."
+                  `Merhaba Sakarya Mimar Yapı, sitenizdeki ${gameConfig.title || "Tuğla Aşırtma Oyunu"}nu oynadım ve tadilat keşfi için görüşmek istiyorum.`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"

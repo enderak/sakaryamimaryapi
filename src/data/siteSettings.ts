@@ -41,6 +41,16 @@ export interface RssSettingsConfig {
   feeds: RssFeedSource[];
 }
 
+export interface GameSettingsConfig {
+  enabled: boolean;
+  title: string;
+  showInNavbar: boolean;
+  showInFooter: boolean;
+  minScoreForDiscount: number;
+  discountPercentage: number;
+  disabledMessage: string;
+}
+
 export interface SiteSettingsConfig {
   security: SecurityDefenseConfig;
   rss: RssSettingsConfig;
@@ -54,7 +64,7 @@ export interface SiteSettingsConfig {
     categories: string[];
   };
   theme: {
-    activeTheme: "navy" | "graphite" | "light";
+    activeTheme: "gold" | "navy" | "graphite" | "light";
     brandName: string;
     showThemeSwitcher: boolean;
     navbarStyle: "sticky" | "floating" | "static";
@@ -62,6 +72,7 @@ export interface SiteSettingsConfig {
     showCookieBanner: boolean;
     primaryAccentColor: string;
   };
+  game: GameSettingsConfig;
 }
 
 export const DEFAULT_SAKARYA_RSS_FEEDS: RssFeedSource[] = [
@@ -154,12 +165,23 @@ export const defaultSiteSettingsConfig: SiteSettingsConfig = {
     ]
   },
   theme: {
-    activeTheme: "navy",
+    activeTheme: "gold",
     brandName: "Sakarya Mimar Yapı",
     showThemeSwitcher: true,
     navbarStyle: "sticky",
     showWhatsAppFloating: true,
     showCookieBanner: true,
-    primaryAccentColor: "#c9a86a"
+    primaryAccentColor: "#ecc54e"
+  },
+  game: {
+    enabled: true,
+    title: "Duvardan Tuğla Aşırtma Oyunu",
+    showInNavbar: true,
+    showInFooter: true,
+    minScoreForDiscount: 200,
+    discountPercentage: 10,
+    disabledMessage: "Tuğla Aşırtma Oyunu şu anda geçici olarak kapalıdır. Tadilat ve keşif talepleriniz için bize WhatsApp veya telefon üzerinden doğrudan ulaşabilirsiniz."
   }
 };
+
+export const defaultGameSettingsConfig: GameSettingsConfig = defaultSiteSettingsConfig.game;

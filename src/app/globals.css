@@ -1,11 +1,13 @@
 @import "tailwindcss";
 
 @theme {
+  --color-corporate-gold: #ecc54e;
+  --color-corporate-gold-light: #f4d960;
+  --color-corporate-gold-dark: #c89e2e;
+  --color-corporate-dark: #111215;
+  --color-corporate-charcoal: #2b2a29;
   --color-corporate-navy: #0f2b5c;
   --color-corporate-navy-dark: #0a1b3a;
-  --color-corporate-gold: #c28b38;
-  --color-corporate-gold-light: #dfa856;
-  --color-corporate-gold-dark: #a17025;
 }
 
 :root {

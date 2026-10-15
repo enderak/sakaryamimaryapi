@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Palette, Check, Shield, Building2, Sun, Sparkles } from "lucide-react";
 
-export type ThemeType = "navy" | "graphite" | "light";
+export type ThemeType = "gold" | "navy" | "graphite" | "light";
 
 interface ThemeOption {
   id: ThemeType;
@@ -15,6 +15,14 @@ interface ThemeOption {
 }
 
 export const themeOptions: ThemeOption[] = [
+  {
+    id: "gold",
+    name: "Lüks Mimari Gold & Antrasit",
+    badge: "Özgün Marka Kimliği",
+    desc: "Katalog ve kartvizitinizdeki mat antrasit zemin, mimari altın varak (#ecc54e) ve saf beyaz tipografi.",
+    colors: ["#111215", "#2b2a29", "#ecc54e"],
+    icon: Sparkles,
+  },
   {
     id: "navy",
     name: "Derin Güven Laciverti",
@@ -42,23 +50,23 @@ export const themeOptions: ThemeOption[] = [
 ];
 
 export default function ThemeSwitcher() {
-  const [currentTheme, setCurrentTheme] = useState<ThemeType>("navy");
+  const [currentTheme, setCurrentTheme] = useState<ThemeType>("gold");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     try {
       const saved = localStorage.getItem("sakarya_theme") as ThemeType;
-      if (saved && (saved === "navy" || saved === "graphite" || saved === "light")) {
+      if (saved && (saved === "gold" || saved === "navy" || saved === "graphite" || saved === "light")) {
         setCurrentTheme(saved);
         document.documentElement.setAttribute("data-theme", saved);
       } else {
-        // Default to navy (trust theme)
-        setCurrentTheme("navy");
-        document.documentElement.setAttribute("data-theme", "navy");
+        // Default to gold (brand identity theme from catalog)
+        setCurrentTheme("gold");
+        document.documentElement.setAttribute("data-theme", "gold");
       }
     } catch {
-      document.documentElement.setAttribute("data-theme", "navy");
+      document.documentElement.setAttribute("data-theme", "gold");
     }
   }, []);
 

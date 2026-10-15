@@ -62,6 +62,10 @@ export function getSiteSettings(): SiteSettingsConfig {
       theme: {
         ...defaultSiteSettingsConfig.theme,
         ...(parsed.theme || {})
+      },
+      game: {
+        ...defaultSiteSettingsConfig.game,
+        ...(parsed.game || {})
       }
     };
   } catch (err) {

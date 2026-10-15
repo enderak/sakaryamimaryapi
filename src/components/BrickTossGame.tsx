@@ -129,7 +129,15 @@ const GROUND_Y = 320;
 const SLING_X = 85;
 const SLING_Y = 245;
 
-export default function BrickTossGame() {
+interface BrickTossGameProps {
+  minScoreForDiscount?: number;
+  discountPercentage?: number;
+}
+
+export default function BrickTossGame({
+  minScoreForDiscount = 200,
+  discountPercentage = 10
+}: BrickTossGameProps = {}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioRef = useRef<GameAudio>(new GameAudio());
 
@@ -808,7 +816,7 @@ export default function BrickTossGame() {
 
               <div>
                 <h3 className="text-xl font-black text-slate-900">
-                  {score >= 200 ? "🏆 Tebrikler Usta!" : "Tuğlalar Bitti!"}
+                  {score >= minScoreForDiscount ? "🏆 Tebrikler Usta!" : "Tuğlalar Bitti!"}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1">
                   Toplam Skorunuz: <strong className="text-[#0f2b5c] text-base">{score}</strong> Puan
@@ -820,18 +828,18 @@ export default function BrickTossGame() {
                 )}
               </div>
 
-              {score >= 200 && (
+              {score >= minScoreForDiscount && (
                 <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs space-y-2">
                   <div className="flex items-center justify-center gap-1.5 font-bold text-emerald-800">
                     <Sparkles className="w-4 h-4 text-emerald-600" />
                     <span>Özel Tadilat Keşif İndirimi!</span>
                   </div>
                   <p className="text-[11px] text-emerald-700">
-                    Başarılı aşırtma atışlarınız için Sakarya Mimar Yapı&apos;dan %10 keşif & işçilik indirimi kazandınız!
+                    Başarılı aşırtma atışlarınız için Sakarya Mimar Yapı&apos;dan %{discountPercentage} keşif & işçilik indirimi kazandınız!
                   </p>
                   <a
                     href={`https://wa.me/${companyInfo.primaryWhatsapp}?text=${encodeURIComponent(
-                      `Merhaba Sakarya Mimar Yapı, Tuğla Aşırtma Oyununda ${score} puan yaparak %10 indirim kazandım! Ev tadilat keşfi için bilgi alabilir miyim?`
+                      `Merhaba Sakarya Mimar Yapı, Tuğla Aşırtma Oyununda ${score} puan yaparak %${discountPercentage} indirim kazandım! Ev tadilat keşfi için bilgi alabilir miyim?`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"

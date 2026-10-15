@@ -84,12 +84,21 @@
     ]
   },
   "theme": {
-    "activeTheme": "navy",
+    "activeTheme": "gold",
     "brandName": "Sakarya Mimar Yapı",
     "showThemeSwitcher": true,
     "navbarStyle": "sticky",
     "showWhatsAppFloating": true,
     "showCookieBanner": true,
-    "primaryAccentColor": "#c9a86a"
+    "primaryAccentColor": "#ecc54e"
+  },
+  "game": {
+    "enabled": true,
+    "title": "Duvardan Tuğla Aşırtma Oyunu",
+    "showInNavbar": true,
+    "showInFooter": true,
+    "minScoreForDiscount": 200,
+    "discountPercentage": 10,
+    "disabledMessage": "Tuğla Aşırtma Oyunu şu anda geçici olarak kapalıdır. Tadilat ve keşif talepleriniz için bize WhatsApp veya telefon üzerinden doğrudan ulaşabilirsiniz."
   }
 }

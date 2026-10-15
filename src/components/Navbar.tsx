@@ -5,8 +5,17 @@ import Link from "next/link";
 import { Phone, MessageCircle, Menu, X, Compass, ChevronRight, Calculator, MapPin } from "lucide-react";
 import { companyInfo } from "@/data/company";
 
-export default function Navbar() {
+interface NavbarProps {
+  gameConfig?: {
+    enabled: boolean;
+    showInNavbar: boolean;
+    title?: string;
+  };
+}
+
+export default function Navbar({ gameConfig }: NavbarProps = {}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isGameVisible = gameConfig ? (gameConfig.enabled && gameConfig.showInNavbar) : true;
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 text-slate-800 shadow-sm">
@@ -39,18 +48,11 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3.5 group">
-            <div className="w-11 h-11 rounded-xl bg-[#0f2b5c] text-amber-400 flex items-center justify-center font-black shadow-md shadow-slate-300 group-hover:scale-105 transition-transform">
-              <Compass className="w-6 h-6 stroke-[2.2]" />
-            </div>
-            <div>
-              <div className="text-xl sm:text-2xl font-black tracking-tight flex items-center gap-1.5">
-                <span className="text-slate-900">SAKARYA</span>
-                <span className="text-[#0f2b5c]">MİMAR YAPI</span>
-              </div>
-              <p className="text-[10px] tracking-wider uppercase text-slate-500 font-semibold">
-                {companyInfo.tagline}
-              </p>
-            </div>
+            <img
+              src="/images/Sakarya-Mimar-Siyah-Logo.png"
+              alt="Sakarya Mimar Yapı"
+              className="h-12 sm:h-14 w-auto object-contain group-hover:scale-105 transition-transform"
+            />
           </Link>
 
           {/* Desktop Nav */}
@@ -74,9 +76,11 @@ export default function Navbar() {
             <Link href="/blog" className="hover:text-[#0f2b5c] transition-colors">
               Tadilat Rehberi
             </Link>
-            <Link href="/oyun" className="hover:text-amber-600 font-bold transition-colors flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
-              <span>🎮 Tuğla Oyunu</span>
-            </Link>
+            {isGameVisible && (
+              <Link href="/oyun" className="hover:text-amber-600 font-bold transition-colors flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
+                <span>🎮 Tuğla Oyunu</span>
+              </Link>
+            )}
             <Link href="/iletisim" className="hover:text-[#0f2b5c] transition-colors">
               İletişim
             </Link>
@@ -173,17 +177,19 @@ export default function Navbar() {
             <span>Tadilat Rehberi & Fiyatlar</span>
             <ChevronRight className="w-4 h-4 text-slate-400" />
           </Link>
-          <Link
-            href="/oyun"
-            onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center justify-between py-2.5 text-sm font-bold text-amber-800 bg-amber-50 px-3 rounded-xl border border-amber-200"
-          >
-            <span className="flex items-center gap-2">
-              <span>🎮</span>
-              <span>Tuğla Aşırtma Oyunu</span>
-            </span>
-            <span className="text-[10px] bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full font-extrabold">Ödüllü</span>
-          </Link>
+          {isGameVisible && (
+            <Link
+              href="/oyun"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between py-2.5 text-sm font-bold text-amber-800 bg-amber-50 px-3 rounded-xl border border-amber-200"
+            >
+              <span className="flex items-center gap-2">
+                <span>🎮</span>
+                <span>Tuğla Aşırtma Oyunu</span>
+              </span>
+              <span className="text-[10px] bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full font-extrabold">Ödüllü</span>
+            </Link>
+          )}
           <Link
             href="/iletisim"
             onClick={() => setMobileMenuOpen(false)}

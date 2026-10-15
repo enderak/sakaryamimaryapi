@@ -52,6 +52,11 @@ export async function POST(request: Request) {
       );
     }
 
+    // Ensure game config fallback exists
+    if (!newConfig.game) {
+      newConfig.game = defaultSiteSettingsConfig.game;
+    }
+
     const saved = saveSiteSettings(newConfig);
     if (!saved) {
       return NextResponse.json(
@@ -62,7 +67,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: "Tüm ayarlar (Şifre/Erişim, RSS, Blog, Tema) başarıyla güncellendi.",
+      message: "Tüm ayarlar (Şifre/Erişim, RSS, Blog, Tema, Oyun) başarıyla güncellendi.",
       config: newConfig
     });
   } catch (error: any) {

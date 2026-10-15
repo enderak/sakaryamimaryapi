@@ -8,6 +8,7 @@ import CookieBanner from "@/components/CookieBanner";
 import MobileStickyBar from "@/components/MobileStickyBar";
 import { getSeoGeoConfig } from "@/lib/seoStorage";
 import { getSocialMediaConfig } from "@/lib/socialStorage";
+import { getSiteSettings } from "@/lib/settingsStorage";
 import { companyInfo } from "@/data/company";
 
 const geistSans = Geist({
@@ -104,6 +105,7 @@ export default function RootLayout({
 }) {
   const seoConfig = getSeoGeoConfig();
   const socialConfig = getSocialMediaConfig();
+  const siteSettings = getSiteSettings();
   const { meta, geo, schema, googlePlaces, merchant, aiOptimization } = seoConfig;
 
   // LocalBusiness + Google Places + Merchant Offerings Schema.org JSON-LD
@@ -241,7 +243,7 @@ export default function RootLayout({
         )}
       </head>
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-900 selection:bg-amber-100 selection:text-amber-900">
-        <Navbar />
+        <Navbar gameConfig={siteSettings.game} />
         <main className="flex-1 pb-16 md:pb-0">{children}</main>
         <Footer />
         <WhatsAppFloating />

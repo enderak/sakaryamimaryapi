@@ -38,7 +38,8 @@ import {
   ShieldCheck,
   Play,
   BookOpen,
-  Settings
+  Settings,
+  Gamepad2
 } from "lucide-react";
 import { HomePageModulesConfig, defaultHomeModulesConfig } from "@/data/homeModules";
 import { SeoGeoConfig, defaultSeoGeoConfig, MerchantServiceOffer } from "@/data/seoGeo";
@@ -421,7 +422,7 @@ export default function AdminModulesPage() {
                   ? "bg-indigo-600 text-white font-black shadow-md ring-2 ring-indigo-300"
                   : "bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200"
               }`}
-              title="Şifre, RSS, Blog ve Tema Ayarları"
+              title="Şifre, RSS, Blog, Tema ve Oyun Ayarları"
             >
               <Settings className="w-4 h-4 text-indigo-600" />
               <span>Ayarlar</span>
@@ -547,7 +548,7 @@ export default function AdminModulesPage() {
             }`}
           >
             <Settings className="w-4 h-4 text-indigo-600" />
-            <span>Ayarlar (Şifre, RSS, Blog, Tema)</span>
+            <span>Ayarlar (Şifre, RSS, Blog, Tema, Oyun)</span>
           </button>
 
           <button
@@ -671,6 +672,106 @@ export default function AdminModulesPage() {
                   </div>
                 );
               })}
+            </div>
+
+            {/* Özel İnteraktif Modüller & Tuğla Oyunu */}
+            <div className="pt-5 border-t border-slate-200 mt-6">
+              <div className="flex items-center justify-between pb-3">
+                <span className="text-xs uppercase font-extrabold text-[#0f2b5c] tracking-wider flex items-center gap-1.5">
+                  <Gamepad2 className="w-4 h-4 text-amber-500" />
+                  <span>Özel İnteraktif Sayfalar & Şantiye Oyunu</span>
+                </span>
+                <span className="text-[11px] text-slate-500">Müstakil Sayfa: /oyun</span>
+              </div>
+
+              {(() => {
+                const isGameEnabled = settingsConfig?.game?.enabled ?? defaultSiteSettingsConfig.game.enabled;
+                return (
+                  <div className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl border transition-all ${
+                    isGameEnabled
+                      ? "bg-amber-50/50 border-amber-200 hover:border-amber-300"
+                      : "bg-slate-100/60 border-dashed border-slate-300 opacity-70"
+                  }`}>
+                    <div className="flex items-center gap-3.5 mb-3 sm:mb-0">
+                      <div className="w-9 h-9 rounded-xl bg-[#0f2b5c] text-amber-400 font-black text-sm flex items-center justify-center shrink-0 shadow-xs">
+                        🎮
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-sm font-bold text-slate-900">
+                            {settingsConfig?.game?.title || "Duvardan Tuğla Aşırtma Oyunu"}
+                          </h3>
+                          <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
+                            isGameEnabled
+                              ? "bg-emerald-100 text-emerald-800"
+                              : "bg-rose-100 text-rose-800"
+                          }`}>
+                            {isGameEnabled ? "Yayında (Açık)" : "Kapalı"}
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-500 mt-0.5">
+                          {isGameEnabled 
+                            ? "Ziyaretçiler oyunu oynayabilir, skor yaparak %10 tadilat keşif indirimi kazanabilir." 
+                            : "Oyun şu anda kapalı. /oyun sayfasında bilgilendirme ekranı ve doğrudan keşif hattı gösterilir."}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 self-end sm:self-auto">
+                      <button
+                        onClick={async () => {
+                          if (!settingsConfig) return;
+                          const currentG = settingsConfig.game || defaultSiteSettingsConfig.game;
+                          const newG = { ...currentG, enabled: !currentG.enabled };
+                          const newSettings = { ...settingsConfig, game: newG };
+                          setSettingsConfig(newSettings);
+                          try {
+                            const res = await fetch("/api/settings", {
+                              method: "POST",
+                              headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify({ config: newSettings })
+                            });
+                            const data = await res.json();
+                            if (data.success) {
+                              setStatusMessage({ 
+                                type: "success", 
+                                text: newG.enabled ? "🎮 Tuğla Oyunu başarıyla AÇILDI ve yayına alındı!" : "🎮 Tuğla Oyunu başarıyla KAPATILDI." 
+                              });
+                              setTimeout(() => setStatusMessage(null), 4000);
+                            }
+                          } catch {}
+                        }}
+                        className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-colors shadow-xs ${
+                          isGameEnabled
+                            ? "bg-amber-50 hover:bg-amber-100 text-amber-800 border-amber-200"
+                            : "bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-200"
+                        }`}
+                      >
+                        {isGameEnabled ? (
+                          <>
+                            <EyeOff className="w-3.5 h-3.5 text-amber-600" />
+                            <span>Kapat</span>
+                          </>
+                        ) : (
+                          <>
+                            <Eye className="w-3.5 h-3.5 text-emerald-600" />
+                            <span>Aç</span>
+                          </>
+                        )}
+                      </button>
+
+                      <button
+                        onClick={() => setActiveTab("settings")}
+                        className="px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:text-[#0f2b5c] hover:border-slate-300 shadow-xs transition-colors flex items-center gap-1.5 text-xs font-bold"
+                        title="Tüm Oyun Ayarlarını Gör"
+                      >
+                        <Settings className="w-3.5 h-3.5 text-indigo-600" />
+                        <span>Detaylı Ayarlar</span>
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         )}

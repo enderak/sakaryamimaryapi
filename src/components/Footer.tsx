@@ -4,9 +4,12 @@ import { sakaryaDistricts } from "@/data/districts";
 import { services } from "@/data/services";
 import { companyInfo } from "@/data/company";
 import { getSocialMediaConfig } from "@/lib/socialStorage";
+import { getSiteSettings } from "@/lib/settingsStorage";
 
 export default function Footer() {
   const socialConfig = getSocialMediaConfig();
+  const siteSettings = getSiteSettings();
+  const showGame = siteSettings.game ? (siteSettings.game.enabled && siteSettings.game.showInFooter) : true;
   const { channels } = socialConfig;
 
   return (
@@ -51,17 +54,11 @@ export default function Footer() {
           {/* Col 1: Brand & Contact Info */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center font-black shadow-md">
-                <Compass className="w-6 h-6" />
-              </div>
-              <div>
-                <span className="text-xl font-black text-white tracking-tight">
-                  SAKARYA <span className="text-amber-400">MİMAR YAPI</span>
-                </span>
-                <p className="text-[10px] uppercase tracking-wider text-slate-300 font-medium">
-                  {companyInfo.tagline}
-                </p>
-              </div>
+              <img
+                src="/images/Sakarya-Mimar-Beyaz-Logo.png"
+                alt="Sakarya Mimar Yapı"
+                className="h-14 w-auto object-contain"
+              />
             </Link>
 
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-sm">
@@ -261,11 +258,13 @@ export default function Footer() {
                   İletişim & Konum
                 </Link>
               </li>
-              <li>
-                <Link href="/oyun" className="text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1.5 font-bold">
-                  <span>🎮 Tuğla Aşırtma Oyunu</span>
-                </Link>
-              </li>
+              {showGame && (
+                <li>
+                  <Link href="/oyun" className="text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1.5 font-bold">
+                    <span>🎮 {siteSettings.game?.title || "Tuğla Aşırtma Oyunu"}</span>
+                  </Link>
+                </li>
+              )}
               <li className="pt-2 border-t border-[#16274a]">
                 <Link href="/kvkk-aydinlatma-metni" className="text-slate-400 hover:text-amber-300 transition-colors flex items-center gap-1">
                   <span>🔒 KVKK Aydınlatma Metni</span>
