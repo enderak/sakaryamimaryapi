@@ -45,35 +45,35 @@ export default function Navbar({ gameConfig }: NavbarProps = {}) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-20 gap-4">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3.5 group">
+          <Link href="/" className="flex items-center shrink-0 mr-6 lg:mr-10 xl:mr-14 py-1 group">
             <img
               src="/images/Sakarya-Mimar-Siyah-Logo.png"
               alt="Sakarya Mimar Yapı"
-              className="h-12 sm:h-14 w-auto object-contain group-hover:scale-105 transition-transform"
+              className="h-11 sm:h-13 w-auto object-contain group-hover:scale-[1.02] transition-transform"
             />
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-700">
-            <Link href="/" className="hover:text-[#0f2b5c] transition-colors">
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-sm font-semibold text-slate-700">
+            <Link href="/" className="hover:text-amber-600 transition-colors">
               Ana Sayfa
             </Link>
-            <Link href="/hizmetler" className="hover:text-[#0f2b5c] transition-colors">
+            <Link href="/hizmetler" className="hover:text-amber-600 transition-colors">
               Hizmetlerimiz
             </Link>
-            <Link href="/projeler" className="hover:text-[#0f2b5c] transition-colors">
+            <Link href="/projeler" className="hover:text-amber-600 transition-colors">
               Projelerimiz
             </Link>
-            <Link href="/bolgeler/serdivan" className="hover:text-[#0f2b5c] transition-colors">
+            <Link href="/bolgeler/serdivan" className="hover:text-amber-600 transition-colors">
               İlçeler
             </Link>
-            <Link href="/haberler" className="hover:text-[#0f2b5c] transition-colors flex items-center gap-1.5">
+            <Link href="/haberler" className="hover:text-amber-600 transition-colors flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               Sektör Haberleri
             </Link>
-            <Link href="/blog" className="hover:text-[#0f2b5c] transition-colors">
+            <Link href="/blog" className="hover:text-amber-600 transition-colors">
               Tadilat Rehberi
             </Link>
             {isGameVisible && (
@@ -81,7 +81,7 @@ export default function Navbar({ gameConfig }: NavbarProps = {}) {
                 <span>🎮 Tuğla Oyunu</span>
               </Link>
             )}
-            <Link href="/iletisim" className="hover:text-[#0f2b5c] transition-colors">
+            <Link href="/iletisim" className="hover:text-amber-600 transition-colors">
               İletişim
             </Link>
           </nav>
