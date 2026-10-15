@@ -8,9 +8,6 @@ const SOCIAL_CONFIG_FILE = path.join(DATA_DIR, "social-media-config.json");
 let memorySocialCache: SocialMediaConfig | null = null;
 
 export function getSocialMediaConfig(): SocialMediaConfig {
-  if (memorySocialCache) {
-    return memorySocialCache;
-  }
   try {
     if (!fs.existsSync(SOCIAL_CONFIG_FILE)) {
       if (!fs.existsSync(DATA_DIR)) {

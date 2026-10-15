@@ -8,9 +8,6 @@ const CONFIG_FILE = path.join(DATA_DIR, "homepage-modules.json");
 let memoryModulesCache: HomePageModulesConfig | null = null;
 
 export function getHomeModulesConfig(): HomePageModulesConfig {
-  if (memoryModulesCache) {
-    return memoryModulesCache;
-  }
   try {
     if (!fs.existsSync(CONFIG_FILE)) {
       // Ensure directory exists and write default

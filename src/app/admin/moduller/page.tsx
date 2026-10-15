@@ -39,7 +39,9 @@ import {
   Play,
   BookOpen,
   Settings,
-  Gamepad2
+  Gamepad2,
+  FolderArchive,
+  History
 } from "lucide-react";
 import { HomePageModulesConfig, defaultHomeModulesConfig } from "@/data/homeModules";
 import { SeoGeoConfig, defaultSeoGeoConfig, MerchantServiceOffer } from "@/data/seoGeo";
@@ -47,6 +49,7 @@ import { SocialMediaConfig, defaultSocialMediaConfig, extractYouTubeId, SocialPo
 import { SiteSettingsConfig, defaultSiteSettingsConfig } from "@/data/siteSettings";
 import AdminGuideSection from "@/components/AdminGuideSection";
 import AdminSettingsSection from "@/components/AdminSettingsSection";
+import AdminBackupSection from "@/components/AdminBackupSection";
 
 export default function AdminModulesPage() {
   const router = useRouter();
@@ -58,7 +61,7 @@ export default function AdminModulesPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
-  const [activeTab, setActiveTab] = useState<"visibility" | "content" | "seo" | "social" | "settings" | "guide">("visibility");
+  const [activeTab, setActiveTab] = useState<"visibility" | "content" | "seo" | "social" | "settings" | "backup" | "guide">("visibility");
   const [selectedModuleKey, setSelectedModuleKey] = useState<string>("hero");
 
   useEffect(() => {
@@ -321,6 +324,17 @@ export default function AdminModulesPage() {
       setSaving(true);
       setStatusMessage(null);
 
+      // Automatically create a safety backup checkpoint before overwriting
+      fetch("/api/backup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "create",
+          type: "auto",
+          title: "Değişiklik Kaydı Öncesi Otomatik Yedek"
+        })
+      }).catch(() => {});
+
       const tasks: Promise<any>[] = [];
 
       // 1. Always save modules if config is loaded
@@ -516,6 +530,19 @@ export default function AdminModulesPage() {
             </button>
 
             <button
+              onClick={() => setActiveTab("backup")}
+              className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-xs ${
+                activeTab === "backup"
+                  ? "bg-amber-400 text-slate-950 font-black shadow-md ring-2 ring-amber-300"
+                  : "bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200"
+              }`}
+              title="Yedekleme, Geri Yükleme ve İşlem Geçmişi (Geri Al)"
+            >
+              <FolderArchive className="w-4 h-4 text-amber-700" />
+              <span>Yedekler & Geri Al</span>
+            </button>
+
+            <button
               onClick={handleReset}
               disabled={saving}
               className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white hover:bg-rose-50 text-rose-600 font-semibold text-xs border border-rose-200 transition-colors"
@@ -623,6 +650,18 @@ export default function AdminModulesPage() {
           >
             <Settings className="w-4 h-4 text-indigo-600" />
             <span>Ayarlar (Şifre, RSS, Blog, Tema, Oyun)</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("backup")}
+            className={`pb-3 px-4 text-sm font-bold border-b-2 flex items-center gap-2 transition-colors ${
+              activeTab === "backup"
+                ? "border-[#0f2b5c] text-[#0f2b5c]"
+                : "border-transparent text-slate-500 hover:text-slate-800"
+            }`}
+          >
+            <FolderArchive className="w-4 h-4 text-amber-600" />
+            <span>Yedekleme & Geri Yükleme (Geri Al)</span>
           </button>
 
           <button
@@ -3269,6 +3308,26 @@ export default function AdminModulesPage() {
         {/* TAB 6: KULLANIM KILAVUZU & ARAMA MOTORU REHBERİ */}
         {activeTab === "guide" && (
           <AdminGuideSection canonicalUrl={seoConfig?.meta?.canonicalUrl} />
+        )}
+
+        {/* TAB 7: YEDEKLEME & GERİ YÜKLEME */}
+        {activeTab === "backup" && (
+          <AdminBackupSection
+            currentModules={config}
+            currentSettings={settingsConfig}
+            currentSeo={seoConfig}
+            currentSocial={socialConfig}
+            onConfigsRestored={(restored) => {
+              if (restored.modules) setConfig(restored.modules);
+              if (restored.settings) setSettingsConfig(restored.settings);
+              if (restored.seo) setSeoConfig(restored.seo);
+              if (restored.social) setSocialConfig(restored.social);
+            }}
+            onNotify={(msg) => {
+              setStatusMessage(msg);
+              setTimeout(() => setStatusMessage(null), 5000);
+            }}
+          />
         )}
 
       </div>

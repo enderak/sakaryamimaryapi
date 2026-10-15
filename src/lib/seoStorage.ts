@@ -8,9 +8,6 @@ const SEO_CONFIG_FILE = path.join(DATA_DIR, "seo-geo-config.json");
 let memorySeoCache: SeoGeoConfig | null = null;
 
 export function getSeoGeoConfig(): SeoGeoConfig {
-  if (memorySeoCache) {
-    return memorySeoCache;
-  }
   try {
     if (!fs.existsSync(SEO_CONFIG_FILE)) {
       if (!fs.existsSync(DATA_DIR)) {

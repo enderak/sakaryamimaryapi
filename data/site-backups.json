@@ -1,0 +1,409 @@
+[
+  {
+    "id": "backup-initial-1792071223063",
+    "createdAt": "2026-10-15T13:33:43.063Z",
+    "formattedDate": "15 Ekim 2026, 16:10",
+    "title": "Başlangıç Kurulum & Güvenlik Yedeği",
+    "description": "Yedekleme modülü devreye alındığında oluşturulan ilk kararlı durum yedeği.",
+    "type": "manual",
+    "summary": {
+      "modulesCount": 9,
+      "enabledModulesCount": 9,
+      "gameEnabled": false,
+      "activeTheme": "gold",
+      "allowedEmailsCount": 3,
+      "seoTitle": "Sakarya Mimar Yapı | Anahtar Teslim Tadilat, İnşaat ve Mimarlık"
+    },
+    "data": {
+      "modules": {
+        "sections": {
+          "constructionSlider": {
+            "id": "constructionSlider",
+            "name": "İnşaat Projeleri Slider'ı",
+            "description": "Menünün hemen altında dönen büyük vitrin ve inşaat projeleri slaytı",
+            "enabled": true,
+            "order": 1
+          },
+          "hero": {
+            "id": "hero",
+            "name": "Hero (Ana Karşılama Alanı)",
+            "description": "Ana başlık, mimari güvence rozetleri ve hızlı keşif formu/kartı",
+            "enabled": true,
+            "order": 2
+          },
+          "services": {
+            "id": "services",
+            "name": "Uzmanlık Alanlarımız & Hizmetler",
+            "description": "Komple tadilat, mutfak/banyo, villa inşaatı, 3D mimarlık kartları",
+            "enabled": true,
+            "order": 3
+          },
+          "projects": {
+            "id": "projects",
+            "name": "Projeler & Öncesi/Sonrası Galerisi",
+            "description": "Tamamlanan projeler ve interaktif Before/After karşılaştırma kaydırıcısı",
+            "enabled": true,
+            "order": 4
+          },
+          "calculator": {
+            "id": "calculator",
+            "name": "Fiyat & Maliyet Hesaplayıcı",
+            "description": "Kullanıcıların m² ve tadilat tipi seçip anında bütçe çıkardığı interaktif modül",
+            "enabled": true,
+            "order": 5
+          },
+          "districts": {
+            "id": "districts",
+            "name": "Sakarya İlçe Hizmet Ağı",
+            "description": "Serdivan, Adapazarı, Sapanca vb. ilçelere özel hizmet kartları",
+            "enabled": true,
+            "order": 6
+          },
+          "testimonials": {
+            "id": "testimonials",
+            "name": "Müşteri Yorumları & Referanslar",
+            "description": "Teslim edilen projelerin müşteri puanları ve memnuniyet yorumları",
+            "enabled": true,
+            "order": 7
+          },
+          "news": {
+            "id": "news",
+            "name": "Güncel Sakarya & Sektör Haberleri (RSS)",
+            "description": "Canlı RSS haber akışı ve mimarlık dünyasından son gelişmeler",
+            "enabled": true,
+            "order": 8
+          },
+          "blog": {
+            "id": "blog",
+            "name": "Blog & Tadilat Rehberi",
+            "description": "Ev tadilatı maliyetleri ve rehber makalelerinin özet kartları",
+            "enabled": true,
+            "order": 9
+          }
+        },
+        "content": {
+          "hero": {
+            "badgeLocation": "Serdivan, Arabacıalanı • Çark Cad. No:148",
+            "badgeHighlight": "",
+            "badgeNote": "Tüm Sakarya Geneli Ücretsiz Keşif",
+            "titleLine1": "Sakarya'da Yaşam Alanınızı",
+            "titleHighlight": "Sözleşmeli & Mimari Güvenceyle",
+            "titleLine2": "Yeniden İnşa Ediyoruz.",
+            "description": "Sakarya Mimar Yapı; komple ev ve daire tadilatı, modern mutfak & banyo yenileme, Sapanca villa inşaatı ve 3D iç mimarlık projelendirmesi sunar. Gününde teslim ve 2 yıl resmi işçilik garantisi.",
+            "trustPoints": [
+              {
+                "text": "Ücretsiz 3D Keşif",
+                "icon": "check"
+              },
+              {
+                "text": "2 Yıl Firma Garantisi",
+                "icon": "shield"
+              },
+              {
+                "text": "350+ Teslim Edilen Proje",
+                "icon": "star"
+              }
+            ],
+            "consultationBox": {
+              "title": "Ücretsiz Keşif & Proje Danışmanlığı",
+              "description": "Sakarya içi 24 saatte yerinde keşif, 3D çizim ve şeffaf malzeme maliyet listesi hazırlıyoruz.",
+              "phoneLabel": "Hemen Ara & Randevu Al",
+              "subNote": "Gününde teslim garantisi • Resmi sözleşmeli ve garantili iş teslimi"
+            }
+          },
+          "constructionSlider": {
+            "sectionTitle": "Devam Eden & Tamamlanan",
+            "sectionSubtitle": "İnşaat ve Taahhüt Projelerimiz",
+            "badgeText": "Canlı Şantiye & Proje Vitrini",
+            "autoPlayIntervalMs": 6500
+          },
+          "services": {
+            "badge": "Uzmanlık Alanlarımız",
+            "title": "Sakarya Tadilat &",
+            "titleHighlight": "Mimarlık Hizmetleri",
+            "description": "Kaba inşaattan en ince detayına kadar profesyonel mimar ve usta kadromuzla yanınızdayız.",
+            "ctaText": "Tüm Hizmetleri Gör",
+            "ctaLink": "/hizmetler"
+          },
+          "projects": {
+            "badge": "Referans Portföyümüz",
+            "title": "Sakarya'da Tamamlanan",
+            "titleHighlight": "Projelerimiz",
+            "description": "Serdivan, Sapanca, Adapazarı ve Erenler lokasyonlarında anahtar teslim tamamladığımız gerçek işlerimizden seçkiler.",
+            "showBeforeAfter": true
+          },
+          "calculator": {
+            "badge": "Şeffaf & Anında Hesaplama",
+            "title": "Sakarya Mimar Yapı",
+            "titleHighlight": "Fiyat Hesaplayıcı",
+            "description": "Evinizin ya da iş yerinizin özelliklerini seçin; 2026 piyasa koşullarına uygun yaklaşık maliyet aralığını anında görün. Serdivan merkez ofisimizden tüm Sakarya'ya ücretsiz keşif hizmeti."
+          },
+          "districts": {
+            "badge": "Sakarya Geneli Hizmet Ağı",
+            "title": "İlçenize Özel",
+            "titleHighlight": "Tadilat & İnşaat",
+            "description": "Sakarya'nın her ilçesinin mimari karakterine ve iklim koşullarına uygun uzman usta ve teknik kadromuzla adrese teslim hizmet veriyoruz."
+          },
+          "testimonials": {
+            "badge": "Müşteri Memnuniyeti",
+            "title": "Sakaryalı Hemşehrilerimiz",
+            "titleHighlight": "Ne Diyor?",
+            "description": "Serdivan, Sapanca ve Adapazarı'nda evini veya ofisini teslim ettiğimiz müşterilerimizin gerçek deneyimleri."
+          },
+          "news": {
+            "badge": "Canlı Haber Akışı",
+            "title": "Sakarya & İnşaat",
+            "titleHighlight": "Gündemi",
+            "description": "Sakarya yapı sektörü, konut projeleri ve kentsel dönüşüm ile ilgili en güncel haberler.",
+            "itemsToShow": 4
+          },
+          "blog": {
+            "badge": "Sakarya Tadilat Rehberi",
+            "title": "Faydalı Bilgiler &",
+            "titleHighlight": "Tadilat Tüyoları",
+            "description": "Bütçenizi korumanızı, doğru malzeme seçmenizi ve evinizi en verimli şekilde yenilemenizi sağlayacak mimari ipuçları.",
+            "ctaText": "Tüm Rehberi Oku"
+          }
+        }
+      },
+      "settings": {
+        "security": {
+          "allowedEmails": [
+            "sakaryamimaryapi@gmail.com",
+            "enderakar@outlook.com",
+            "enderakar@gmail.com"
+          ],
+          "requireOtp": true,
+          "sessionDurationDays": 7,
+          "masterPasswordHint": "Sakarya 2026 Admin Şifresi / OTP ile doğrulama",
+          "maxLoginAttempts": 5,
+          "rateLimitingEnabled": true,
+          "maxContactRequestsPer10Min": 5,
+          "blockMaliciousUserAgents": true,
+          "blockSqlInjectionPatterns": true,
+          "xssProtectionStrict": true,
+          "clickjackingProtection": true,
+          "hstsEnabled": true,
+          "nosniffEnabled": true,
+          "blockedIps": [],
+          "ipWhitelistForAdmin": []
+        },
+        "rss": {
+          "enabled": true,
+          "itemsToShow": 6,
+          "refreshIntervalMinutes": 30,
+          "showFallbackOnFail": true,
+          "filterKeywordsOnly": true,
+          "keywords": [
+            "sakarya",
+            "adapazarı",
+            "serdivan",
+            "sapanca",
+            "inşaat",
+            "tadilat",
+            "dekorasyon",
+            "kentsel dönüşüm",
+            "mimari",
+            "konut",
+            "villa",
+            "çelik ev",
+            "yalıtım",
+            "mantolama",
+            "bina",
+            "çevre ve şehircilik"
+          ],
+          "feeds": [
+            {
+              "id": "feed-sakarya-insaat-google",
+              "name": "Sakarya İnşaat, Tadilat & Kentsel Dönüşüm (Google Haberler)",
+              "url": "https://news.google.com/rss/search?q=sakarya+in%C5%9Faat+OR+tadilat+OR+kentsel+d%C3%B6n%C3%BC%C5%9F%C3%BCm+OR+mimari+OR+dekorasyon&hl=tr&gl=TR&ceid=TR:tr",
+              "enabled": true,
+              "category": "sakarya"
+            },
+            {
+              "id": "feed-trt-ekonomi",
+              "name": "TRT Haber - Ekonomi & Gayrimenkul",
+              "url": "https://www.trthaber.com/ekonomi_articles.rss",
+              "enabled": true,
+              "category": "insaat"
+            },
+            {
+              "id": "feed-aa-guncel",
+              "name": "Anadolu Ajansı - Güncel & Şehircilik",
+              "url": "https://www.aa.com.tr/tr/rss/default?cat=guncel",
+              "enabled": true,
+              "category": "genel"
+            }
+          ]
+        },
+        "blog": {
+          "enabled": true,
+          "postsPerPage": 6,
+          "showAuthorInfo": true,
+          "showReadTime": true,
+          "allowComments": false,
+          "featuredCategory": "Maliyet Rehberi",
+          "categories": [
+            "Maliyet Rehberi",
+            "Villa & İnşaat",
+            "Dekorasyon Fikirleri",
+            "İç Mimarlık Trendleri",
+            "Kentsel Dönüşüm"
+          ]
+        },
+        "theme": {
+          "activeTheme": "gold",
+          "brandName": "Sakarya Mimar Yapı",
+          "showThemeSwitcher": true,
+          "navbarStyle": "sticky",
+          "showWhatsAppFloating": true,
+          "showCookieBanner": true,
+          "primaryAccentColor": "#ecc54e"
+        },
+        "game": {
+          "enabled": false,
+          "title": "Duvardan Tuğla Aşırtma Oyunu",
+          "showInNavbar": true,
+          "showInFooter": true,
+          "minScoreForDiscount": 200,
+          "discountPercentage": 10,
+          "disabledMessage": "Tuğla Aşırtma Oyunu şu anda geçici olarak kapalıdır. Tadilat ve keşif talepleriniz için bize WhatsApp veya telefon üzerinden doğrudan ulaşabilirsiniz."
+        }
+      },
+      "seo": {
+        "meta": {
+          "siteTitle": "Sakarya Mimar Yapı | Anahtar Teslim Tadilat, İnşaat ve Mimarlık",
+          "siteDescription": "Sakarya Mimar Yapı; Serdivan merkezli anahtar teslim komple ev tadilatı, mutfak & banyo yenileme, Sapanca villa inşaatı ve 3D mimari projelendirme. 2 Yıl işçilik garantisi ve ücretsiz keşif.",
+          "keywords": [
+            "sakarya mimar yapı",
+            "sakarya tadilat",
+            "serdivan tadilat dekorasyon",
+            "sakarya ev tadilatı",
+            "serdivan ev yenileme",
+            "adapazarı dekorasyon",
+            "sapanca villa inşaatı",
+            "anahtar teslim tadilat sakarya",
+            "sakarya mutfak banyo yenileme",
+            "erenler tadilat firması",
+            "sakarya inşaat taahhüt",
+            "asım yılmazer",
+            "abdussamet gültekin"
+          ],
+          "canonicalUrl": "https://www.sakaryamimaryapi.com",
+          "author": "Sakarya Mimar Yapı",
+          "ogImage": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+          "googleSiteVerification": "",
+          "yandexVerification": ""
+        },
+        "geo": {
+          "region": "TR-54",
+          "placename": "Sakarya / Serdivan",
+          "position": "40.7667;30.3667",
+          "icbm": "40.7667, 30.3667",
+          "streetAddress": "Arabacıalanı Mah. Çark Cd. No:148 Kat:2",
+          "postalCode": "54050",
+          "latitude": 40.7667,
+          "longitude": 30.3667,
+          "targetDistricts": [
+            "Serdivan",
+            "Adapazarı",
+            "Sapanca",
+            "Erenler",
+            "Arifiye",
+            "Hendek",
+            "Akyazı",
+            "Geyve",
+            "Karasu"
+          ]
+        },
+        "schema": {
+          "businessType": "GeneralContractor",
+          "businessName": "Sakarya Mimar Yapı İnşaat & Tadilat",
+          "openingHours": "Mo-Sa 08:30-19:30",
+          "priceRange": "₺₺",
+          "googleMapsEmbedUrl": "https://maps.google.com/?q=Serdivan+Sakarya",
+          "ratingValue": "4.9",
+          "reviewCount": "86"
+        }
+      },
+      "social": {
+        "channels": {
+          "instagram": {
+            "enabled": true,
+            "url": "https://www.instagram.com/sakaryamimaryapi",
+            "handle": "@sakaryamimaryapi",
+            "badge": "Günlük Şantiye Reels & Hikayeleri"
+          },
+          "youtube": {
+            "enabled": true,
+            "channelUrl": "https://www.youtube.com/@sakaryamimaryapi",
+            "handle": "@sakaryamimaryapi",
+            "featuredVideoUrl": "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+            "featuredVideoId": "ScMzIvxBSi4",
+            "featuredVideoTitle": "Sakarya Serdivan Villa & Daire Komple Tadilat Turu",
+            "featuredVideoDescription": "Anahtar teslim daire tadilatı, modern mutfak ve banyo dönüşüm sürecimizi adım adım inceleyin."
+          },
+          "tiktok": {
+            "enabled": true,
+            "url": "https://www.tiktok.com/@sakaryamimaryapi",
+            "handle": "@sakaryamimaryapi",
+            "badge": "Kısa Şantiye Dönüşüm Videoları"
+          },
+          "facebook": {
+            "enabled": true,
+            "url": "https://www.facebook.com/sakaryamimaryapi",
+            "handle": "sakaryamimaryapi",
+            "badge": "Resmi Facebook Sayfamız"
+          },
+          "linkedin": {
+            "enabled": false,
+            "url": "https://www.linkedin.com/company/sakaryamimaryapi",
+            "handle": "Sakarya Mimar Yapı",
+            "badge": "Kurumsal Ağımız"
+          },
+          "pinterest": {
+            "enabled": true,
+            "url": "https://www.pinterest.com/sakaryamimaryapi",
+            "handle": "sakaryamimaryapi",
+            "badge": "Mimari İlham Panoları"
+          }
+        },
+        "showcaseSection": {
+          "enabled": true,
+          "badge": "Canlı Şantiye & Sosyal Medya",
+          "title": "Sosyal Medyada",
+          "titleHighlight": "Sakarya Mimar Yapı",
+          "description": "Şantiyelerimizden canlı yayınlanan Instagram Reels, TikTok dönüşüm videoları ve YouTube tadilat turlarımızla işçiliğimizi şeffafça izleyin.",
+          "showYouTubeEmbed": true,
+          "privacyMode": true,
+          "posts": [
+            {
+              "id": "post-1",
+              "platform": "instagram",
+              "title": "Serdivan 3+1 Daire Komple Dönüşüm Hikayesi",
+              "url": "https://www.instagram.com/sakaryamimaryapi",
+              "viewsOrLikes": "14.2K İzlenme",
+              "thumbnailUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+              "id": "post-2",
+              "platform": "tiktok",
+              "title": "Eski Banyo Kırımından Lüks Tasarıma Geçiş (24 Gün)",
+              "url": "https://www.tiktok.com/@sakaryamimaryapi",
+              "viewsOrLikes": "28.5K İzlenme",
+              "thumbnailUrl": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+              "id": "post-3",
+              "platform": "youtube",
+              "title": "Sapanca Müstakil Villa Çelik Karkas İskelet Montajı",
+              "url": "https://www.youtube.com/@sakaryamimaryapi",
+              "viewsOrLikes": "9.8K İzlenme",
+              "thumbnailUrl": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80"
+            }
+          ]
+        }
+      }
+    }
+  }
+]
